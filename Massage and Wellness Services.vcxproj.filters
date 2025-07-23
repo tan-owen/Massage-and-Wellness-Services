@@ -18,6 +18,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="menu.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
     <ClCompile Include="function.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
