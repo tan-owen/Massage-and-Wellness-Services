@@ -1,4 +1,5 @@
 1. Customer Functionalities Description
+   
 i. View Beauty Centre Information
 • Displays general information about the beauty service provider.
 • May include:
@@ -50,15 +51,9 @@ o Service name
 o Expert assigned
 o Date and time
 o Payment amount and status
-Sample Output:
-Your Booked Appointments:
-Service: Bridal Glow Package
-Expert: Alice
-Date: Dec 12, 2025
-Time: 10AM–12PM
-Total Paid: RM600
 
 2. Admin Functionalities – Beauty Service Booking Application
+
 The admin (Owner of the Beauty Centre) must log in to the system to manage and monitor
 the business operations. The admin has access to the following features:
 i. View Individual Expert Schedule
@@ -92,6 +87,7 @@ o 25 to <30 hours → 25% bonus
 o <25 hours → No bonus
 
 3. Expert Functionalities – Beauty Service Booking Application
+
 Each Expert (employee providing treatments and consultations) must log in to the system
 to access their personalized dashboard. The following functionalities are available only to
 the logged-in expert:
