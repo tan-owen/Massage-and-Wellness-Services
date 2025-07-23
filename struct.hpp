@@ -11,10 +11,12 @@ struct account {
 	string password;
 	string firstName;
 	string lastName;
-	string accoutType;
 };
 
 struct appointment {
 	string appointmentID;
 	time_t appointmentDateTime;
 };
+
+
+accountExpert expert[100];

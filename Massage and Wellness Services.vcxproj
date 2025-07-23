@@ -123,7 +123,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="function.cpp" />
     <ClCompile Include="function.hpp" />
+    <ClCompile Include="menu.cpp" />
     <ClCompile Include="menu.hpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

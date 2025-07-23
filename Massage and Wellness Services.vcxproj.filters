@@ -24,6 +24,12 @@
     <ClCompile Include="function.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="menu.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="function.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="struct.hpp">
