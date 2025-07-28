@@ -5,20 +5,20 @@
 using namespace std;
 
 
-string organizationLogoScreen()  ;
+void organizationLogoScreen()  ;
 void loginScreen();
 void registrationScreen();
 
 //user screens
 void customerOptionScreen();
-void appointmentSelectScreen();
-void serviceSelectScreen();
-void expertSelectScreen();
-void dateSelectScreen();
-void timeSlotSelectScreen();
-void paymentMethodSelectScreen();
-void paymentSuccessScreen();
-void viewBookingScreen();
+	void appointmentSelectScreen();
+	void serviceSelectScreen();
+	void expertSelectScreen();
+	void dateSelectScreen();
+	void timeSlotSelectScreen();
+	void paymentMethodSelectScreen();
+	void paymentSuccessScreen();
+	void viewBookingScreen();
 
 //admin screens
 void adminOptionScreen();
@@ -31,3 +31,4 @@ void viewExpertBonusScreens_ADMIN();
 void viewScheduleScreen();
 void viewAssignedCustomerScreen();
 void viewEarningBonusScreen_EXPERT();
+

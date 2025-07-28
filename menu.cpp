@@ -1,6 +1,14 @@
 #include "function.hpp"
 using namespace std;
 
-string organizationLogoScreen() {
-    return "test";
-}
+void organizationLogoScreen() {
+	cout << "test";
+};
+void loginScreen();
+void registrationScreen();
+
+//user screens
+void customerOptionScreen();
+void appointmentSelectScreen();
+void serviceSelectScreen();
+void expertSelectScreen();

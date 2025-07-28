@@ -6,7 +6,8 @@
 using namespace std;
 
 int main() {
-	cout << organizationLogoScreen();
-
+	organizationLogoScreen();
+	
 	return 0;
 }
+
