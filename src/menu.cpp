@@ -165,6 +165,14 @@ void customerRegistrationScreen() {
 //void generateSalesReportScreen();
 //    //cout << "Sales Report\n";
 //    //cout << "--------------------------------------------------------\n";
+//    //cout << "Sales Report\n";
+//    //cout << "--------------------------------------------------------\n";
+//    //cout << left << setw(5) << "No. |" << setw(30) << "Service Type" << setw(16) << "Total Bookings" << setw(18) << "Sales Total (RM)" << "\n";
+//    //cout << "--------------------------------------------------------\n";
+//    //cout << left << setw(5) << "1. " << setw(30) << "Consultations" << setw(16) << "25" << setw(18) << "RM 2,500.00" << "\n";
+//    //cout << left << setw(5) << "2. " << setw(30) << "Example Treatments" << setw(16) << "18" << setw(18) << "RM 1,800.00" << "\n";
+//    //cout << left << setw(5) << "3. " << setw(30) << "Example Treatments" << setw(16) << "12" << setw(18) << "RM 1,200.00" << "\n";
+    
 //    //cout << "1. Date Range\n";
 //    //cout << "2. Service Category\n";
 //    //cout << "3. Expert\n\n";
@@ -181,17 +189,97 @@ void customerRegistrationScreen() {
 //
 //
 //void viewExpertBonusScreens_ADMIN();
-//
-//
-//
+
+//    //cout << "Expert Bonus Summary\n";
+//    //cout << "--------------------------------------------------------------------------------------------------------------------------------------------------------\n";
+//    //cout << left << setw(5) << "No. |" << setw(15) << "Expert Name" << setw(18) << "Treatment Hours" << setw(20) << "Consultation Hours" << setw(16) << "Combined Hours" << setw(18) << "Service Value (RM)" << setw(15) << "Bonus Rate (%)" << setw(18) << "Bonus Amount (RM)" << "\n";
+//    //cout << "--------------------------------------------------------------------------------------------------------------------------------------------------------\n";
+//    //cout << left << setw(5) << "1. " << setw(15) << "Name 12345" << setw(18) << "25" << setw(20) << "15" << setw(16) << "40" << setw(18) << "RM 2,500.00" << setw(15) << "8%" << setw(18) << "RM 200.00" << "\n";
+//    //cout << left << setw(5) << "2. " << setw(15) << "Name 12345" << setw(18) << "18" << setw(20) << "12" << setw(16) << "30" << setw(18) << "RM 1,800.00" << setw(15) << "7%" << setw(18) << "RM 126.00" << "\n";
+//    //cout << left << setw(5) << "3. " << setw(15) << "Name 12345" << setw(18) << "12" << setw(20) << "8" << setw(16) << "20" << setw(18) << "RM 1,200.00" << setw(15) << "6%" << setw(18) << "RM 72.00" << "\n";
+    
+
+	
 ////expert screens
 //void viewScheduleScreen();
-//
+//cout << "Expert Schedule\n";
+//    //cout << "Name: Name 12345\n";
+//    //cout << "Week: 3\n";
+//    //cout << "-------------------------------------------------------------------------\n";
+//    //cout << left << setw(6) << "No." 
+//    //<< setw(15) << "Date" 
+//    //<< setw(12) << "Start Time" 
+//    //<< setw(12) << "End Time" 
+//    //<< setw(20) << "Service Type" 
+//    //<< setw(20) << "Customer Name" << "\n";
+//    //cout << "-------------------------------------------------------------------------\n";
+//    //cout << left << setw(6) << "1." 
+//    //<< setw(15) << "Dec 12 (FRI)" 
+//    //<< setw(12) << "9 AM" 
+//    //<< setw(12) << "11 AM" 
+//    //<< setw(20) << "Massage" 
+//    //<< setw(20) << "John Smith" << "\n";
+//    //cout << left << setw(6) << "2." 
+//    //<< setw(15) << "Dec 12 (FRI)" 
+//    //<< setw(12) << "2 PM" 
+//    //<< setw(12) << "4 PM" 
+//    //<< setw(20) << "Consultation" 
+//    //<< setw(20) << "Mary Johnson" << "\n";
+//    //cout << left << setw(6) << "3." 
+//    //<< setw(15) << "Dec 12 (FRI)" 
+//    //<< setw(12) << "5 PM" 
+//    //<< setw(12) << "6 PM" 
+//    //<< setw(20) << "Facial" 
+//    //<< setw(20) << "David Lee" << "\n";
+//    //cout << "-------------------------------------------------------------------------\n";
+//    //cout << "Total Working Hours: " << "\n";
 //
 //void viewAssignedCustomerScreen();
 //
+//    //cout << "View Booked Customers\n";
+//    //cout << "------------------------------------------------------------------------------------------\n";
+//    //cout << left << setw(6) << "No." 
+//    //<< setw(20) << "Customer Name" 
+//    //<< setw(15) << "Date" 
+//    //<< setw(12) << "Start Time" 
+//    //<< setw(12) << "End Time" 
+//    //<< setw(20) << "Service Type" 
+//    //<< setw(10) << "Duration" << "\n";
+//    //cout << "------------------------------------------------------------------------------------------\n";
+//    //cout << left << setw(6) << "1." 
+//    //<< setw(20) << "John Smith" 
+//    //<< setw(15) << "Dec 12 (FRI)" 
+//    //<< setw(12) << "9 AM" 
+//    //<< setw(12) << "11 AM" 
+//    //<< setw(20) << "Massage" 
+//    //<< setw(10) << "2 hrs" << "\n";
+//    //cout << left << setw(6) << "2." 
+//    //<< setw(20) << "Mary Johnson" 
+//    //<< setw(15) << "Dec 12 (FRI)" 
+//    //<< setw(12) << "2 PM" 
+//    //<< setw(12) << "4 PM" 
+//    //<< setw(20) << "Consultation" 
+//    //<< setw(10) << "2 hrs" << "\n";
+//    //cout << left << setw(6) << "3." 
+//    //<< setw(20) << "David Lee" 
+//    //<< setw(15) << "Dec 12 (FRI)" 
+//    //<< setw(12) << "5 PM" 
+//    //<< setw(12) << "6 PM" 
+//    //<< setw(20) << "Facial" 
+//    //<< setw(10) << "1 hr" << "\n";
+//    //cout << "------------------------------------------------------------------------------------------\n";
+
+
 //
 //void viewEarningBonusScreen_EXPERT();
+//    //cout << "Bonus Summary\n\n";
+//    //cout << "---------------------------------------\n";
+//    //cout << std::left << std::setw(25) << "Consultation Hours :" << "6" << '\n';
+//    //cout << std::left << std::setw(25) << "Treatment Hours :" << "24" << '\n';
+//    //cout << std::left << std::setw(25) << "Combined Hours :" << "30" << '\n';
+//    //cout << std::left << std::setw(25) << "Total Service Value :" << "RM 2100.00" << '\n';
+//    //cout << std::left << std::setw(25) << "Eligible Bonus :" << "50%" << '\n';
+//    //cout << std::left << std::setw(25) << "Bonus Amount:" << "RM 1050.00" << '\n';
 
 void customerMode() {
     void customerLoginRegistrationSelectionScreen();
