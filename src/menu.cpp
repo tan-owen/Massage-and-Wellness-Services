@@ -52,7 +52,7 @@ void customerLoginRegistrationSelectionScreen() {
                 customerLoginScreen();
                 break;
             case 2:
-                custoemerRegistrationScreen();
+                customerRegistrationScreen();
                 break;
             default:
                 cout << "Invalid. Please select again (1/2): ";
@@ -69,7 +69,7 @@ void customerLoginScreen() {
      cin >> password;
 }
 
-void custoemerRegistrationScreen() {
+void customerRegistrationScreen() {
     cout << "--- Registration Screen ---\n";
      string newUsername, newPassword;
      cout << "Choose a username: ";
