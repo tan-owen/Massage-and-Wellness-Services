@@ -18,8 +18,10 @@ void modeSelectScreen() {
     cout << "3. Admin Mode\n";
     cout << "Please select a mode to continue(1/2/3): ";
     int choice = 0;
-    while (choice < 1 || choice > 3) {
+    while (!(choice > 0  && choice < 4)) {
+        cout << "Invalid. Please select again (1/2/3): ";
         cin >> choice;
+	}
         switch (choice) {
             case 1:
                 cout << "\n";
@@ -31,10 +33,7 @@ void modeSelectScreen() {
             case 3:
                 // adminMode();
                 break;
-            default:
-                cout << "Invalid. Please select again (1/2/3): ";
 		}
-	}
 };
 
 
@@ -52,14 +51,13 @@ void customerLoginRegistrationSelectionScreen() {
                 customerLoginScreen();
                 break;
             case 2:
-                custoemerRegistrationScreen();
+                customerRegistrationScreen();
                 break;
             default:
                 cout << "Invalid. Please select again (1/2): ";
         }
 	}
 }
-
 void customerLoginScreen() {
     cout << "--- Login Screen ---\n";
      string username, password;
@@ -69,7 +67,7 @@ void customerLoginScreen() {
      cin >> password;
 }
 
-void custoemerRegistrationScreen() {
+void customerRegistrationScreen() {
     cout << "--- Registration Screen ---\n";
      string newUsername, newPassword;
      cout << "Choose a username: ";
@@ -77,6 +75,8 @@ void custoemerRegistrationScreen() {
      cout << "Choose a password: ";
      cin >> newPassword;
 }
+
+
 
 
 //void customerOptionScreen() {
