@@ -6,21 +6,20 @@
 
 using namespace std;
 
-struct accountCustomer {
-	string username;
+struct Account {
+	string accountID; 
+	string accountType; // "patient", "expert", "admin"
+	string username; 
 	string password;
 	string firstName;
 	string lastName;
 };
-struct accountExpert {
-	string username;
-	string password;
-	string firstName;
-	string lastName;
-	int day;
-	string timeslot[5]; // {"1200-1400",1400-1500,,,}
+struct Expert : Account {
+	string expertID;
+	string expertType; // "doctor", "nurse", "therapist"
+	string availableTime;
 };
-struct accountAdmin{
+struct Admin : Account{
 	string username;
 	string password;
 	string firstName;
@@ -32,5 +31,3 @@ struct appointment {
 	time_t appointmentDateTime;
 };
 
-
-accountExpert expert[100];

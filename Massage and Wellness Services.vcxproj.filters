@@ -15,24 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="menu.hpp">
-      <Filter>Header Files</Filter>
+    <ClCompile Include="src\function.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="function.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="menu.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="function.cpp">
-      <Filter>Header Files</Filter>
+    <ClCompile Include="src\menu.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="struct.hpp">
+    <ClInclude Include="src\function.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\struct.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
