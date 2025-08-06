@@ -20,10 +20,7 @@ struct Expert : Account {
 	string availableTime;
 };
 struct Admin : Account{
-	string username;
-	string password;
-	string firstName;
-	string lastName;
+// Admin specific fields can be added here
 };
 
 struct appointment {
