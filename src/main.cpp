@@ -5,10 +5,10 @@
 #include "menu.hpp"
 using namespace std;
 
-int main() {
-	organizationLogoScreen();
-	modeSelectScreen();
+int main()
+{
+  organizationLogoScreen();
+  modeSelectScreen();
 
-	return 0;
+  return 0;
 }
-

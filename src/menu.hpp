@@ -3,11 +3,10 @@
 #include <string>
 #include "function.hpp"
 
-
 void organizationLogoScreen();
 void modeSelectScreen();
 
-//user screens
+// user screens
 void customerMode();
 void customerLoginRegistrationSelectionScreen();
 void customerRegistrationScreen();
@@ -22,7 +21,7 @@ void paymentMethodSelectScreen();
 void paymentSuccessScreen();
 void viewBookingScreen();
 
-//admin screens
+// admin screens
 void adminLoginScreen();
 void adminOptionScreen();
 void viewOverallScheduleScreen();
@@ -30,9 +29,8 @@ void viewCustomerListScreen();
 void generateSalesReportScreen();
 void viewExpertBonusScreens_ADMIN();
 
-//expert screens
+// expert screens
 void expertLoginScreen();
 void viewScheduleScreen();
 void viewAssignedCustomerScreen();
 void viewEarningBonusScreen_EXPERT();
-
