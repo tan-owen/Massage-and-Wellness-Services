@@ -132,6 +132,13 @@
     <ClInclude Include="src\menu.hpp" />
     <ClInclude Include="src\struct.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="account.txt" />
+    <Text Include="appointmentBooking.txt" />
+    <Text Include="expertTimeslot.txt" />
+    <Text Include="feedback.txt" />
+    <Text Include="serviceType.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -1,14 +1,21 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 #include "function.hpp"
 #include "struct.hpp"
 #include "menu.hpp"
 using namespace std;
 
-int main() {
-	organizationLogoScreen();
-	modeSelectScreen();
+void main() {
+	int accountArraySize = fileLineCount("account.txt");
+	Account* account = new Account[accountArraySize];
+    for (int i = 0; i < fileLineCount("account.txt"); i++) {
+        loadFromAccountFile(account, i);
+    }
 
-	return 0;
+    for (int i = 0; i < fileLineCount("account.txt"); i++) {
+		cout << "------------------------" << endl;
+        printLoadFromAccountStruct(account[i]);
+    }
 }
 

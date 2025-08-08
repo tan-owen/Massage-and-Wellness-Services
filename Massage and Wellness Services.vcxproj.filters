@@ -36,4 +36,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="account.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="serviceType.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="appointmentBooking.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="feedback.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="expertTimeslot.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
