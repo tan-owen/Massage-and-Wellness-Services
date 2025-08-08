@@ -24,6 +24,9 @@
     <ClCompile Include="src\menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AccountAdmin.txt">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\function.hpp">
@@ -35,5 +38,25 @@
     <ClInclude Include="src\struct.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="AccountCustomer.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="serviceType.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="appointmentBooking.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="feedback.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="expertTimeslot.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="AccountExpert.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
