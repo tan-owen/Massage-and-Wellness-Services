@@ -1,6 +1,9 @@
-#pragma once
 #include "menu.hpp"
+#include "function.hpp"
+#include "struct.hpp"
 #include <iostream>
+#include <string>
+#include <fstream>
 using namespace std;
 
 
@@ -13,63 +16,125 @@ void organizationLogoScreen() {
     cout << "\n";
 };
 
-void modeSelectScreen() {
-    cout << "--- Mode Select ---\n";
-    cout << "1. Customer Mode\n";
-    cout << "2. Expert Mode\n";
-    cout << "3. Admin Mode\n";
-    cout << "Please select a mode to continue(1/2/3): ";
-    int choice = 0;
-    while (!(choice > 0  && choice < 4)) {
-        cin >> choice;
-	}
-        switch (choice) {
-            case 1:
-                cout << "\n";
-                customerMode();
-                break;
-            case 2:
-                // expertMode();
-                break;
-            case 3:
-                // adminMode();
-                break;
-			default:
-                cout << "Invalid. Please select again (1/2/3): ";
-		}
-};
 
 
 //user screens
 void customerMode() {
-	cout << "Would you like to login or register?\n";
-    cout << "1. Login\n";
-    cout << "2. Register\n";
-    cout << "Please select an option (1/2): ";
-    int choice = 0;
-    while (choice < 1 || choice > 2) {
-        cin >> choice;
-        switch (choice) {
-            case 1:
-                cout << "\n";
-                customerLoginScreen();
-                break;
-            case 2:
-                cout << "\n";
-                customerRegistrationScreen();
-                break;
-            default:
-                cout << "Invalid. Please select again (1/2): ";
+    int modeChoice;
+    while (1) { 
+        cout << "Would you like to LOGIN or REGISTER?\n";
+        cout << "1. Login\n";
+        cout << "2. Register\n";
+        cout << "Please select an option (1/2): ";
+        cin >> modeChoice;
+
+        if (modeChoice == 1) {
+            // 需要先创建一个临时账户数组
+            int accountArraySize = fileLineCount("account.txt");
+            Account* account = new Account[accountArraySize];
+            for (int i = 0; i < accountArraySize; i++) {
+                loadFromAccountFile(account, i);
+            }
+            customerLoginScreen(account);
+            delete[] account; // 释放内存
+            return;
         }
-	}
+        else if (modeChoice == 2) {
+            customerRegistrationScreen();
+            return;
+        }
+        else {
+            cout << "Invalid option. Please try again.\n";
+        }
+    }
 }
-void customerLoginScreen() {
-    cout << "--- Login Screen ---\n";
-     string username, password;
-     cout << "Username: ";
-     cin >> username;
-     cout << "Password: ";
-     cin >> password;
+
+
+void customerLoginScreen(struct Account *account) {
+    cout << "--- Customer Login Screen ---\n";
+    string usernameInput, passwordInput;
+    cout << "Enter username: ";
+    cin >> usernameInput;
+    
+    bool accountFound = false;
+    int i = 0, accountIndex = 0;
+    
+    for(i = 0; i < fileLineCount("account.txt"); i++) {
+        if(account[i].username == usernameInput){
+            cout << "Account is found!" << endl;
+            accountFound = true;
+            accountIndex = i;
+            break;
+        }
+    }
+    if(accountFound == 1){
+        cout << "Username: " << usernameInput << endl;
+        cout << "Enter password:";
+        cin >> passwordInput;
+        if(account[accountIndex].password == passwordInput){
+            cout << "Login successful!" << endl;
+            customerOptionScreen(account);
+        } else {
+            cout << "Incorrect password. Please try again." << endl;
+        }
+
+    }
+
+}
+
+void adminLoginScreen(){
+    cout << "--- Admin Login Screen ---\n";
+    string username, password;
+    
+    cout << "Username: ";
+    cin >> username;
+    cout << "Password: ";
+    cin >> password;
+    
+    // 这里应该进行管理员账户验证
+    // 暂时简单实现，后面可以增加实际验证
+    cout << "Admin login functionality to be implemented.\n";
+}
+
+void expertLoginScreen(){
+    cout << "--- Expert Login Screen ---\n";
+    string username, password;
+    
+    cout << "Username: ";
+    cin >> username;
+    cout << "Password: ";
+    cin >> password;
+    
+    // 这里应该进行专家账户验证
+    // 暂时简单实现，后面可以增加实际验证
+    cout << "Expert login functionality to be implemented.\n";
+}
+
+void customerOptionScreen(struct Account *account) {
+    cout << "--- Customer Options ---\n";
+    cout << "1. Book an appointment\n";
+    cout << "2. View my bookings\n";
+    cout << "3. Exit\n";
+    int choice;
+    cout << "Please select an option: ";
+    cin >> choice;
+    
+    switch(choice) {
+        case 1:
+            // 预约服务 - 这里可以后续实现
+            cout << "Booking service functionality to be implemented.\n";
+            break;
+        case 2:
+            // 查看已有预约 - 这里可以后续实现
+            cout << "View bookings functionality to be implemented.\n";
+            break;
+        case 3:
+            cout << "Thank you for using our services!\n";
+            break;
+        default:
+            cout << "Invalid option. Please try again.\n";
+            customerOptionScreen(account);
+    }
 }
 
 void customerRegistrationScreen() {

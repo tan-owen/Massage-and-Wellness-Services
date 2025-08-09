@@ -9,10 +9,9 @@ void modeSelectScreen();
 
 //user screens
 void customerMode();
-void customerLoginRegistrationSelectionScreen();
 void customerRegistrationScreen();
-void customerLoginScreen();
-void customerOptionScreen();
+void customerLoginScreen(struct Account *account);
+void customerOptionScreen(struct Account *account);
 void appointmentSelectScreen();
 void serviceSelectScreen();
 void expertSelectScreen();

@@ -8,3 +8,4 @@ C0007;username=david;password=dave789;firstName=David;lastName=Garcia;
 C0008;username=linda;password=linda456;firstName=Linda;lastName=Miller;
 C0009;username=daniel;password=danpass;firstName=Daniel;lastName=Davis;
 C0010;username=olivia;password=olivia1;firstName=Olivia;lastName=Martinez;
+C0011;username=lebin;password=lebin123;firstName=Lebin;lastName=Siow;

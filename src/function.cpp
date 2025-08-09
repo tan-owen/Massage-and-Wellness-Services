@@ -1,4 +1,3 @@
-#pragma once
 #include <iostream>
 #include <string>
 #include <ctime>
@@ -6,6 +5,7 @@
 #include <cstring>
 #include "function.hpp"
 #include "struct.hpp"
+#include "menu.hpp"
 
 int fileLineCount(const std::string& fileName)
 {
@@ -18,6 +18,21 @@ int fileLineCount(const std::string& fileName)
     }
     accountFileLineCount.close();
 	return lineCount;
+}
+
+void loginVerification() {
+    int accountType;
+    cout << "--- Select your identify ---" << endl;
+    cout << "1. Customer" << endl;
+    cout << "2. Expert" << endl;
+    cout << "3. Admin" << endl;
+    cout << "Please select your account type (1/2/3): ";
+    cin >> accountType;
+    switch(accountType){
+        case 1: customerMode(); break;
+        case 2: expertLoginScreen(); break;
+        case 3: adminLoginScreen(); break;
+    }
 }
 
 void loadFromAccountFile(struct Account* account, int lineIndex) {

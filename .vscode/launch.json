@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Project",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/program",
+            "args": [],
+            "stopAtEntry":false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb"
+        }
+    ]
+}
