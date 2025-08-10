@@ -1,0 +1,85 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include "function.hpp"
+#include "struct.hpp"
+#include "menu.hpp"
+#include "lib/database.hpp"
+#include "lib/serialization.hpp"
+using namespace std;
+
+// Convert your struct into line of string
+std::string toString(CustomerAccount data)
+{
+    std::stringstream stringstream;
+
+    // Append each part of the struct to the stringstream in the desired format
+    stringstream << serializeString(data.customerID, "customerID")
+                 << serializeString(data.username, "username")
+                 << serializeString(data.password, "password")
+                 << serializeString(data.firstName, "firstName")
+                 << serializeString(data.lastName, "lastName");
+
+    // Convert the stringstream to a std::string and return it
+    return stringstream.str();
+}
+
+// Convert a line of string into a struct
+CustomerAccount fromString(std::string dataString)
+{
+    CustomerAccount account;
+
+    account.customerID = deserializeString(dataString, "customerID");
+    account.username = deserializeString(dataString, "username");
+    account.password = deserializeString(dataString, "password");
+    account.firstName = deserializeString(dataString, "firstName");
+    account.lastName = deserializeString(dataString, "lastName");
+
+    return account;
+}
+
+int main()
+{
+    // Create 2 sample customer account
+    CustomerAccount accounts[1000];
+    int accountCount = 0;
+
+    CustomerAccount data1;
+    data1.customerID = "C0001";
+    data1.firstName = "looz";
+    data1.lastName = "dreemur";
+    data1.password = "password";
+    data1.username = "looz";
+
+    accounts[accountCount] = data1;
+    accountCount++;
+
+    CustomerAccount data2;
+    data2.customerID = "C0002";
+    data2.firstName = "-";
+    data2.lastName = "quack";
+    data2.password = "password";
+    data2.username = "quack";
+
+    accounts[accountCount] = data2;
+    accountCount++;
+
+    // Save array of CustomerAccount into account.txt
+    std::string filename("account.txt");
+    saveToFile(filename, &accounts[0], accountCount, toString);
+    std::cout << "Saved " << accountCount << " record(s) to \"" << filename << "\"." << std::endl;
+
+
+    // Load accounts from account.txt into an array of CustomerAccount
+    CustomerAccount loadedAccounts[1000];
+    int loadedAccountCount = 0;
+    loadFromFile("account.txt", &loadedAccounts[0], fromString, &loadedAccountCount);
+    for (int i = 0; i < loadedAccountCount; i++)
+    {
+        std::cout << toString(loadedAccounts[i]) << std::endl;
+    }
+
+    std::cout << std::endl;
+    std::cout << "Loaded " << loadedAccountCount << " record(s)." << std::endl;
+    return 0;
+}
