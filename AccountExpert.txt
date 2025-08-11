@@ -1,0 +1,5 @@
+E01;username=bob Expert;password=bob'spassword;firstName=Bob;lastName=the Builder;
+E02;username=alice;password=alice_pw;firstName=Alice;lastName=Johnson;
+E03;username=charlie;password=charlie_123;firstName=Charlie;lastName=Brown;
+E04;username=diana;password=diana_pass;firstName=Diana;lastName=Miller;
+E05;username=frank;password=frank_789;firstName=Frank;lastName=Davis;

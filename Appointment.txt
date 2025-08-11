@@ -1,0 +1,5 @@
+AP002;C005;E02;serviceType=Massage;appointmentStartTime=1400;appointmentEndTime=1500;appointmentDate=20231212;totalPaid=85.50;serviceFee=8.55;paymentStatus=1;
+AP003;C012;E03;serviceType=Consultation;appointmentStartTime=0930;appointmentEndTime=1030;appointmentDate=20231213;totalPaid=50.00;serviceFee=5.00;paymentStatus=1;
+AP004;C028;E01;serviceType=Treatment;appointmentStartTime=1000;appointmentEndTime=1100;appointmentDate=20231213;totalPaid=110.00;serviceFee=11.00;paymentStatus=0;
+AP005;C041;E02;serviceType=Massage;appointmentStartTime=1600;appointmentEndTime=1730;appointmentDate=20231214;totalPaid=120.00;serviceFee=12.00;paymentStatus=1;
+AP006;C009;E04;serviceType=Treatment;appointmentStartTime=1130;appointmentEndTime=1230;appointmentDate=20231214;totalPaid=95.00;serviceFee=9.50;paymentStatus=0;

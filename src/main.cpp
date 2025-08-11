@@ -6,21 +6,54 @@
 #include "menu.hpp"
 using namespace std;
 
-// The correct entry point for a C++ program is 'int main()'
+
 int main() {
-    int accountArraySize = fileLineCount("AccountCustomer.txt");
-    CustomerAccount* customerAccountArry = new CustomerAccount[accountArraySize];
-    loadToCustomerAccountStruct(customerAccountArry, accountArraySize);
+	const int customerAccountArraySize = 999;
+	const int expertAccountArraySize = 99;
+	const int adminAccountArraySize = 9;
+	const int appointmentArraySize = 999;
+	const int feedbackArraySize = 999;
 
-    // TEST PRINT ALL CUSTOMER STRUCTS
-    for (int i = 0; i < accountArraySize; i++) {
-		cout << "________________________________" << endl;
-        printLoadFromAccountStruct(customerAccountArry[i]);
-    }
+	CustomerAccount customerAccountArry[customerAccountArraySize];
+	ExpertAccount expertAccountArry[expertAccountArraySize];
+	AdminAccount adminAccountArry[adminAccountArraySize];
+	Appointment appointmentArry[appointmentArraySize];
+	Feedback feedbackArry[feedbackArraySize];
+	
+	// Load Account Data
+	loadToCustomerAccountStruct(customerAccountArry, customerAccountArraySize);
+	loadToExpertAccountStruct(expertAccountArry, expertAccountArraySize);
+	loadToAdminAccountStruct(adminAccountArry, adminAccountArraySize);
+	loadToAppointmentStruct(appointmentArry, appointmentArraySize);
+	loadToFeedbackStruct(feedbackArry, feedbackArraySize);
+	
+	// Print
+	printAllCustomerStructs(customerAccountArry, customerAccountArraySize);
+	printAllExpertStructs(expertAccountArry, expertAccountArraySize);
+	printAllAdminStructs(adminAccountArry, adminAccountArraySize);
+	printAllAppointmentStructs(appointmentArry, appointmentArraySize);
+	printAllFeedbackStructs(feedbackArry, feedbackArraySize);
 
 
-    // Clean up allocated memory
-    delete[] customerAccountArry;
+	// Your code starts here:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     return 0;
 }
 

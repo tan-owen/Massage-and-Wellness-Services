@@ -1,0 +1,10 @@
+F001;C001;AP001;E01;comment=Great service!;service=5;
+F002;C002;AP002;E02;comment=Expert was very knowledgeable.;service=4;
+F003;C003;AP003;E03;comment=The experience exceeded my expectations.;service=5;
+F004;C004;AP004;E01;comment=Very quick and efficient service.;service=4;
+F005;C005;AP005;E04;comment=The expert was friendly and helpful.;service=3;
+F006;C001;AP006;E05;comment=Would definitely book again.;service=5;
+F007;C006;AP007;E02;comment=Appreciate the detailed explanation provided.;service=5;
+F008;C007;AP008;E01;comment=The session was okay, not bad but not great either.;service=3;
+F009;C008;AP009;E03;comment=Had a small issue, but it was resolved quickly.;service=4;
+F010;C009;AP010;E05;comment=Highly recommend this expert for the service.;service=5;

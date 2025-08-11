@@ -123,7 +123,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AccountAdmin.txt" />
     <ClCompile Include="src\function.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\menu.cpp" />
@@ -134,12 +133,11 @@
     <ClInclude Include="src\struct.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="AccountAdmin.txt" />
     <Text Include="AccountCustomer.txt" />
-    <Text Include="appointmentBooking.txt" />
+    <Text Include="Appointment.txt" />
     <Text Include="AccountExpert.txt" />
-    <Text Include="expertTimeslot.txt" />
-    <Text Include="feedback.txt" />
-    <Text Include="serviceType.txt" />
+    <Text Include="Feedback.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
