@@ -86,6 +86,20 @@ void loadFromExpertAccountFile(struct ExpertAccount* account, int lineIndex) {
                 fileText.find("lastName=") + string("lastName=").length(),
                 fileText.find(';', fileText.find("lastName=")) - (fileText.find("lastName=") + string("lastName=").length())
             );
+			// Get specialization
+			account[lineIndex].specialization = fileText.substr(
+                fileText.find("specialization=") + string("specialization=").length(),
+                fileText.find(';', fileText.find("specialization=")) - (fileText.find("specialization=") + string("specialization=").length())
+            );
+			// Get working hours
+            account[lineIndex].workingHours.startTime = fileText.substr(
+                fileText.find("workStartTime=") + string("workStartTime=").length(),
+                fileText.find(';', fileText.find("workStartTime=")) - (fileText.find("workStartTime=") + string("workStartTime=").length())
+            );
+            account[lineIndex].workingHours.endTime = fileText.substr(
+                fileText.find("workEndTime=") + string("workEndTime=").length(),
+                fileText.find(';', fileText.find("workEndTime=")) - (fileText.find("workEndTime=") + string("workEndTime=").length())
+            );
         }
         currentLine++;
     }
@@ -266,6 +280,10 @@ void printAllExpertStructs(ExpertAccount expertAccountArry[], int arraySize) {
         cout << "Password\t: " << expertAccountArry[i].password << endl;
         cout << "First Name\t: " << expertAccountArry[i].firstName << endl;
         cout << "Last Name\t: " << expertAccountArry[i].lastName << endl;
+		cout << "Specialization\t: " << expertAccountArry[i].specialization << endl;
+		cout << "Working Days\t: " << expertAccountArry[i].workingHours.day << endl;
+		cout << "Working Hours\t: " << expertAccountArry[i].workingHours.startTime << " - " << expertAccountArry[i].workingHours.endTime << endl;
+
     }
 }
 // Function to print all Admin structs

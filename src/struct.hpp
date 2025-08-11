@@ -15,8 +15,14 @@ struct CustomerAccount {
     string lastName;
 };
 
+struct ExpertWorkingHours {
+    string day = "Monday - Friday"; // Moneday to Friday
+    string startTime; // 24-hour format (e.g., "0900" for 9 AM)
+    string endTime;   // 24-hour format (e.g., "1700" for 5 PM)
+};
+
 // Expert Account File Format:
-// E01;username=bob Expert;password=bob'spassword;firstName=Bob;lastName=the Builder;
+// E01;username=bob Expert;password=bob'spassword;firstName=Bob;lastName=the Builder;specializatoin=Massage;workStartTime=0900;workEndTime=1700;
 struct ExpertAccount {
     string expertID;
     string username;
@@ -24,7 +30,8 @@ struct ExpertAccount {
     string firstName;
     string lastName;
     string specialization;
-
+	ExpertWorkingHours workingHours; // Array of working hours for each day (Monday to Friday)
+    // REMINDER TO ADD WOWRKING HOURS
 };
 
 // Admin Account File Format:

@@ -1,5 +1,7 @@
-E01;username=bob Expert;password=bob'spassword;firstName=Bob;lastName=the Builder;
-E02;username=alice;password=alice_pw;firstName=Alice;lastName=Johnson;
-E03;username=charlie;password=charlie_123;firstName=Charlie;lastName=Brown;
-E04;username=diana;password=diana_pass;firstName=Diana;lastName=Miller;
-E05;username=frank;password=frank_789;firstName=Frank;lastName=Davis;
+E02;username=alice_expert;password=alice123;firstName=Alice;lastName=Green;specialization=Deep Tissue Massage;workStartTime=1000;workEndTime=1800;
+E03;username=mark_therapist;password=mark@2025;firstName=Mark;lastName=Johnson;specialization=Swedish Massage;workStartTime=0900;workEndTime=1700;
+E04;username=sophia_healer;password=sophiaPW;firstName=Sophia;lastName=Lee;specialization=Aromatherapy;workStartTime=1100;workEndTime=1900;
+E05;username=david_spa;password=davidPass;firstName=David;lastName=Nguyen;specialization=Hot Stone Therapy;workStartTime=0800;workEndTime=1600;
+E06;username=emma_wellness;password=emmaSafe;firstName=Emma;lastName=Rodriguez;specialization=Reflexology;workStartTime=1200;workEndTime=2000;
+E07;username=li_therapist;password=li12345;firstName=Li;lastName=Wang;specialization=Thai Massage;workStartTime=0900;workEndTime=1700;
+E08;username=karen_relax;password=relaxWithKaren;firstName=Karen;lastName=Brown;specialization=Prenatal Massage;workStartTime=1000;workEndTime=1800;
