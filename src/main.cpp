@@ -6,7 +6,6 @@
 #include "menu.hpp"
 using namespace std;
 
-// The correct entry point for a C++ program is 'int main()'
 int main() {
     int accountArraySize = fileLineCount("AccountCustomer.txt");
     CustomerAccount* customerAccountArry = new CustomerAccount[accountArraySize];
