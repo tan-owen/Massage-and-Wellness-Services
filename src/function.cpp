@@ -1,4 +1,3 @@
-#pragma once
 #include <iostream>
 #include <string>
 #include <ctime>
@@ -13,7 +12,7 @@ using namespace std;
 // Customer Account Struct Functions
 void loadFromCustomerAccountFile(struct CustomerAccount* account, int arrayPosition) {
     string fileText;
-    ifstream accountFile("AccountCustomer.txt");
+    ifstream accountFile(RESOURCES_FOLDER + "AccountCustomer.txt");
 
     int currentLine = 0;
     while (getline(accountFile, fileText)) {
@@ -59,7 +58,7 @@ void loadToCustomerAccountStruct(struct CustomerAccount* account, int arraySize)
 // Expert Account Struct Functions
 void loadFromExpertAccountFile(struct ExpertAccount* account, int lineIndex) {
     string fileText;
-    ifstream expertFile("AccountExpert.txt");
+    ifstream expertFile(RESOURCES_FOLDER + "AccountExpert.txt");
     int currentLine = 0;
     while (getline(expertFile, fileText)) {
         if (currentLine == lineIndex && !fileText.empty()) {
@@ -113,7 +112,7 @@ void loadToExpertAccountStruct(struct ExpertAccount* account, int arraySize) {
 // Admin Account Struct Functions
 void loadFromAdminAccountFile(struct AdminAccount* account, int lineIndex) {
     string fileText;
-    ifstream accountFile("AccountAdmin.txt");
+    ifstream accountFile(RESOURCES_FOLDER + "AccountAdmin.txt");
 
     int currentLine = 0;
     while (getline(accountFile, fileText)) {
@@ -151,7 +150,7 @@ void loadToAdminAccountStruct(struct AdminAccount* account, int arraySize) {
 //  Appointment Struct Functions
 void loadFromAppointmentFile(struct Appointment* appointment, int lineIndex) {
     string fileText;
-    ifstream appointmentFile("Appointment.txt");
+    ifstream appointmentFile(RESOURCES_FOLDER + "Appointment.txt");
     int currentLine = 0;
     while (getline(appointmentFile, fileText)) {
         if (fileText.empty()) {
@@ -209,7 +208,7 @@ void loadToAppointmentStruct(struct Appointment* appointment, int arraySize) {
 // Feedback Struct Functions
 void loadFromFeedbackFile(struct Feedback* feedback, int lineIndex) {
     string fileText;
-    ifstream feedbackFile("Feedback.txt");
+    ifstream feedbackFile(RESOURCES_FOLDER + "Feedback.txt");
     int currentLine = 0;
     while (getline(feedbackFile, fileText)) {
         if (fileText.empty()) {

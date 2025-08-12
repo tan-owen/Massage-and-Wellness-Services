@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 
+const std::string RESOURCES_FOLDER = "res/";
 
 // Customer Account Struct Functions
 void loadFromCustomerAccountFile(struct CustomerAccount* account, int lineIndex);
