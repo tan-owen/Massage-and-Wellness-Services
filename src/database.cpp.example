@@ -1,39 +1,49 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include "function.hpp"
-#include "struct.hpp"
-#include "menu.hpp"
+#include <sstream>
 #include "lib/database.hpp"
 #include "lib/serialization.hpp"
 using namespace std;
 
+struct LoozStruct
+{
+    std::string a;
+    int b;
+    double c;
+    float d;
+    char e;
+    bool f;
+};
+
 // Convert your struct into line of string
-std::string toString(CustomerAccount data)
+std::string toString(LoozStruct data)
 {
     std::stringstream stringstream;
 
     // Append each part of the struct to the stringstream in the desired format
-    stringstream << serializeString(data.customerID, "customerID")
-                 << serializeString(data.username, "username")
-                 << serializeString(data.password, "password")
-                 << serializeString(data.firstName, "firstName")
-                 << serializeString(data.lastName, "lastName");
+    stringstream << serializeString(data.a, "a")
+                 << serializeInt(data.b, "b")
+                 << serializeDouble(data.c, "c")
+                 << serializeFloat(data.d, "d")
+                 << serializeChar(data.e, "e")
+                 << serializeBool(data.f, "f");
 
     // Convert the stringstream to a std::string and return it
     return stringstream.str();
 }
 
 // Convert a line of string into a struct
-CustomerAccount fromString(std::string dataString)
+LoozStruct fromString(std::string dataString)
 {
-    CustomerAccount account;
+    LoozStruct account;
 
-    account.customerID = getStringValueByKey(dataString, "customerID");
-    account.username = getStringValueByKey(dataString, "username");
-    account.password = getStringValueByKey(dataString, "password");
-    account.firstName = getStringValueByKey(dataString, "firstName");
-    account.lastName = getStringValueByKey(dataString, "lastName");
+    account.a = getStringValueByKey(dataString, "a");
+    account.b = getIntValueByKey(dataString, "b");
+    account.c = getDoubleValueByKey(dataString, "c");
+    account.d = getFloatValueByKey(dataString, "d");
+    account.e = getCharValueByKey(dataString, "e");
+    account.f = getBoolValueByKey(dataString, "f");
 
     return account;
 }
@@ -41,44 +51,50 @@ CustomerAccount fromString(std::string dataString)
 int main()
 {
     // Create 2 sample customer account
-    CustomerAccount accounts[1000];
+    LoozStruct accounts[1000];
     int accountCount = 0;
 
-    CustomerAccount data1;
-    data1.customerID = "C0001";
-    data1.firstName = "looz";
-    data1.lastName = "dreemur";
-    data1.password = "password";
-    data1.username = "looz";
+    LoozStruct data1;
+    data1.a = "data1 string";
+    data1.b = 1;
+    data1.c = 1.2;
+    data1.d = 3.4f;
+    data1.e = 'c';
+    data1.f = false;
 
     accounts[accountCount] = data1;
     accountCount++;
 
-    CustomerAccount data2;
-    data2.customerID = "C0002";
-    data2.firstName = "-";
-    data2.lastName = "quack";
-    data2.password = "password";
-    data2.username = "quack";
+    LoozStruct data2;
+    data2.a = "data2 string";
+    data2.b = 10;
+    data2.c = 9.8;
+    data2.d = 7.6f;
+    data2.e = 'f';
+    data2.f = true;
 
     accounts[accountCount] = data2;
     accountCount++;
 
+    for (int i = 0; i < accountCount; i++)
+    {
+        std::cout << toString(accounts[i]) << std::endl;
+    }
+
     // Save array of CustomerAccount into account.txt
-    std::string filename("account.txt");
+    std::string filename("example.txt");
     saveToFile(filename, &accounts[0], accountCount, toString);
-    std::cout << "Saved " << accountCount << " record(s) to \"" << filename << "\"." << std::endl;
+    std::cout << "Saved " << accountCount << " record(s) to \"" << filename << "\"." << std::endl << std::endl;
 
     // Load accounts from account.txt into an array of CustomerAccount
-    CustomerAccount loadedAccounts[1000];
+    LoozStruct loadedAccounts[1000];
     int loadedAccountCount = 0;
-    loadFromFile("account.txt", &loadedAccounts[0], fromString, &loadedAccountCount);
+    loadFromFile(filename, &loadedAccounts[0], fromString, &loadedAccountCount);
     for (int i = 0; i < loadedAccountCount; i++)
     {
         std::cout << toString(loadedAccounts[i]) << std::endl;
     }
 
-    std::cout << std::endl;
     std::cout << "Loaded " << loadedAccountCount << " record(s)." << std::endl;
     return 0;
 }

@@ -47,25 +47,25 @@ std::string serializeString(std::string data, std::string key)
 
 std::string serializeInt(int data, std::string key)
 {
-    return key + "=" + std::to_string(data);
+    return key + "=" + std::to_string(data) + ";";
 }
 
 std::string serializeDouble(double data, std::string key)
 {
-    return key + "=" + std::to_string(data);
+    return key + "=" + std::to_string(data) + ";";
 }
 
 std::string serializeFloat(float data, std::string key)
 {
-    return key + "=" + std::to_string(data);
+    return key + "=" + std::to_string(data) + ";";
 }
 
 std::string serializeChar(char data, std::string key)
 {
-    return key + "=" + std::to_string(data);
+    return key + "=" + std::string(1, data) + ";";
 }
 
 std::string serializeBool(bool data, std::string key)
 {
-    return key + "=" + std::to_string(data);
+    return key + "=" + std::to_string(data) + ";";
 }
