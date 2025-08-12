@@ -123,14 +123,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\function.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\menu.cpp" />
+    <ClCompile Include="src\menu.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\function.hpp" />
-    <ClInclude Include="src\menu.hpp" />
-    <ClInclude Include="src\struct.hpp" />
+    <ClInclude Include="src\menu.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="AccountAdmin.txt" />
