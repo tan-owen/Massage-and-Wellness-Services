@@ -123,14 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\function.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\menu.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\function.hpp" />
-    <ClInclude Include="src\menu.hpp" />
-    <ClInclude Include="src\struct.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="AccountAdmin.txt" />
