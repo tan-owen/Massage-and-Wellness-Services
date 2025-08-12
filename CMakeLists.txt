@@ -4,9 +4,9 @@ cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 project(Application LANGUAGES CXX)
 
 #-----------------------------------------------------------------------------#
-# Copy over resources folder
-file(GLOB_RECURSE data resources/*)
-file(COPY ${data} DESTINATION resources)
+# define the data path in c++
+set(DATA_DIR ${PROJECT_SOURCE_DIR}/res)
+set(DEST_DIR ${CMAKE_BINARY_DIR}/res)
 
 #-----------------------------------------------------------------------------#
 # list of all source files
@@ -20,3 +20,12 @@ file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS "${SRC_DIR}/*.cpp")
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(${PROJECT_NAME} PUBLIC src)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11) # use c++11
+
+#-----------------------------------------------------------------------------#
+# Copy data folder
+add_custom_command(
+    TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${DATA_DIR} ${DEST_DIR}
+    COMMENT "Copying data folder to build directory..."
+)
