@@ -2,8 +2,10 @@
 #include <string>
 #include <fstream>
 
+// Load data from file into `array` given, will update `arrayLength` variable with the count of data loaded.
+// `fromString` function - impl of how to convert from single line of string to struct
 template <typename DataStruct>
-void loadFromFile(std::string filename, DataStruct *array, DataStruct (*fromString)(std::string stringData), int *arrayLength)
+void loadFromFile(std::string filename, DataStruct *array, int *arrayLength, DataStruct (*fromString)(std::string stringData))
 {
     std::string line;
     std::ifstream inputStream(filename);
@@ -16,6 +18,8 @@ void loadFromFile(std::string filename, DataStruct *array, DataStruct (*fromStri
     }
 }
 
+// Save an array of struct into a file
+// `toString` function - impl of how to convert struct to a single line of string
 template <typename DataStruct>
 void saveToFile(std::string filename, DataStruct *array, int length, std::string (*toString)(DataStruct data))
 {

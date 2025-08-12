@@ -50,8 +50,8 @@ LoozStruct fromString(std::string dataString)
 
 int main()
 {
-    // Create 2 sample customer account
-    LoozStruct accounts[1000];
+    // Create 2 sample struct
+    LoozStruct dataArray[1000];
     int accountCount = 0;
 
     LoozStruct data1;
@@ -62,7 +62,7 @@ int main()
     data1.e = 'c';
     data1.f = false;
 
-    accounts[accountCount] = data1;
+    dataArray[accountCount] = data1;
     accountCount++;
 
     LoozStruct data2;
@@ -73,23 +73,23 @@ int main()
     data2.e = 'f';
     data2.f = true;
 
-    accounts[accountCount] = data2;
+    dataArray[accountCount] = data2;
     accountCount++;
 
     for (int i = 0; i < accountCount; i++)
     {
-        std::cout << toString(accounts[i]) << std::endl;
+        std::cout << toString(dataArray[i]) << std::endl;
     }
 
-    // Save array of CustomerAccount into account.txt
+    // Save array of LoozStruct into example.txt
     std::string filename("example.txt");
-    saveToFile(filename, &accounts[0], accountCount, toString);
+    saveToFile(filename, &dataArray[0], accountCount, toString);
     std::cout << "Saved " << accountCount << " record(s) to \"" << filename << "\"." << std::endl << std::endl;
 
-    // Load accounts from account.txt into an array of CustomerAccount
+    // Load data from example.txt into an array of LoozStruct
     LoozStruct loadedAccounts[1000];
     int loadedAccountCount = 0;
-    loadFromFile(filename, &loadedAccounts[0], fromString, &loadedAccountCount);
+    loadFromFile(filename, &loadedAccounts[0], &loadedAccountCount, fromString);
     for (int i = 0; i < loadedAccountCount; i++)
     {
         std::cout << toString(loadedAccounts[i]) << std::endl;
