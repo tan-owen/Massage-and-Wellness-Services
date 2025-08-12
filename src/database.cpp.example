@@ -29,11 +29,11 @@ CustomerAccount fromString(std::string dataString)
 {
     CustomerAccount account;
 
-    account.customerID = deserializeString(dataString, "customerID");
-    account.username = deserializeString(dataString, "username");
-    account.password = deserializeString(dataString, "password");
-    account.firstName = deserializeString(dataString, "firstName");
-    account.lastName = deserializeString(dataString, "lastName");
+    account.customerID = getStringValueByKey(dataString, "customerID");
+    account.username = getStringValueByKey(dataString, "username");
+    account.password = getStringValueByKey(dataString, "password");
+    account.firstName = getStringValueByKey(dataString, "firstName");
+    account.lastName = getStringValueByKey(dataString, "lastName");
 
     return account;
 }
@@ -68,7 +68,6 @@ int main()
     std::string filename("account.txt");
     saveToFile(filename, &accounts[0], accountCount, toString);
     std::cout << "Saved " << accountCount << " record(s) to \"" << filename << "\"." << std::endl;
-
 
     // Load accounts from account.txt into an array of CustomerAccount
     CustomerAccount loadedAccounts[1000];
