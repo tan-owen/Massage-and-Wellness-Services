@@ -22,6 +22,14 @@ target_include_directories(${PROJECT_NAME} PUBLIC src)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11) # use c++11
 
 #-----------------------------------------------------------------------------#
+# use strict compliation
+if(MSVC)
+  target_compile_options(${PROJECT_NAME} PRIVATE /W4 /WX)
+else()
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror)
+endif()
+
+#-----------------------------------------------------------------------------#
 # Copy data folder
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
