@@ -20,19 +20,25 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="AccountCustomer.txt">
+    <Text Include="res\AccountExpert.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Appointment.txt">
+    <Text Include="res\Appointment.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="Feedback.txt">
+    <Text Include="res\feedback.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="AccountExpert.txt">
+    <Text Include="res\serviceType.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="AccountAdmin.txt">
+    <Text Include="res\timeSlot.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="res\AccountAdmin.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="res\AccountCustomer.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
