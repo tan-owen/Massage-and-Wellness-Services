@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <iomanip>
 using namespace std;
 
 const std::string RESOURCES_FOLDER = "res/";
@@ -102,7 +103,17 @@ void printAllAppointmentStructs(Appointment appointmentArry[], int arraySize);
 // Print Feedback Struct
 void printAllFeedbackStructs(Feedback feedbackArry[], int arraySize);
 
-int main() {
+// View expert individual schedule
+int expertScheduleMenuSelection();
+int expertDailyScheduleInput();
+int expertWeeklyScheduleInput();
+int calculateWeek(int dateInput);
+void expertDailySchedule(ExpertAccount expertAccountArray[], Appointment appointmentArray[], int expertDailyScheduleInput, int arraySize, int week);
+void expertWeeklySchedule(ExpertAccount expertAccountArray[], Appointment appointmentArray[], int arraySize, int week);
+
+
+int main() 
+{
 	const int customerAccountArraySize = 999;
 	const int expertAccountArraySize = 99;
 	const int adminAccountArraySize = 9;
@@ -115,23 +126,45 @@ int main() {
 	Appointment appointmentArry[appointmentArraySize];
 	Feedback feedbackArry[feedbackArraySize];
 	
-	// Load Account Data
+	//Load Account Data
 	loadToCustomerAccountStruct(customerAccountArry, customerAccountArraySize);
 	loadToExpertAccountStruct(expertAccountArry, expertAccountArraySize);
 	loadToAdminAccountStruct(adminAccountArry, adminAccountArraySize);
 	loadToAppointmentStruct(appointmentArry, appointmentArraySize);
 	loadToFeedbackStruct(feedbackArry, feedbackArraySize);
 	
-	// Print
-	printAllCustomerStructs(customerAccountArry, customerAccountArraySize);
-	printAllExpertStructs(expertAccountArry, expertAccountArraySize);
-	printAllAdminStructs(adminAccountArry, adminAccountArraySize);
-	printAllAppointmentStructs(appointmentArry, appointmentArraySize);
-	printAllFeedbackStructs(feedbackArry, feedbackArraySize);
+    // Print
+    printAllCustomerStructs(customerAccountArry, customerAccountArraySize);
+    printAllExpertStructs(expertAccountArry, expertAccountArraySize);
+    printAllAdminStructs(adminAccountArry, adminAccountArraySize);
+    printAllAppointmentStructs(appointmentArry, appointmentArraySize);
+    printAllFeedbackStructs(feedbackArry, feedbackArraySize);
 
 
 	// Your code starts here:
 
+    int dateInput, week;
+    int menuInput = expertScheduleMenuSelection();
+    
+
+    switch (menuInput)
+    {
+    case 1:
+        dateInput = expertDailyScheduleInput();
+        week = calculateWeek(dateInput);
+        expertDailySchedule(expertAccountArry, appointmentArry, dateInput, appointmentArraySize, week);
+        break;
+    case 2:
+        week = expertWeeklyScheduleInput();
+        expertWeeklySchedule(expertAccountArry, appointmentArry, appointmentArraySize, week);
+        break;
+    case 3: 
+        // return to menu function
+        cout << "Going Back to Main Menu"; 
+        break;
+    default:
+        ;
+    }
 
 
 
@@ -150,6 +183,280 @@ int main() {
 
 
     return 0;
+}
+
+int expertScheduleMenuSelection()
+{
+    int expertInput;
+    cout << "Select from the menu below. (1 - 3)\n";
+    cout << "1. View Daily Schedule\n";
+    cout << "2. View Weekly Schedule\n";
+    cout << "3. Return to menu\n\n";
+    cout << "Option: ";
+    cin >> expertInput;
+
+    while (expertInput > 3 || expertInput < 1)
+    {
+        cout << "\nError! Please enter a valid option (1 - 3).\n";
+        cout << "Select from the menu below. (1 - 3)\n";
+        cout << "1. View Daily Schedule\n";
+        cout << "2. View Weekly Schedule\n";
+        cout << "3. Return to menu\n\n";
+        cout << "Option: ";
+        cin >> expertInput;
+    }
+
+
+    switch (expertInput)
+    {
+    case 1:
+        return 1; // Enter daily schedule menu
+    case 2:
+        return 2; // Enter weekly schedule menu
+    case 3:
+        return 3; // Return to expert menu function()
+    default:
+        return 0; 
+    }
+}
+
+int expertDailyScheduleInput()
+{
+    int daysInMonth = 31;
+    int currentDay = 1;
+    int dateInput;
+
+    cout << "Calendar for December 2025\n";
+    cout << "____________________________________\n\n";
+
+    cout << setw(7) << " " << "SU MO TU WE TH FR SA\n"; // Display the days of the week 
+    cout << setw(3) << " "; // Blank space for 30 Dec Sunday
+
+    cout << setw(7) << " ";
+    for (int i = 0; i < 6; i++) { // Display 6 days only in the first week
+        cout << setw(2) << currentDay++ << " ";
+    }
+
+
+    int dayOfWeek = 7; // Display the rest of the 7 days in the week
+    for (int i = currentDay; i <= daysInMonth; i++) {
+        if (dayOfWeek % 7 == 0) {
+            cout << "\n";
+            cout << setw(7) << " ";
+        }
+        cout << setw(2) << i << " ";
+        dayOfWeek++;
+    }
+
+    cout << "\n____________________________________\n\n";
+    cout << "Select the day of the month to view your schedule (1 - 31): ";
+    cin >> dateInput;
+
+    while (dateInput > 31 || dateInput < 1)
+    {
+        cout << "\nError! Please enter a valid day. (1 - 31).\n";
+        cout << "Select the day of the month to view your schedule (1 - 31): ";
+        cin >> dateInput;
+    }
+
+    return dateInput;
+}
+
+int expertWeeklyScheduleInput()
+{
+    int daysInMonth = 31;
+    int currentDay = 1;
+    int weekInput;
+
+    cout << "Calendar for December 2025\n";
+    cout << "____________________________________\n\n";
+
+    cout << setw(7) << " " << "SU MO TU WE TH FR SA\n"; // Display the days of the week 
+    cout << setw(3) << " "; // Blank space for 30 Dec Sunday
+
+    cout << setw(7) << " ";
+    for (int i = 0; i < 6; i++) { // Display 6 days only in the first week
+        cout << setw(2) << currentDay++ << " ";
+    }
+
+    int dayOfWeek = 7; // Display the rest of the 7 days in the week
+    for (int i = currentDay; i <= daysInMonth; i++) {
+        if (dayOfWeek % 7 == 0) {
+            cout << "\n";
+            cout << setw(7) << " ";
+        }
+        cout << setw(2) << i << " ";
+        dayOfWeek++;
+    }
+
+    cout << "\n____________________________________\n\n";
+    cout << "Note: Each new week starts on MONDAY!\n";
+    cout << "Select the week of the month to view your schedule (1 - 5): ";
+    cin >> weekInput;
+
+    while (weekInput > 5 || weekInput < 1)
+    {
+        cout << "\nError! Please enter a valid week. (1 - 5)\n";
+        cout << "Select the week of the month to view your schedule (1 - 5): ";
+        cin >> weekInput;
+    }
+
+    return weekInput;
+}
+
+int calculateWeek(int day)
+{
+    if (day >= 1 && day <= 7)
+    {
+        return 1;
+    }
+    else if (day >= 8 && day <= 14)
+    {
+        return 2;
+    }
+    else if (day >= 15 && day <= 21)
+    {
+        return 3;
+    }
+    else if (day >= 22 && day <= 28)
+    {
+        return 4;
+    }
+    else if (day >= 29 && day <= 31)
+    {
+        return 5;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+void expertDailySchedule(ExpertAccount expertAccountArray[], Appointment appointmentArray[], int expertDailyScheduleInput, int arraySize, int week)
+{
+    int i = 1; // Logged in expert user ID
+    int workingHoursCount = 0;
+    int indexNumber = 1;
+
+    cout << "\n\nViewing Daily Schedule\n";
+    cout << "Name: " << expertAccountArray[i].firstName << " " << expertAccountArray[i].lastName;
+    cout << "\nWeek: " << week << "\n"; 
+    cout << "-------------------------------------------------------------------------\n";
+    cout << left << setw(6) << "No."
+        << setw(15) << "Date"
+        << setw(12) << "Start Time"
+        << setw(12) << "End Time"
+        << setw(20) << "Service Type"
+        << setw(20) << "Customer ID" << "\n";
+    cout << "-------------------------------------------------------------------------\n";
+    
+
+    for (int j = 0; j < arraySize; j++) // j is appointment under expert
+    {
+
+        if (appointmentArray[j].appointmentID.empty()) {
+            continue; // Skip empty appointments
+        }
+        
+        else if (appointmentArray[j].expertID == expertAccountArray[i].expertID && stoi(appointmentArray[j].appointmentDate.substr(6,2)) == expertDailyScheduleInput) 
+        // Loop through appointments that match with current expert
+        {
+            cout << left << setw(6) << indexNumber
+                << "Dec " << setw(11) << expertDailyScheduleInput
+                << setw(12) << appointmentArray[j].appointmentTimeSlot.startTime
+                << setw(12) << appointmentArray[j].appointmentTimeSlot.endTime
+                << setw(20) << appointmentArray[j].serviceType
+                << setw(20) << appointmentArray[j].customerID << "\n";
+
+            int startHour = stoi(appointmentArray[j].appointmentTimeSlot.startTime.substr(0, 2));
+            int endHour = stoi(appointmentArray[j].appointmentTimeSlot.endTime.substr(0, 2));
+
+            workingHoursCount += endHour - startHour;
+            indexNumber++;
+        }
+        
+    }
+    
+    cout << "\nTotal Working Hours: " << workingHoursCount << "\n\n";
+
+    //cout << "Enter any key to return to menu.";  change the contents later
+    //cin.get();
+
+    // return 0; change function to int, to return to menu.
+}
+
+void expertWeeklySchedule(ExpertAccount expertAccountArray[], Appointment appointmentArray[], int arraySize, int week)
+{
+    int i = 1; // Logged in expert user ID
+    int indexNumber = 1;
+    int startDay = 0;
+    int endDay = 0;
+    if (week == 1) 
+    { 
+        startDay = 1; endDay = 7; 
+    }
+    
+    else if (week == 2) 
+    { 
+        startDay = 8; endDay = 14; 
+    }
+    
+    else if (week == 3) 
+    { 
+        startDay = 15; endDay = 21; 
+    }
+    
+    else if (week == 4) 
+    { 
+        startDay = 22; endDay = 28; 
+    }
+    
+    else if (week == 5) 
+    { 
+        startDay = 29; endDay = 31; 
+    }
+
+    cout << "\n\nViewing Weekly Schedule\n";
+    cout << "Name: " << expertAccountArray[i].firstName << " " << expertAccountArray[i].lastName;
+    cout << "\nWeek: " << week << "\n";
+    cout << "-------------------------------------------------------------------------\n";
+    cout << left << setw(6) << "No."
+        << setw(15) << "Date"
+        << setw(12) << "Start Time"
+        << setw(12) << "End Time"
+        << setw(20) << "Service Type"
+        << setw(20) << "Customer ID" << "\n";
+    cout << "-------------------------------------------------------------------------\n";
+
+    for (int j = 0; j < arraySize; j++) // j is appointment under expert
+    {
+
+        if (appointmentArray[j].appointmentID.empty()) {
+            continue; // Skip empty appointments
+        }
+
+        else if (appointmentArray[j].expertID == expertAccountArray[i].expertID 
+            && stoi(appointmentArray[j].appointmentDate.substr(6, 2)) >= startDay 
+            && stoi(appointmentArray[j].appointmentDate.substr(6, 2)) <= endDay)
+            // Loop through appointments that match with current expert
+        {
+            cout << left << setw(6) << indexNumber
+                << "Dec " << setw(11) << appointmentArray[j].appointmentDate.substr(6, 2)
+                << setw(12) << appointmentArray[j].appointmentTimeSlot.startTime
+                << setw(12) << appointmentArray[j].appointmentTimeSlot.endTime
+                << setw(20) << appointmentArray[j].serviceType
+                << setw(20) << appointmentArray[j].customerID << "\n";
+
+            indexNumber++;
+        }
+
+    }
+
+    //cout << "Enter any key to return to menu.";  change the contents later
+    //cin.get();
+
+    // return 0; change function to int, to return to menu.
+
 }
 
 // Customer Account Struct Functions
