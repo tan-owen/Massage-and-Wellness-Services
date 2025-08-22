@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -27,12 +27,6 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="res\feedback.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="res\serviceType.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="res\timeSlot.txt">
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="res\AccountAdmin.txt">

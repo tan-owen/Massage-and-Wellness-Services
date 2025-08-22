@@ -1,0 +1,1 @@
+AP011;C001;E01;serviceType=Treatment;appointmentStartTime=0900;appointmentEndTime=1200;appointmentDate=20251205;totalPaid=550.00;serviceFee=50.00;paymentStatus=1;

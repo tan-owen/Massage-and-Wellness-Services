@@ -125,7 +125,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="res\AccountAdmin.txt" />
@@ -133,8 +133,6 @@
     <Text Include="res\AccountExpert.txt" />
     <Text Include="res\Appointment.txt" />
     <Text Include="res\feedback.txt" />
-    <Text Include="res\serviceType.txt" />
-    <Text Include="res\timeSlot.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
