@@ -47,8 +47,7 @@ const std::string RESOURCES_FOLDER = getResourcesPath();
 
 // Customer Account File Format:
 // C010;username=olivia;password=olivia1;firstName=Olivia;lastName=Martinez;
-struct CustomerAccount
-{
+struct CustomerAccount {
     string customerID;
     string username;
     string password;
@@ -56,17 +55,15 @@ struct CustomerAccount
     string lastName;
 };
 
-struct ExpertWorkingHours
-{
+struct ExpertWorkingHours {
     string day = "Monday - Friday"; // Moneday to Friday
-    string startTime;               // 24-hour format (e.g., "0900" for 9 AM)
-    string endTime;                 // 24-hour format (e.g., "1700" for 5 PM)
+    string startTime; // 24-hour format (e.g., "0900" for 9 AM)
+    string endTime;   // 24-hour format (e.g., "1700" for 5 PM)
 };
 
 // Expert Account File Format:
 // E01;username=bob Expert;password=bob'spassword;firstName=Bob;lastName=the Builder;specializatoin=Massage;workStartTime=0900;workEndTime=1700;
-struct ExpertAccount
-{
+struct ExpertAccount {
     string expertID;
     string username;
     string password;
@@ -79,8 +76,7 @@ struct ExpertAccount
 
 // Admin Account File Format:
 // A1;username=admin;password=admin123;firstName=Admin;lastName=User;
-struct AdminAccount
-{
+struct AdminAccount {
     string adminID;
     string username;
     string password;
@@ -88,22 +84,21 @@ struct AdminAccount
     string lastName;
 };
 
-struct AppointmentTimeSlot
-{
+struct AppointmentTimeSlot {
     string startTime; // 24-hour format (e.g., 1400 for 2 PM)
     string endTime;   // 24-hour format (e.g., 1600 for 4 PM)
 };
 
+
 // Appointment File Format:
 // AP001;C001;E01;serviceType=Treatment;appointmentStartTime=1200;appointmentEndTime=1300;appointmentDate=20231212;totalPaid=100.00;serviceFee=10.00;paymentStatus=true;
-struct Appointment
-{
+struct Appointment {
     string appointmentID;
     string customerID;
     string expertID;
     string serviceType;
     AppointmentTimeSlot appointmentTimeSlot; // appointmentTimeSlot.startTime or appointmentTimeSlot.endTime to access
-    string appointmentDate;                  // YYYYMMDD format (e.g., 20231212 for Dec 12, 2025)
+    string appointmentDate; // YYYYMMDD format (e.g., 20231212 for Dec 12, 2025)
     double totalPaid;
     double serviceFee; // Fee charged for the service
     bool paymentStatus = 0;
@@ -111,8 +106,7 @@ struct Appointment
 
 // Feedback File Format:
 // F001;C001;AP001;E01;comment=Great service!;service=5;
-struct Feedback
-{
+struct Feedback {
     string feedbackID;
     string customerID;
     string appointmentID;
@@ -129,20 +123,20 @@ void clearInputBuffer()
 }
 
 // Customer Account Struct Functions
-void loadFromCustomerAccountFile(struct CustomerAccount *account, int lineIndex);
-void loadToCustomerAccountStruct(struct CustomerAccount *account, int arraySize);
+void loadFromCustomerAccountFile(struct CustomerAccount* account, int lineIndex);
+void loadToCustomerAccountStruct(struct CustomerAccount* account, int arraySize);
 // Expert Account Struct Functions
-void loadFromExpertAccountFile(struct ExpertAccount *account, int lineIndex);
-void loadToExpertAccountStruct(struct ExpertAccount *account, int arraySize);
+void loadFromExpertAccountFile(struct ExpertAccount* account, int lineIndex);
+void loadToExpertAccountStruct(struct ExpertAccount* account, int arraySize);
 // Admin Account Struct Functions
-void loadFromAdminAccountFile(struct AdminAccount *account, int lineIndex);
-void loadToAdminAccountStruct(struct AdminAccount *account, int arraySize);
+void loadFromAdminAccountFile(struct AdminAccount* account, int lineIndex);
+void loadToAdminAccountStruct(struct AdminAccount* account, int arraySize);
 // Appointment Struct Functions
-void loadFromAppointmentFile(struct Appointment *appointment, int lineIndex);
-void loadToAppointmentStruct(struct Appointment *appointment, int arraySize);
+void loadFromAppointmentFile(struct Appointment* appointment, int lineIndex);
+void loadToAppointmentStruct(struct Appointment* appointment, int arraySize);
 // Feedback Struct Functions
-void loadFromFeedbackFile(struct Feedback *feedback, int lineIndex);
-void loadToFeedbackStruct(struct Feedback *feedback, int arraySize);
+void loadFromFeedbackFile(struct Feedback* feedback, int lineIndex);
+void loadToFeedbackStruct(struct Feedback* feedback, int arraySize);
 
 // Print Customer Account Struct
 void printAllCustomerStructs(CustomerAccount customerAccountArry[], int arraySize);
@@ -202,28 +196,28 @@ int main()
     // LOGIN PAGE
     mainLoginPage();
 
-    // //EXPERT SCHEDULE MENU SELECTION
-    // int dateInput, week;
-    // int menuInput = expertScheduleMenuSelection();
+    //EXPERT SCHEDULE MENU SELECTION
+    int dateInput, week;
+    int menuInput = expertScheduleMenuSelection();
 
-    // switch (menuInput)
-    // {
-    // case 1:
-    //     dateInput = expertDailyScheduleInput();
-    //     week = calculateWeek(dateInput);
-    //     expertDailySchedule(expertAccountArry, appointmentArry, dateInput, appointmentArraySize, week);
-    //     break;
-    // case 2:
-    //     week = expertWeeklyScheduleInput();
-    //     expertWeeklySchedule(expertAccountArry, appointmentArry, appointmentArraySize, week);
-    //     break;
-    // case 3:
-    //     // return to menu function
-    //     cout << "Going Back to Main Menu";
-    //     break;
-    // default:
-    //     ;
-    // }
+    switch (menuInput)
+    {
+    case 1:
+        dateInput = expertDailyScheduleInput();
+        week = calculateWeek(dateInput);
+        expertDailySchedule(expertAccountArry, appointmentArry, dateInput, appointmentArraySize, week);
+        break;
+    case 2:
+        week = expertWeeklyScheduleInput();
+        expertWeeklySchedule(expertAccountArry, appointmentArry, appointmentArraySize, week);
+        break;
+    case 3:
+        // return to menu function
+        cout << "Going Back to Main Menu";
+        break;
+    default:
+        ;
+    }
 
     return 0;
 }
@@ -622,20 +616,18 @@ int expertDailyScheduleInput()
     cout << "Calendar for December 2025\n";
     cout << "____________________________________\n\n";
 
-    cout << setw(7) << " " << "SU MO TU WE TH FR SA\n"; // Display the days of the week
-    cout << setw(3) << " ";                             // Blank space for 30 Dec Sunday
+    cout << setw(7) << " " << "SU MO TU WE TH FR SA\n"; // Display the days of the week 
+    cout << setw(3) << " "; // Blank space for 30 Dec Sunday
 
     cout << setw(7) << " ";
-    for (int i = 0; i < 6; i++)
-    { // Display 6 days only in the first week
+    for (int i = 0; i < 6; i++) { // Display 6 days only in the first week
         cout << setw(2) << currentDay++ << " ";
     }
 
+
     int dayOfWeek = 7; // Display the rest of the 7 days in the week
-    for (int i = currentDay; i <= daysInMonth; i++)
-    {
-        if (dayOfWeek % 7 == 0)
-        {
+    for (int i = currentDay; i <= daysInMonth; i++) {
+        if (dayOfWeek % 7 == 0) {
             cout << "\n";
             cout << setw(7) << " ";
         }
@@ -666,20 +658,17 @@ int expertWeeklyScheduleInput()
     cout << "Calendar for December 2025\n";
     cout << "____________________________________\n\n";
 
-    cout << setw(7) << " " << "SU MO TU WE TH FR SA\n"; // Display the days of the week
-    cout << setw(3) << " ";                             // Blank space for 30 Dec Sunday
+    cout << setw(7) << " " << "SU MO TU WE TH FR SA\n"; // Display the days of the week 
+    cout << setw(3) << " "; // Blank space for 30 Dec Sunday
 
     cout << setw(7) << " ";
-    for (int i = 0; i < 6; i++)
-    { // Display 6 days only in the first week
+    for (int i = 0; i < 6; i++) { // Display 6 days only in the first week
         cout << setw(2) << currentDay++ << " ";
     }
 
     int dayOfWeek = 7; // Display the rest of the 7 days in the week
-    for (int i = currentDay; i <= daysInMonth; i++)
-    {
-        if (dayOfWeek % 7 == 0)
-        {
+    for (int i = currentDay; i <= daysInMonth; i++) {
+        if (dayOfWeek % 7 == 0) {
             cout << "\n";
             cout << setw(7) << " ";
         }
@@ -738,30 +727,33 @@ void expertDailySchedule(ExpertAccount expertAccountArray[], Appointment appoint
 
     cout << "\n\nViewing Daily Schedule\n";
     cout << "Name: " << expertAccountArray[i].firstName << " " << expertAccountArray[i].lastName;
-    cout << "\nDay: " << expertDailyScheduleInput << "\n";
+    cout << "\nWeek: " << week << "\n"; 
     cout << "-------------------------------------------------------------------------\n";
     cout << left << setw(6) << "No."
-         << setw(12) << "Start Time"
-         << setw(12) << "End Time"
-         << setw(20) << "Service Type"
-         << setw(20) << "Customer ID" << "\n";
+        << setw(15) << "Date"
+        << setw(12) << "Start Time"
+        << setw(12) << "End Time"
+        << setw(20) << "Service Type"
+        << setw(20) << "Customer ID" << "\n";
     cout << "-------------------------------------------------------------------------\n";
+    
 
     for (int j = 0; j < arraySize; j++) // j is appointment under expert
     {
-        if (appointmentArray[j].appointmentID.empty())
-        {
+
+        if (appointmentArray[j].appointmentID.empty()) {
             continue; // Skip empty appointments
         }
-
-        if (appointmentArray[j].expertID == expertAccountArray[i].expertID &&
-            stoi(appointmentArray[j].appointmentDate.substr(6, 2)) == expertDailyScheduleInput)
+        
+        else if (appointmentArray[j].expertID == expertAccountArray[i].expertID && stoi(appointmentArray[j].appointmentDate.substr(6,2)) == expertDailyScheduleInput) 
+        // Loop through appointments that match with current expert
         {
             cout << left << setw(6) << indexNumber
-                 << setw(12) << appointmentArray[j].appointmentTimeSlot.startTime
-                 << setw(12) << appointmentArray[j].appointmentTimeSlot.endTime
-                 << setw(20) << appointmentArray[j].serviceType
-                 << setw(20) << appointmentArray[j].customerID << "\n";
+                << "Dec " << setw(11) << expertDailyScheduleInput
+                << setw(12) << appointmentArray[j].appointmentTimeSlot.startTime
+                << setw(12) << appointmentArray[j].appointmentTimeSlot.endTime
+                << setw(20) << appointmentArray[j].serviceType
+                << setw(20) << appointmentArray[j].customerID << "\n";
 
             int startHour = stoi(appointmentArray[j].appointmentTimeSlot.startTime.substr(0, 2));
             int endHour = stoi(appointmentArray[j].appointmentTimeSlot.endTime.substr(0, 2));
@@ -769,12 +761,13 @@ void expertDailySchedule(ExpertAccount expertAccountArray[], Appointment appoint
             workingHoursCount += endHour - startHour;
             indexNumber++;
         }
+        
     }
-
+    
     cout << "\nTotal Working Hours: " << workingHoursCount << "\n\n";
 
-    // cout << "Enter any key to return to menu.";  change the contents later
-    // cin.get();
+    //cout << "Enter any key to return to menu.";  change the contents later
+    //cin.get();
 
     // return 0; change function to int, to return to menu.
 }
@@ -785,34 +778,29 @@ void expertWeeklySchedule(ExpertAccount expertAccountArray[], Appointment appoin
     int indexNumber = 1;
     int startDay = 0;
     int endDay = 0;
-    if (week == 1)
-    {
-        startDay = 1;
-        endDay = 7;
+    if (week == 1) 
+    { 
+        startDay = 1; endDay = 7; 
     }
-
-    else if (week == 2)
-    {
-        startDay = 8;
-        endDay = 14;
+    
+    else if (week == 2) 
+    { 
+        startDay = 8; endDay = 14; 
     }
-
-    else if (week == 3)
-    {
-        startDay = 15;
-        endDay = 21;
+    
+    else if (week == 3) 
+    { 
+        startDay = 15; endDay = 21; 
     }
-
-    else if (week == 4)
-    {
-        startDay = 22;
-        endDay = 28;
+    
+    else if (week == 4) 
+    { 
+        startDay = 22; endDay = 28; 
     }
-
-    else if (week == 5)
-    {
-        startDay = 29;
-        endDay = 31;
+    
+    else if (week == 5) 
+    { 
+        startDay = 29; endDay = 31; 
     }
 
     cout << "\n\nViewing Weekly Schedule\n";
@@ -820,326 +808,290 @@ void expertWeeklySchedule(ExpertAccount expertAccountArray[], Appointment appoin
     cout << "\nWeek: " << week << "\n";
     cout << "-------------------------------------------------------------------------\n";
     cout << left << setw(6) << "No."
-         << setw(15) << "Date"
-         << setw(12) << "Start Time"
-         << setw(12) << "End Time"
-         << setw(20) << "Service Type"
-         << setw(20) << "Customer ID" << "\n";
+        << setw(15) << "Date"
+        << setw(12) << "Start Time"
+        << setw(12) << "End Time"
+        << setw(20) << "Service Type"
+        << setw(20) << "Customer ID" << "\n";
     cout << "-------------------------------------------------------------------------\n";
 
     for (int j = 0; j < arraySize; j++) // j is appointment under expert
     {
 
-        if (appointmentArray[j].appointmentID.empty())
-        {
+        if (appointmentArray[j].appointmentID.empty()) {
             continue; // Skip empty appointments
         }
 
-        else if (appointmentArray[j].expertID == expertAccountArray[i].expertID && stoi(appointmentArray[j].appointmentDate.substr(6, 2)) >= startDay && stoi(appointmentArray[j].appointmentDate.substr(6, 2)) <= endDay)
-        // Loop through appointments that match with current expert
+        else if (appointmentArray[j].expertID == expertAccountArray[i].expertID 
+            && stoi(appointmentArray[j].appointmentDate.substr(6, 2)) >= startDay 
+            && stoi(appointmentArray[j].appointmentDate.substr(6, 2)) <= endDay)
+            // Loop through appointments that match with current expert
         {
             cout << left << setw(6) << indexNumber
-                 << "Dec " << setw(11) << appointmentArray[j].appointmentDate.substr(6, 2)
-                 << setw(12) << appointmentArray[j].appointmentTimeSlot.startTime
-                 << setw(12) << appointmentArray[j].appointmentTimeSlot.endTime
-                 << setw(20) << appointmentArray[j].serviceType
-                 << setw(20) << appointmentArray[j].customerID << "\n";
+                << "Dec " << setw(11) << appointmentArray[j].appointmentDate.substr(6, 2)
+                << setw(12) << appointmentArray[j].appointmentTimeSlot.startTime
+                << setw(12) << appointmentArray[j].appointmentTimeSlot.endTime
+                << setw(20) << appointmentArray[j].serviceType
+                << setw(20) << appointmentArray[j].customerID << "\n";
 
             indexNumber++;
         }
+
     }
 
-    // cout << "Enter any key to return to menu.";  change the contents later
-    // cin.get();
+    //cout << "Enter any key to return to menu.";  change the contents later
+    //cin.get();
 
     // return 0; change function to int, to return to menu.
+
 }
 
 // Customer Account Struct Functions
-void loadFromCustomerAccountFile(struct CustomerAccount *account, int arrayPosition)
-{
+void loadFromCustomerAccountFile(struct CustomerAccount* account, int arrayPosition) {
     string fileText;
     ifstream accountFile(RESOURCES_FOLDER + "AccountCustomer.txt");
 
-    if (!accountFile.is_open())
-    {
-        cout << "Error: Could not open " << RESOURCES_FOLDER + "AccountCustomer.txt" << endl;
-        return;
-    }
-
     int currentLine = 0;
-    while (getline(accountFile, fileText))
-    {
-        if (currentLine == arrayPosition && !fileText.empty())
-        {
-            // Example: C001;username=peter;password=peter_pw;firstName=Peter;lastName=Quinn;
+    while (getline(accountFile, fileText)) {
+
+        if (currentLine == arrayPosition && !fileText.empty()) {
+            // C0001;username=john;password=1234;firstName=John;lastName=Black;
 
             // Get accountID
             account[arrayPosition].customerID = fileText.substr(0, 4);
 
-            // Get username
-            size_t usernameStart = fileText.find("username=");
-            if (usernameStart != string::npos)
-            {
-                usernameStart += string("username=").length();
-                size_t usernameEnd = fileText.find(';', usernameStart);
-                if (usernameEnd != string::npos)
-                {
-                    account[arrayPosition].username = fileText.substr(usernameStart, usernameEnd - usernameStart);
-                }
-            }
+            // Get username 
+            account[arrayPosition].username = fileText.substr(
+                fileText.find("username=") + string("username=").length(),
+                fileText.find(';', fileText.find("username=")) - (fileText.find("username=") + string("username=").length())
+            );
+            // Get password 
+            account[arrayPosition].password = fileText.substr(
+                fileText.find("password=") + string("password=").length(),
+                fileText.find(';', fileText.find("password=")) - (fileText.find("password=") + string("password=").length())
+            );
+            // Get firstName 
+            account[arrayPosition].firstName = fileText.substr(
+                fileText.find("firstName=") + string("firstName=").length(),
+                fileText.find(';', fileText.find("firstName=")) - (fileText.find("firstName=") + string("firstName=").length())
+            );
+            // Get lastName 
+            account[arrayPosition].lastName = fileText.substr(
+                fileText.find("lastName=") + string("lastName=").length(),
+                fileText.find(';', fileText.find("lastName=")) - (fileText.find("lastName=") + string("lastName=").length())
+            );
 
-            // Get password
-            size_t passwordStart = fileText.find("password=");
-            if (passwordStart != string::npos)
-            {
-                passwordStart += string("password=").length();
-                size_t passwordEnd = fileText.find(';', passwordStart);
-                if (passwordEnd != string::npos)
-                {
-                    account[arrayPosition].password = fileText.substr(passwordStart, passwordEnd - passwordStart);
-                }
-            }
-
-            // Get firstName
-            size_t firstNameStart = fileText.find("firstName=");
-            if (firstNameStart != string::npos)
-            {
-                firstNameStart += string("firstName=").length();
-                size_t firstNameEnd = fileText.find(';', firstNameStart);
-                if (firstNameEnd != string::npos)
-                {
-                    account[arrayPosition].firstName = fileText.substr(firstNameStart, firstNameEnd - firstNameStart);
-                }
-            }
-
-            // Get lastName
-            size_t lastNameStart = fileText.find("lastName=");
-            if (lastNameStart != string::npos)
-            {
-                lastNameStart += string("lastName=").length();
-                size_t lastNameEnd = fileText.find(';', lastNameStart);
-                if (lastNameEnd != string::npos)
-                {
-                    account[arrayPosition].lastName = fileText.substr(lastNameStart, lastNameEnd - lastNameStart);
-                }
-            }
-
-            break; // Found the line we're looking for, no need to continue
         }
         currentLine++;
     }
 
     accountFile.close();
 }
-void loadToCustomerAccountStruct(struct CustomerAccount *account, int arraySize)
-{
-    for (int i = 0; i < arraySize; i++)
-    {
+void loadToCustomerAccountStruct(struct CustomerAccount* account, int arraySize) {
+    for (int i = 0; i < arraySize; i++) {
         loadFromCustomerAccountFile(account, i);
     }
 }
 // Expert Account Struct Functions
-void loadFromExpertAccountFile(struct ExpertAccount *account, int lineIndex)
-{
+void loadFromExpertAccountFile(struct ExpertAccount* account, int lineIndex) {
     string fileText;
     ifstream expertFile(RESOURCES_FOLDER + "AccountExpert.txt");
     int currentLine = 0;
-    while (getline(expertFile, fileText))
-    {
-        if (currentLine == lineIndex && !fileText.empty())
-        {
+    while (getline(expertFile, fileText)) {
+        if (currentLine == lineIndex && !fileText.empty()) {
             // E0001;username=bob Expert;password=bob'spassword;firstName=Bob;lastName=the Builder;
             // Get expertID
             account[lineIndex].expertID = fileText.substr(0, 3);
-            // Get username
+            // Get username 
             account[lineIndex].username = fileText.substr(
                 fileText.find("username=") + string("username=").length(),
-                fileText.find(';', fileText.find("username=")) - (fileText.find("username=") + string("username=").length()));
-            // Get password
+                fileText.find(';', fileText.find("username=")) - (fileText.find("username=") + string("username=").length())
+            );
+            // Get password 
             account[lineIndex].password = fileText.substr(
                 fileText.find("password=") + string("password=").length(),
-                fileText.find(';', fileText.find("password=")) - (fileText.find("password=") + string("password=").length()));
-            // Get firstName
+                fileText.find(';', fileText.find("password=")) - (fileText.find("password=") + string("password=").length())
+            );
+            // Get firstName 
             account[lineIndex].firstName = fileText.substr(
                 fileText.find("firstName=") + string("firstName=").length(),
-                fileText.find(';', fileText.find("firstName=")) - (fileText.find("firstName=") + string("firstName=").length()));
-            // Get lastName
+                fileText.find(';', fileText.find("firstName=")) - (fileText.find("firstName=") + string("firstName=").length())
+            );
+            // Get lastName 
             account[lineIndex].lastName = fileText.substr(
                 fileText.find("lastName=") + string("lastName=").length(),
-                fileText.find(';', fileText.find("lastName=")) - (fileText.find("lastName=") + string("lastName=").length()));
+                fileText.find(';', fileText.find("lastName=")) - (fileText.find("lastName=") + string("lastName=").length())
+            );
             // Get specialization
             account[lineIndex].specialization = fileText.substr(
                 fileText.find("specialization=") + string("specialization=").length(),
-                fileText.find(';', fileText.find("specialization=")) - (fileText.find("specialization=") + string("specialization=").length()));
+                fileText.find(';', fileText.find("specialization=")) - (fileText.find("specialization=") + string("specialization=").length())
+            );
             // Get working hours
             account[lineIndex].workingHours.startTime = fileText.substr(
                 fileText.find("workStartTime=") + string("workStartTime=").length(),
-                fileText.find(';', fileText.find("workStartTime=")) - (fileText.find("workStartTime=") + string("workStartTime=").length()));
+                fileText.find(';', fileText.find("workStartTime=")) - (fileText.find("workStartTime=") + string("workStartTime=").length())
+            );
             account[lineIndex].workingHours.endTime = fileText.substr(
                 fileText.find("workEndTime=") + string("workEndTime=").length(),
-                fileText.find(';', fileText.find("workEndTime=")) - (fileText.find("workEndTime=") + string("workEndTime=").length()));
+                fileText.find(';', fileText.find("workEndTime=")) - (fileText.find("workEndTime=") + string("workEndTime=").length())
+            );
         }
         currentLine++;
     }
     expertFile.close();
 }
-void loadToExpertAccountStruct(struct ExpertAccount *account, int arraySize)
-{
-    for (int i = 0; i < arraySize; i++)
-    {
+void loadToExpertAccountStruct(struct ExpertAccount* account, int arraySize) {
+    for (int i = 0; i < arraySize; i++) {
         loadFromExpertAccountFile(account, i);
     }
 }
 // Admin Account Struct Functions
-void loadFromAdminAccountFile(struct AdminAccount *account, int lineIndex)
-{
+void loadFromAdminAccountFile(struct AdminAccount* account, int lineIndex) {
     string fileText;
     ifstream accountFile(RESOURCES_FOLDER + "AccountAdmin.txt");
 
     int currentLine = 0;
-    while (getline(accountFile, fileText))
-    {
-        if (fileText.empty())
-        {
+    while (getline(accountFile, fileText)) {
+        if (fileText.empty()) {
             continue; // Skip empty lines
         }
-        if (currentLine == lineIndex)
-        {
+        if (currentLine == lineIndex) {
             account[lineIndex].adminID = fileText.substr(0, 2);
             account[lineIndex].username = fileText.substr(
                 fileText.find("username=") + string("username=").length(),
-                fileText.find(';', fileText.find("username=")) - (fileText.find("username=") + string("username=").length()));
+                fileText.find(';', fileText.find("username=")) - (fileText.find("username=") + string("username=").length())
+            );
             account[lineIndex].password = fileText.substr(
                 fileText.find("password=") + string("password=").length(),
-                fileText.find(';', fileText.find("password=")) - (fileText.find("password=") + string("password=").length()));
+                fileText.find(';', fileText.find("password=")) - (fileText.find("password=") + string("password=").length())
+            );
             account[lineIndex].firstName = fileText.substr(
                 fileText.find("firstName=") + string("firstName=").length(),
-                fileText.find(';', fileText.find("firstName=")) - (fileText.find("firstName=") + string("firstName=").length()));
+                fileText.find(';', fileText.find("firstName=")) - (fileText.find("firstName=") + string("firstName=").length())
+            );
             account[lineIndex].lastName = fileText.substr(
                 fileText.find("lastName=") + string("lastName=").length(),
-                fileText.find(';', fileText.find("lastName=")) - (fileText.find("lastName=") + string("lastName=").length()));
+                fileText.find(';', fileText.find("lastName=")) - (fileText.find("lastName=") + string("lastName=").length())
+            );
         }
         currentLine++;
     }
     accountFile.close();
 }
-void loadToAdminAccountStruct(struct AdminAccount *account, int arraySize)
-{
-    for (int i = 0; i < arraySize; i++)
-    {
+void loadToAdminAccountStruct(struct AdminAccount* account, int arraySize) {
+    for (int i = 0; i < arraySize; i++) {
         loadFromAdminAccountFile(account, i);
     }
 }
 //  Appointment Struct Functions
-void loadFromAppointmentFile(struct Appointment *appointment, int lineIndex)
-{
+void loadFromAppointmentFile(struct Appointment* appointment, int lineIndex) {
     string fileText;
     ifstream appointmentFile(RESOURCES_FOLDER + "Appointment.txt");
     int currentLine = 0;
-    while (getline(appointmentFile, fileText))
-    {
-        if (fileText.empty())
-        {
+    while (getline(appointmentFile, fileText)) {
+        if (fileText.empty()) {
             continue; // Skip empty lines
         }
-        if (currentLine == lineIndex)
-        {
+        if (currentLine == lineIndex) {
             // AP001;C001;E001;serviceType=Treatment;appointmentStartTime=1200;appointmentEndTime=1300;appointmentDate=20231212;totalPaid=100.00;serviceFee=10.00;paymentStatus=true;
             appointment[lineIndex].appointmentID = fileText.substr(0, 5);
             appointment[lineIndex].customerID = fileText.substr(
                 fileText.find(';') + 1,
-                fileText.find(';', fileText.find(';') + 1) - (fileText.find(';') + 1));
+                fileText.find(';', fileText.find(';') + 1) - (fileText.find(';') + 1)
+            );
             appointment[lineIndex].expertID = fileText.substr(
                 fileText.find(';', fileText.find(';') + 1) + 1,
-                fileText.find(';', fileText.find(';', fileText.find(';') + 1) + 1) - (fileText.find(';', fileText.find(';') + 1) + 1));
+                fileText.find(';', fileText.find(';', fileText.find(';') + 1) + 1) - (fileText.find(';', fileText.find(';') + 1) + 1)
+            );
             appointment[lineIndex].serviceType = fileText.substr(
                 fileText.find("serviceType=") + string("serviceType=").length(),
-                fileText.find(';', fileText.find("serviceType=")) - (fileText.find("serviceType=") + string("serviceType=").length()));
+                fileText.find(';', fileText.find("serviceType=")) - (fileText.find("serviceType=") + string("serviceType=").length())
+            );
             appointment[lineIndex].appointmentTimeSlot.startTime = fileText.substr(
                 fileText.find("appointmentStartTime=") + string("appointmentStartTime=").length(),
-                fileText.find(';', fileText.find("appointmentStartTime=")) - (fileText.find("appointmentStartTime=") + string("appointmentStartTime=").length()));
+                fileText.find(';', fileText.find("appointmentStartTime=")) - (fileText.find("appointmentStartTime=") + string("appointmentStartTime=").length())
+            );
             appointment[lineIndex].appointmentTimeSlot.endTime = fileText.substr(
                 fileText.find("appointmentEndTime=") + string("appointmentEndTime=").length(),
-                fileText.find(';', fileText.find("appointmentEndTime=")) - (fileText.find("appointmentEndTime=") + string("appointmentEndTime=").length()));
+                fileText.find(';', fileText.find("appointmentEndTime=")) - (fileText.find("appointmentEndTime=") + string("appointmentEndTime=").length())
+            );
             appointment[lineIndex].appointmentDate = fileText.substr(
                 fileText.find("appointmentDate=") + string("appointmentDate=").length(),
-                fileText.find(';', fileText.find("appointmentDate=")) - (fileText.find("appointmentDate=") + string("appointmentDate=").length()));
+                fileText.find(';', fileText.find("appointmentDate=")) - (fileText.find("appointmentDate=") + string("appointmentDate=").length())
+            );
             appointment[lineIndex].serviceFee = stod(fileText.substr(
                 fileText.find("serviceFee=") + string("serviceFee=").length(),
-                fileText.find(';', fileText.find("serviceFee=")) - (fileText.find("serviceFee=") + string("serviceFee=").length())));
+                fileText.find(';', fileText.find("serviceFee=")) - (fileText.find("serviceFee=") + string("serviceFee=").length())
+            ));
             appointment[lineIndex].totalPaid = stod(fileText.substr(
                 fileText.find("totalPaid=") + string("totalPaid=").length(),
-                fileText.find(';', fileText.find("totalPaid=")) - (fileText.find("totalPaid=") + string("totalPaid=").length())));
+                fileText.find(';', fileText.find("totalPaid=")) - (fileText.find("totalPaid=") + string("totalPaid=").length())
+            ));
             appointment[lineIndex].paymentStatus = stoi(fileText.substr(
                 fileText.find("paymentStatus=") + string("paymentStatus=").length(),
-                fileText.find(';', fileText.find("paymentStatus=")) - (fileText.find("paymentStatus=") + string("paymentStatus=").length())));
+                fileText.find(';', fileText.find("paymentStatus=")) - (fileText.find("paymentStatus=") + string("paymentStatus=").length())
+            ));
             break; // Add this line to exit the loop after finding the correct line
         }
         currentLine++;
     }
 }
-void loadToAppointmentStruct(struct Appointment *appointment, int arraySize)
-{
-    for (int i = 0; i < arraySize; i++)
-    {
+void loadToAppointmentStruct(struct Appointment* appointment, int arraySize) {
+    for (int i = 0; i < arraySize; i++) {
         loadFromAppointmentFile(appointment, i);
     }
 }
 // Feedback Struct Functions
-void loadFromFeedbackFile(struct Feedback *feedback, int lineIndex)
-{
+void loadFromFeedbackFile(struct Feedback* feedback, int lineIndex) {
     string fileText;
     ifstream feedbackFile(RESOURCES_FOLDER + "Feedback.txt");
     int currentLine = 0;
-    while (getline(feedbackFile, fileText))
-    {
-        if (fileText.empty())
-        {
+    while (getline(feedbackFile, fileText)) {
+        if (fileText.empty()) {
             continue; // Skip empty lines
         }
-        if (currentLine == lineIndex)
-        {
+        if (currentLine == lineIndex) {
             // F001;C001;AP001;E01;comment=Great service!;service=5;
             feedback[lineIndex].feedbackID = fileText.substr(0, 4);
             feedback[lineIndex].customerID = fileText.substr(
                 fileText.find(';') + 1,
-                fileText.find(';', fileText.find(';') + 1) - (fileText.find(';') + 1));
+                fileText.find(';', fileText.find(';') + 1) - (fileText.find(';') + 1)
+            );
             feedback[lineIndex].appointmentID = fileText.substr(
                 fileText.find(';', fileText.find(';') + 1) + 1,
-                fileText.find(';', fileText.find(';', fileText.find(';') + 1) + 1) - (fileText.find(';', fileText.find(';') + 1) + 1));
+                fileText.find(';', fileText.find(';', fileText.find(';') + 1) + 1) - (fileText.find(';', fileText.find(';') + 1) + 1)
+            );
             feedback[lineIndex].expertID = fileText.substr(
                 fileText.find(';', fileText.find(';', fileText.find(';') + 1) + 1) + 1,
-                fileText.find(';', fileText.find(';', fileText.find(';', fileText.find(';') + 1) + 1) + 1) - (fileText.find(';', fileText.find(';', fileText.find(';') + 1) + 1) + 1));
+                fileText.find(';', fileText.find(';', fileText.find(';', fileText.find(';') + 1) + 1) + 1) - (fileText.find(';', fileText.find(';', fileText.find(';') + 1) + 1) + 1)
+            );
             feedback[lineIndex].comment = fileText.substr(
                 fileText.find("comment=") + string("comment=").length(),
-                fileText.find(';', fileText.find("comment=")) - (fileText.find("comment=") + string("comment=").length()));
+                fileText.find(';', fileText.find("comment=")) - (fileText.find("comment=") + string("comment=").length())
+            );
             feedback[lineIndex].rating = stoi(fileText.substr(
                 fileText.find("service=") + string("service=").length(),
-                string::npos));
+                string::npos
+            ));
             break; // Add this line to exit the loop after finding the correct line
         }
         currentLine++;
     }
     feedbackFile.close();
 }
-void loadToFeedbackStruct(struct Feedback *feedback, int arraySize)
-{
-    for (int i = 0; i < arraySize; i++)
-    {
+void loadToFeedbackStruct(struct Feedback* feedback, int arraySize) {
+    for (int i = 0; i < arraySize; i++) {
         loadFromFeedbackFile(feedback, i);
     }
 }
 
 // Function to print all Customer structs
-void printAllCustomerStructs(CustomerAccount customerAccountArry[], int arraySize)
-{
+void printAllCustomerStructs(CustomerAccount customerAccountArry[], int arraySize) {
     cout << "________________________________" << endl;
     cout << "Customer Account Data Loaded Successfully!";
-    for (int i = 0; i < arraySize; i++)
-    {
-        if (customerAccountArry[i].customerID.empty())
-        {
+    for (int i = 0; i < arraySize; i++) {
+        if (customerAccountArry[i].customerID.empty()) {
             continue; // Skip empty customer accounts
         }
         cout << "\n________________________________" << endl;
@@ -1151,14 +1103,11 @@ void printAllCustomerStructs(CustomerAccount customerAccountArry[], int arraySiz
     }
 }
 // Function to print all Expert structs
-void printAllExpertStructs(ExpertAccount expertAccountArry[], int arraySize)
-{
+void printAllExpertStructs(ExpertAccount expertAccountArry[], int arraySize) {
     cout << "\n________________________________" << endl;
     cout << "Expert Account Data Loaded Successfully!" << endl;
-    for (int i = 0; i < arraySize; i++)
-    {
-        if (expertAccountArry[i].expertID.empty())
-        {
+    for (int i = 0; i < arraySize; i++) {
+        if (expertAccountArry[i].expertID.empty()) {
             continue; // Skip empty expert accounts
         }
         cout << "________________________________" << endl;
@@ -1170,17 +1119,15 @@ void printAllExpertStructs(ExpertAccount expertAccountArry[], int arraySize)
         cout << "Specialization\t: " << expertAccountArry[i].specialization << endl;
         cout << "Working Days\t: " << expertAccountArry[i].workingHours.day << endl;
         cout << "Working Hours\t: " << expertAccountArry[i].workingHours.startTime << " - " << expertAccountArry[i].workingHours.endTime << endl;
+
     }
 }
 // Function to print all Admin structs
-void printAllAdminStructs(AdminAccount adminAccountArry[], int arraySize)
-{
+void printAllAdminStructs(AdminAccount adminAccountArry[], int arraySize) {
     cout << "\n________________________________" << endl;
     cout << "Admin Account Data Loaded Successfully!" << endl;
-    for (int i = 0; i < arraySize; i++)
-    {
-        if (adminAccountArry[i].adminID.empty())
-        {
+    for (int i = 0; i < arraySize; i++) {
+        if (adminAccountArry[i].adminID.empty()) {
             continue; // Skip empty admin accounts
         }
         cout << "________________________________" << endl;
@@ -1192,14 +1139,11 @@ void printAllAdminStructs(AdminAccount adminAccountArry[], int arraySize)
     }
 }
 // Function to print all Appointment structs
-void printAllAppointmentStructs(Appointment appointmentArry[], int arraySize)
-{
+void printAllAppointmentStructs(Appointment appointmentArry[], int arraySize) {
     cout << "\n________________________________" << endl;
     cout << "Appointment Data Loaded Successfully!" << endl;
-    for (int i = 0; i < arraySize; i++)
-    {
-        if (appointmentArry[i].appointmentID.empty())
-        {
+    for (int i = 0; i < arraySize; i++) {
+        if (appointmentArry[i].appointmentID.empty()) {
             continue; // Skip empty appointments
         }
         cout << "________________________________" << endl;
@@ -1216,14 +1160,11 @@ void printAllAppointmentStructs(Appointment appointmentArry[], int arraySize)
     }
 }
 // Function to print all Feedback structs
-void printAllFeedbackStructs(Feedback feedbackArry[], int arraySize)
-{
+void printAllFeedbackStructs(Feedback feedbackArry[], int arraySize) {
     cout << "\n________________________________" << endl;
     cout << "Appointment Data Loaded Successfully!" << endl;
-    for (int i = 0; i < arraySize; i++)
-    {
-        if (feedbackArry[i].feedbackID.empty())
-        {
+    for (int i = 0; i < arraySize; i++) {
+        if (feedbackArry[i].feedbackID.empty()) {
             continue; // Skip empty appointments
         }
         cout << "________________________________" << endl;
