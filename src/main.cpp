@@ -115,12 +115,7 @@ struct Feedback {
     int rating; // 1-5
 };
 
-// clear input buffer
-void clearInputBuffer()
-{
-    cin.clear();                                         // 清除错误状态
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // 丢弃错误输入
-}
+
 
 // Customer Account Struct Functions
 void loadFromCustomerAccountFile(struct CustomerAccount* account, int lineIndex);
