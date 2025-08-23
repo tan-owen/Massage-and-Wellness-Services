@@ -48,4 +48,7 @@ C047;username=jeffrey;password=jeff_pass;firstName=Jeffrey;lastName=Barnes;
 C048;username=erin;password=erin_pw;firstName=Erin;lastName=Fisher;
 C049;username=jeremy;password=jeremy_123;firstName=Jeremy;lastName=Graham;
 C050;username=holly;password=holly_pass;firstName=Holly;lastName=Harrison;
-C051;username=lebin;password=1214;firstName=Siow;lastName=Lebin;
+C051;username=lebin;password=1214;firstName=Siow;lastName=Lebin;C051;username=lebin;password=1214;firstName=Siow;lastName=Lebin;
+C052;username=lebinnnnn;password=12345;firstName=siow;lastName=lebin;
+C053;username=qerr;password=12345;firstName=saff;lastName=fhdfhh;
+C054;username=lebin123;password=123123;firstName=lebin123;lastName=lebin645;
