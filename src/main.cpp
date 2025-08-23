@@ -164,10 +164,10 @@ void expertDailySchedule(ExpertAccount expertAccountArray[], Appointment appoint
 void expertWeeklySchedule(ExpertAccount expertAccountArray[], Appointment appointmentArray[], int arraySize, int week);
 
 // Login page selection
-bool customerLoginPage();
-int customerRegisterPage();
-int expertLoginPage();
-int adminLoginPage();
+string customerLoginPage();
+string customerRegisterPage();
+string expertLoginPage();
+string adminLoginPage();
 int mainLoginPage();
 
 int main()
@@ -257,17 +257,55 @@ int mainLoginPage()
                 switch (customerChoice)
                 {
                 case 1:
-                    if (customerLoginPage())
+                {
+                    string customerId = customerLoginPage();
+                    if (!customerId.empty())
                     {
-                        // Login successful, you can add customer menu here
-                        // For now, just return to main menu
+                        // Login successful
+                        // Customer menu loop
+                        while (true)
+                        {
+                            cout << "\n=== Customer Menu ===\n";
+                            cout << "Current logged in customer ID: " << customerId << "\n";
+                            cout << "1. View My Profile\n";
+                            cout << "2. Log out\n";
+                            cout << "0. Back to Main Menu\n";
+                            cout << "Please enter your choice: ";
+                            int customerMenuChoice;
+                            cin >> customerMenuChoice;
+
+                            if (customerMenuChoice == 1)
+                            {
+                                cout << "\nViewing profile...\n";
+                                // Add profile viewing code here
+                            }
+                            else if (customerMenuChoice == 2)
+                            {
+                                cout << "You have been logged out.\n";
+                                break;
+                            }
+                            else if (customerMenuChoice == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                cout << "Invalid choice, please try again.\n";
+                            }
+                        }
                         return 0;
                     }
                     // Login failed, go back to the customer menu
                     break;
+                }
                 case 2:
-                    customerRegisterPage();
+                {
+                    string newCustomerId = customerRegisterPage();
+                    if (!newCustomerId.empty()) {
+                        cout << "Registration successful with ID: " << newCustomerId << endl;
+                    }
                     return 0;
+                }
                 case 0:
                     return 0;
                 default:
@@ -278,11 +316,11 @@ int mainLoginPage()
         }
         case 2:
         {
-            int expertID = expertLoginPage();
-            if (expertID != -1)
+            string expertID = expertLoginPage();
+            if (!expertID.empty())
             {
                 // Login successful
-                // TODO: Add expert menu here
+                cout << "Expert logged in with ID: " << expertID << endl;
                 return 0;
             }
             // Login failed, continue to main menu
@@ -290,11 +328,11 @@ int mainLoginPage()
         }
         case 3:
         {
-            int adminID = adminLoginPage();
-            if (adminID != -1)
+            string adminID = adminLoginPage();
+            if (!adminID.empty())
             {
                 // Login successful
-                // TODO: Add admin menu here
+                cout << "Admin logged in with ID: " << adminID << endl;
                 return 0;
             }
             // Login failed, continue to main menu
@@ -310,7 +348,7 @@ int mainLoginPage()
     return 0;
 };
 
-bool customerLoginPage()
+string customerLoginPage()
 {
     const int customerAccountArraySize = 999;
     CustomerAccount customerAccountArray[customerAccountArraySize];
@@ -323,7 +361,6 @@ bool customerLoginPage()
     cout << "Password: ";
     cin >> passwordInput;
 
-    bool success = false;
     for (int i = 0; i < customerAccountArraySize; i++)
     {
         // Skip empty customer accounts
@@ -336,23 +373,18 @@ bool customerLoginPage()
         if (customerAccountArray[i].username == usernameInput &&
             customerAccountArray[i].password == passwordInput)
         {
-
             cout << "Successful login!\n";
             cout << "Welcome, " << customerAccountArray[i].firstName << " "
                  << customerAccountArray[i].lastName << "!\n";
-            success = true;
-            break;
+            return customerAccountArray[i].customerID;
         }
     }
 
-    if (!success)
-    {
-        cout << "Username or password is wrong, please try again...\n";
-    }
-    return success;
+    cout << "Username or password is wrong, please try again...\n";
+    return "";
 };
 
-int customerRegisterPage()
+string customerRegisterPage()
 {
     const int customerAccountArraySize = 999;
     CustomerAccount customerAccountArray[customerAccountArraySize];
@@ -472,10 +504,10 @@ int customerRegisterPage()
     cout << "Your customer ID is: " << customerID << endl;
     cout << "You can now login with your new account." << endl;
 
-    return 0; // Return to main menu
+    return customerID; // Return the newly created customer ID
 };
 
-int expertLoginPage()
+string expertLoginPage()
 {
     const int expertAccountArraySize = 50;
     ExpertAccount expertAccountArray[expertAccountArraySize];
@@ -488,7 +520,6 @@ int expertLoginPage()
     cout << "Password: ";
     cin >> passwordInput;
 
-    int expertID = -1;
     for (int i = 0; i < expertAccountArraySize; i++)
     {
         // Skip empty expert accounts
@@ -504,19 +535,15 @@ int expertLoginPage()
             cout << "Successful login!\n";
             cout << "Welcome, " << expertAccountArray[i].firstName << " "
                  << expertAccountArray[i].lastName << "!\n";
-            expertID = i;
-            break;
+            return expertAccountArray[i].expertID;
         }
     }
 
-    if (expertID == -1)
-    {
-        cout << "Username or password is wrong, please try again...\n";
-    }
-    return expertID;
+    cout << "Username or password is wrong, please try again...\n";
+    return "";
 }
 
-int adminLoginPage()
+string adminLoginPage()
 {
     const int adminAccountArraySize = 50;
     AdminAccount adminAccountArray[adminAccountArraySize];
@@ -529,7 +556,6 @@ int adminLoginPage()
     cout << "Password: ";
     cin >> passwordInput;
 
-    int adminID = -1;
     for (int i = 0; i < adminAccountArraySize; i++)
     {
         // Skip empty admin accounts
@@ -545,16 +571,12 @@ int adminLoginPage()
             cout << "Successful login!\n";
             cout << "Welcome, " << adminAccountArray[i].firstName << " "
                  << adminAccountArray[i].lastName << "!\n";
-            adminID = i;
-            break;
+            return adminAccountArray[i].adminID;
         }
     }
 
-    if (adminID == -1)
-    {
-        cout << "Username or password is wrong, please try again...\n";
-    }
-    return adminID;
+    cout << "Username or password is wrong, please try again...\n";
+    return "";
 }
 
 int expertScheduleMenuSelection()
