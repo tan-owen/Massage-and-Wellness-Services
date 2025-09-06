@@ -5,8 +5,6 @@
 #include <iomanip>
 using namespace std;
 
-const string RESOURCES_FOLDER = "res/";
-#pragma region Struct Definitions
 // Customer Account File Format:
 // C010;username=olivia;password=olivia1;firstName=Olivia;lastName=Martinez;
 struct CustomerAccount {
@@ -79,8 +77,7 @@ struct Feedback {
   string comment;
   int rating; // 1-5
 };
-#pragma endregion
-#pragma region Struct Data Loading and Printing
+
 // Customer Account Struct Functions
 void loadFromCustomerAccountFile(struct CustomerAccount* account, int lineIndex);
 void loadToCustomerAccountStruct(struct CustomerAccount* account, int arraySize);
@@ -99,17 +96,6 @@ void loadToFeedbackStruct(struct Feedback* feedback, int arraySize);
 // TimeSlot Struct Functions
 void loadExpertTimeSlots(Appointment* appointmentArray, int appointmentArraySize, ExpertAccount* expertAccountArray, int expertAccountArraySize);
 
-// Print Customer Account Struct
-void printAllCustomerStructs(CustomerAccount customerAccountArry[], int arraySize);
-// Print Expert Account Struct
-void printAllExpertStructs(ExpertAccount expertAccountArry[], int arraySize);
-// Print Admin Account Struct
-void printAllAdminStructs(AdminAccount adminAccountArry[], int arraySize);
-// Print Appointment Struct
-void printAllAppointmentStructs(Appointment appointmentArry[], int arraySize);
-// Print Feedback Struct
-void printAllFeedbackStructs(Feedback feedbackArry[], int arraySize);
-#pragma endregion
 
 
 // Miscellaneous Functions
@@ -120,6 +106,9 @@ string convertToAmPm(string& time24);
 string convertToAmPm(int hour24);
 void eraseEmptyLinesFromFile(const string& fileName);
 void showExpertTimeTable(ExpertAccount expertAccountArray[], int expertIndex);
+int getValidatedChoice(int min, int max);
+int getDecemberDay();
+string removeSemicolons(string input);
 
 // Customer Functions
 string customerLogin(CustomerAccount customerAccountArray[], int customerArraySize);
@@ -130,6 +119,7 @@ void checkAppointmentAvailability(ExpertAccount expertAccountArray[], int expert
 void viewBooking(Appointment appointmentArray[], int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountSize, int customerIndex, CustomerAccount customerAccountArray[]);
 void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, int customerArrayIndex);
 void makePayment(Appointment appointmentArray[], int appointmentArraySize, CustomerAccount customerAccountArray[], int customerArrayIndex);
+void submitFeedback(int customerIndex, CustomerAccount customerAccountArray[], int customerAccountArraySize, Appointment appointmentArray[], const int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize);
 
 
 // Admin Functions 
@@ -139,27 +129,31 @@ void viewIndividualExpertSchedule(ExpertAccount expertAccountArray[], int expert
 void viewCustomerList(CustomerAccount customerAccountArray[], int customerAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize);
 void generateSalesReport(Appointment appointmentArray[], int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize);
 void viewExpertBonusEntitlement(Appointment appointmentArray[], int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize);
+void viewAllFeedback(Feedback feedbackArray[], int feedbackArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize);
+void viewFeedbackByExpert(Feedback feedbackArray[], int feedbackArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize);
 
 // Expert Functions
-string expertLogin(ExpertAccount expertAccountArray[], int expertArraySize);
+int expertLogin(ExpertAccount expertAccountArray[], int expertArraySize);
 void viewIndividualSchedule(ExpertAccount expertAccountArray[], Appointment appointmentArray[], int appointmentArraySize, int expertIndex);
 void viewAssignedCustomerList(CustomerAccount customerAccountArray[], int customerAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, ExpertAccount expertAccountArray[], int expertIndex);
 void viewEarningsBonusEntitlement(Appointment appointmentArray[], int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, int expertIDIndex);
+void viewExpertFeedback(ExpertAccount expertAccountArray[], int expertAccountArraySize, Feedback feedbackArray[], int feedbackArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize, int expertIndex);
+
 
 // Menu functions
 void displayMainMenu();
 void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize);
-void adminMenu(AdminAccount adminAccountArray[], int adminAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize);
-void expertMenu(ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize);
+void adminMenu(AdminAccount adminAccountArray[], int adminAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize, Feedback feedbackArray[], int feedbackArraySize);
+void expertMenu(ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize, Feedback feedback[], int feedbackArraySize);
 
 int main()
 {
   // Clear Empty Lines in Files
-  eraseEmptyLinesFromFile(RESOURCES_FOLDER + "AccountCustomer.txt");
-  eraseEmptyLinesFromFile(RESOURCES_FOLDER + "AccountExpert.txt");
-  eraseEmptyLinesFromFile(RESOURCES_FOLDER + "AccountAdmin.txt");
-  eraseEmptyLinesFromFile(RESOURCES_FOLDER + "Appointment.txt");
-  eraseEmptyLinesFromFile(RESOURCES_FOLDER + "feedback.txt");
+  eraseEmptyLinesFromFile("res/AccountCustomer.txt");
+  eraseEmptyLinesFromFile("res/AccountExpert.txt");
+  eraseEmptyLinesFromFile("res/AccountAdmin.txt");
+  eraseEmptyLinesFromFile("res/Appointment.txt");
+  eraseEmptyLinesFromFile("res/feedback.txt");
 
   // Array Size Declaration
   const int customerAccountArraySize = 50;
@@ -194,24 +188,17 @@ int main()
   do {
     displayMainMenu();
     cout << "Enter your choice: ";
-    cin >> choice;
+    choice = getValidatedChoice(1, 4);
 
     switch (choice) {
     case 1:
-      customerMenu(customerAccountArray, customerAccountArraySize,
-        expertAccountArray, expertAccountArraySize,
-        appointmentArray, appointmentArraySize);
+      customerMenu(customerAccountArray, customerAccountArraySize, expertAccountArray, expertAccountArraySize, appointmentArray, appointmentArraySize);
       break;
     case 2:
-      expertMenu(expertAccountArray, expertAccountArraySize,
-        appointmentArray, appointmentArraySize,
-        customerAccountArray, customerAccountArraySize);
+      expertMenu(expertAccountArray, expertAccountArraySize, appointmentArray, appointmentArraySize, customerAccountArray, customerAccountArraySize, feedbackArray, feedbackArraySize);
       break;
     case 3:
-      adminMenu(adminAccountArray, adminAccountArraySize,
-        expertAccountArray, expertAccountArraySize,
-        appointmentArray, appointmentArraySize,
-        customerAccountArray, customerAccountArraySize);
+      adminMenu(adminAccountArray, adminAccountArraySize, expertAccountArray, expertAccountArraySize, appointmentArray, appointmentArraySize, customerAccountArray, customerAccountArraySize, feedbackArray, feedbackArraySize);
       break;
     case 4:
       cout << "Thank you for using Serenity Wellness Center System!\n";
@@ -225,26 +212,25 @@ int main()
 }
 // Menu Functions
 void displayMainMenu() {
-  cout << "\n===== MAIN MENU =====\n";
+  cout << "===== MAIN MENU =====\n";
   cout << "1. Customer Menu\n";
   cout << "2. Expert Menu\n";
   cout << "3. Admin Menu\n";
   cout << "4. Exit\n";
-  cout << "=====================\n";
 }
-
 void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize) {
+  cin.ignore(10000, '\n'); // Clear input buffer
 
   int customerIndex = -1;
   string customerID;
   int choice;
 
-  cout << "\n===== CUSTOMER MENU =====\n";
+  cout << "\n===== CUSTOMER PORTAL =====\n";
   cout << "1. Login\n";
   cout << "2. Register\n";
   cout << "3. Back to Main Menu\n";
   cout << "Enter your choice: ";
-  cin >> choice;
+  choice = getValidatedChoice(1, 3);
 
   if (choice == 1) {
     customerID = customerLogin(customerAccountArray, customerAccountArraySize);
@@ -281,10 +267,11 @@ void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArr
     cout << "4. Book Appointment\n";
     cout << "5. Make Payment\n";
     cout << "6. View My Bookings\n";
-    cout << "7. Logout\n";
+    cout << "7. Submit Feedback\n";  
+    cout << "8. Logout\n";
     cout << "Enter your choice: ";
-    cin >> customerChoice;
-
+    customerChoice = getValidatedChoice(1, 8);
+    cout << "\n";
     switch (customerChoice) {
     case 1:
       viewBeautyCentreInformation();
@@ -306,33 +293,22 @@ void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArr
       viewBooking(appointmentArray, appointmentArraySize, expertAccountArray,
         expertAccountArraySize, customerIndex, customerAccountArray);
       break;
-    case 7:
-      cout << "Logging out...\n";
+    case 7:  
+      submitFeedback(customerIndex, customerAccountArray, customerAccountArraySize, appointmentArray, appointmentArraySize, expertAccountArray, expertAccountArraySize);
+      break;
+    case 8:
+      cout << "Logging out...\n\n\n";
       break;
     default:
       cout << "Invalid choice. Please try again.\n";
     }
-  } while (customerChoice != 7);
+  } while (customerChoice != 8);
 }
+void expertMenu(ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize, Feedback feedbackArray[], int feedbackArraySize) {
+  cin.ignore(10000, '\n'); // Clear input buffer
 
-void expertMenu(ExpertAccount expertAccountArray[], int expertAccountArraySize,
-  Appointment appointmentArray[], int appointmentArraySize,
-  CustomerAccount customerAccountArray[], int customerAccountArraySize) {
-
-  string expertID = expertLogin(expertAccountArray, expertAccountArraySize);
-  if (expertID == "") return;
-
-  // Find expert index
-  int expertIndex = -1;
-  for (int i = 0; i < expertAccountArraySize; i++) {
-    if (expertAccountArray[i].expertID == expertID) {
-      expertIndex = i;
-      break;
-    }
-  }
-
+  int expertIndex = expertLogin(expertAccountArray, expertAccountArraySize);
   if (expertIndex == -1) {
-    cout << "Expert not found.\n";
     return;
   }
 
@@ -343,9 +319,10 @@ void expertMenu(ExpertAccount expertAccountArray[], int expertAccountArraySize,
     cout << "1. View Individual Schedule\n";
     cout << "2. View Assigned Customer List\n";
     cout << "3. View Earnings Bonus Entitlement\n";
-    cout << "4. Logout\n";
+    cout << "4. View Feedback\n";
+    cout << "5. Logout\n";
     cout << "Enter your choice: ";
-    cin >> expertChoice;
+    expertChoice = getValidatedChoice(1, 5);
 
     switch (expertChoice) {
     case 1:
@@ -361,24 +338,25 @@ void expertMenu(ExpertAccount expertAccountArray[], int expertAccountArraySize,
         expertAccountArray, expertAccountArraySize,
         expertIndex);
       break;
-    case 4:
-      cout << "Logging out...\n";
+    case 4:  // Add this as a new option
+      viewExpertFeedback(expertAccountArray, expertAccountArraySize,
+        feedbackArray, feedbackArraySize,
+        customerAccountArray, customerAccountArraySize,
+        expertIndex);
+      break;
+    case 5:
+      cout << "Logging out...\n\n\n";
       break;
     default:
       cout << "Invalid choice. Please try again.\n";
     }
-  } while (expertChoice != 4);
+  } while (expertChoice != 5);
 }
-
-void adminMenu(AdminAccount adminAccountArray[], int adminAccountArraySize,
-  ExpertAccount expertAccountArray[], int expertAccountArraySize,
-  Appointment appointmentArray[], int appointmentArraySize,
-  CustomerAccount customerAccountArray[], int customerAccountArraySize) {
-
+void adminMenu(AdminAccount adminAccountArray[], int adminAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize, Feedback feedbackArray[], int feedbackArraySize) {
+  cin.ignore(10000, '\n'); // Clear input buffer
   string adminID = adminLogin(adminAccountArray, adminAccountArraySize);
   if (adminID == "") return;
-
-  int adminChoice;
+  int adminChoice = 0;
   do {
     cout << "\n===== ADMIN MENU =====\n";
     cout << "1. View Overall Schedule\n";
@@ -386,39 +364,41 @@ void adminMenu(AdminAccount adminAccountArray[], int adminAccountArraySize,
     cout << "3. View Customer List\n";
     cout << "4. Generate Sales Report\n";
     cout << "5. View Expert Bonus Entitlement\n";
-    cout << "6. Logout\n";
+    cout << "6. View All Feedback\n";
+    cout << "7. View Feedback by Expert\n";
+    cout << "8. Logout\n";
     cout << "Enter your choice: ";
-    cin >> adminChoice;
+    adminChoice = getValidatedChoice(1, 8);
 
     switch (adminChoice) {
     case 1:
-      viewOverallSchedule(expertAccountArray, expertAccountArraySize,
-        appointmentArray, appointmentArraySize);
+      viewOverallSchedule(expertAccountArray, expertAccountArraySize, appointmentArray, appointmentArraySize);
       break;
     case 2:
-      viewIndividualExpertSchedule(expertAccountArray, expertAccountArraySize,
-        appointmentArray, appointmentArraySize);
+      viewIndividualExpertSchedule(expertAccountArray, expertAccountArraySize,appointmentArray, appointmentArraySize);
       break;
     case 3:
-      viewCustomerList(customerAccountArray, customerAccountArraySize,
-        expertAccountArray, expertAccountArraySize,
-        appointmentArray, appointmentArraySize);
+      viewCustomerList(customerAccountArray, customerAccountArraySize, expertAccountArray, expertAccountArraySize, appointmentArray, appointmentArraySize);
       break;
     case 4:
-      generateSalesReport(appointmentArray, appointmentArraySize,
-        expertAccountArray, expertAccountArraySize);
+      generateSalesReport(appointmentArray, appointmentArraySize, expertAccountArray, expertAccountArraySize);
       break;
     case 5:
-      viewExpertBonusEntitlement(appointmentArray, appointmentArraySize,
-        expertAccountArray, expertAccountArraySize);
+      viewExpertBonusEntitlement(appointmentArray, appointmentArraySize, expertAccountArray, expertAccountArraySize);
       break;
-    case 6:
-      cout << "Logging out...\n";
+    case 6: 
+      viewAllFeedback(feedbackArray, feedbackArraySize, customerAccountArray, customerAccountArraySize, expertAccountArray, expertAccountArraySize);
+      break;
+    case 7:  
+      viewFeedbackByExpert(feedbackArray, feedbackArraySize, customerAccountArray, customerAccountArraySize, expertAccountArray, expertAccountArraySize);
+      break;
+    case 8:
+      cout << "Logging out...\n\n\n";
       break;
     default:
       cout << "Invalid choice. Please try again.\n";
     }
-  } while (adminChoice != 6);
+  } while (adminChoice != 8);
 }
 
 // Customer Functions
@@ -428,7 +408,8 @@ string customerLogin(CustomerAccount customerAccountArray[], int customerArraySi
   cin >> username;
   cout << "Enter Password: ";
   cin >> password;
-  // Validate credentials
+  cin.ignore(); // Clear input buffer
+  // Validate credentials using linear search
   for (int i = 0; i < customerArraySize; i++) {
     if (customerAccountArray[i].username == username && customerAccountArray[i].password == password) {
       cout << "Login successful. Welcome, " << customerAccountArray[i].firstName << "!\n";
@@ -436,7 +417,7 @@ string customerLogin(CustomerAccount customerAccountArray[], int customerArraySi
     }
 
   }
-  cout << "Login failed. Please try again.\n";
+  cout << "Login failed. Please try again.\n\n";
   return "";
 }
 void customerRegistration(CustomerAccount customerAccountArray[], int customerAccountArraySize) {
@@ -458,8 +439,9 @@ void customerRegistration(CustomerAccount customerAccountArray[], int customerAc
   cout << "Enter Username: ";
   cin >> username;
 
-  // Check for duplicate username
-  for (int i = 0; i < customerAccountArraySize; i++) {
+  // Check for duplicate username using linear search
+  for (int i = 0; i < customerAccountArraySize; i++) // linear search
+  {
     if (!customerAccountArray[i].customerID.empty() &&
       customerAccountArray[i].username == username) {
       cout << "Error: Username already exists. Please choose another.\n";
@@ -491,7 +473,7 @@ void customerRegistration(CustomerAccount customerAccountArray[], int customerAc
   customerAccountArray[freeIndex].lastName = lastName;
 
   // Append to file AccountCustomer.txt
-  ofstream outFile(RESOURCES_FOLDER + "AccountCustomer.txt", ios::app);
+  ofstream outFile("res/AccountCustomer.txt", ios::app);
   if (outFile.is_open()) {
     outFile << customerID << ";"
       << "username=" << username << ";"
@@ -506,7 +488,6 @@ void customerRegistration(CustomerAccount customerAccountArray[], int customerAc
 
   cout << "Registration successful! Your Customer ID is: " << customerID << endl;
 }
-
 void viewBeautyCentreInformation() {
   cout << "==================================\n\n";
   cout << "Serenity Massage & Wellness Centre\n\n";
@@ -537,7 +518,10 @@ void viewBeautyCentreInformation() {
   cout << " Massage Therapy\n";
   cout << " Aromatherapy\n";
   cout << " Reflexology\n";
-  cout << "------------------------------------------------------------\n\n";
+  cout << "------------------------------------------------------------\n";
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
 };
 void viewServicesAndExperts(ExpertAccount expertAccountArray[], int expertAccountArraySize) {
 
@@ -566,7 +550,9 @@ void viewServicesAndExperts(ExpertAccount expertAccountArray[], int expertAccoun
       found = true;
     }
   }
-
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
   if (!found) {
     cout << "No experts available for this service.\n";
   }
@@ -581,14 +567,7 @@ void checkAppointmentAvailability(ExpertAccount expertAccountArray[], int expert
 
 
   cout << "Select the week of the month to view appointment slot availability (1 - 5): ";
-  int weekInput = 0, weekStartDay = 0, weekEndDay = 0;
-  cin >> weekInput;
-
-  while (weekInput > 5 || weekInput < 1) {
-    cout << "\nError! Please enter a valid week. (1 - 5)\n";
-    cout << "Select the week of the month to view appointment slot availability (1 - 5): ";
-    cin >> weekInput;
-  }
+  int weekInput = getValidatedChoice(1, 5), weekStartDay = 0, weekEndDay = 0;
 
   // Set the week range
   switch (weekInput) {
@@ -612,13 +591,8 @@ void checkAppointmentAvailability(ExpertAccount expertAccountArray[], int expert
 
   // Get day selection
   cout << "\nSelect a day of week (1-7): ";
-  int daySelection = 0;
-  cin >> daySelection;
+  int daySelection = getValidatedChoice(1,7);
 
-  while (daySelection < 1 || daySelection > 7) {
-    cout << "\nError! Please enter a valid day (1-7): ";
-    cin >> daySelection;
-  }
 
   int selectedDay = weekStartDay + daySelection - 1;
   if (selectedDay > weekEndDay) {
@@ -661,11 +635,12 @@ void checkAppointmentAvailability(ExpertAccount expertAccountArray[], int expert
       counter++;
     }
   }
-
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
 }
 void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, int customerArrayIndex) {
-  viewServicesAndExperts(expertAccountArray, expertAccountArraySize); // Placeholder
-
+  viewServicesAndExperts(expertAccountArray, expertAccountArraySize);
   // Get expert selection
   int expertIDIndex = findExpertIndexByID(expertAccountArray, expertAccountArraySize);
   if (expertIDIndex == -1) {
@@ -678,11 +653,8 @@ void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount exper
   cout << "1. Treatment (3 Hours)\n";
   cout << "2. Consultation (1 Hour)\n";
   cout << "Enter service type: ";
-  int serviceChoice = 0;
-  if (!(cin >> serviceChoice) || (serviceChoice < 1 || serviceChoice > 2)) {
-    cout << "Invalid input, exiting...\n";
-    return;
-  }
+  int serviceChoice = getValidatedChoice(1,2);
+
 
   string serviceType;
   int serviceTypeHours = 0;
@@ -704,10 +676,7 @@ void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount exper
   // Get day and time
   int dayInt = 0, timeInt = 0;
   cout << "Enter day (1-31): ";
-  if (!(cin >> dayInt) || dayInt < 1 || dayInt > 31) {
-    cout << "Invalid day. Returning...\n";
-    return;
-  }
+  dayInt = getDecemberDay();
   cout << "Enter start hour within 9AM to 5PM (9-17): ";
   if (!(cin >> timeInt) || timeInt < 9 || timeInt > 17) {
     cout << "Invalid time. Returning...\n";
@@ -720,7 +689,8 @@ void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount exper
 
   // Check availability
   int totalHoursWorkedDay = 0;
-  for (int i = 0; i < 24; i++) {
+  for (int i = 0; i < 24; i++) // Count booked hours for the day using linear search
+  {
     if (expertAccountArray[expertIDIndex].timeSlots[dayInt - 1][i].booked) {
       totalHoursWorkedDay++;
     }
@@ -801,7 +771,7 @@ void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount exper
   loadExpertTimeSlots(appointmentArray, appointmentArraySize, expertAccountArray, expertAccountArraySize);
 
   // Append to file
-  ofstream outFile(RESOURCES_FOLDER + "Appointment.txt", ios::app);
+  ofstream outFile("res/Appointment.txt", ios::app);
   if (outFile.is_open()) {
     outFile << appt.appointmentID << ";"
       << appt.customerID << ";"
@@ -828,7 +798,8 @@ void makePayment(Appointment appointmentArray[], int appointmentArraySize, Custo
     << customerAccountArray[customerArrayIndex].firstName << " "
     << customerAccountArray[customerArrayIndex].lastName << " ---\n";
 
-  for (int i = 0; i < appointmentArraySize; i++) {
+  for (int i = 0; i < appointmentArraySize; i++) // List unpaid appointments using linear search
+  {
     if (appointmentArray[i].appointmentID != ""
       && !appointmentArray[i].paymentStatus
       && appointmentArray[i].customerID == customerAccountArray[customerArrayIndex].customerID) {
@@ -860,10 +831,10 @@ void makePayment(Appointment appointmentArray[], int appointmentArraySize, Custo
   // Find the chosen unpaid appointment
   int selectedIndex = -1;
   int currentCount = 0;
-  for (int i = 0; i < appointmentArraySize; i++) {
-    if (appointmentArray[i].appointmentID != ""
-      && !appointmentArray[i].paymentStatus
-      && appointmentArray[i].customerID == customerAccountArray[customerArrayIndex].customerID) {
+  for (int i = 0; i < appointmentArraySize; i++) // linear search
+  {
+    if (appointmentArray[i].appointmentID != "" && !appointmentArray[i].paymentStatus && appointmentArray[i].customerID == customerAccountArray[customerArrayIndex].customerID) 
+    {
       currentCount++;
       if (currentCount == choice) {
         selectedIndex = i;
@@ -892,7 +863,7 @@ void makePayment(Appointment appointmentArray[], int appointmentArraySize, Custo
   appointmentArray[selectedIndex].paymentStatus = true;
 
   // Rewrite Appointment.txt with updated statuses
-  ofstream outFile(RESOURCES_FOLDER + "Appointment.txt", ios::trunc);
+  ofstream outFile("res/Appointment.txt", ios::trunc);
   if (outFile.is_open()) {
     for (int i = 0; i < appointmentArraySize; i++) {
       if (appointmentArray[i].appointmentID.empty()) continue;
@@ -923,8 +894,8 @@ void viewBooking(Appointment appointmentArray[], int appointmentArraySize, Exper
   int indexNumber = 1;
   bool hasBookings = false;
 
-
-  for (int i = 0; i < appointmentArraySize; i++)
+  
+  for (int i = 0; i < appointmentArraySize; i++) // linear search
   {
     if (appointmentArray[i].appointmentID.empty()) {
       continue;
@@ -937,7 +908,7 @@ void viewBooking(Appointment appointmentArray[], int appointmentArraySize, Exper
 
       // For expert name
       string expertName = "Unknown";
-      for (int j = 0; j < expertAccountSize; j++)
+      for (int j = 0; j < expertAccountSize; j++) // linear search
       {
         if (expertAccountArray[j].expertID == appointmentArray[i].expertID)
         {
@@ -970,7 +941,7 @@ void viewBooking(Appointment appointmentArray[], int appointmentArraySize, Exper
         << '|' << setw(6) << "Status" << '|' << "\n";
       cout << "------------------------------------------------------------------------------------\n";
 
-      cout << left << setw(4) << indexNumber++
+      cout << left << setw(4) << indexNumber++ // Number for display purposes
         << '|' << setw(15) << (appointmentArray[i].serviceType.length() > 14 ? appointmentArray[i].serviceType.substr(0, 12) + ".." : appointmentArray[i].serviceType)
         << '|' << setw(10) << (expertName.length() > 9 ? expertName.substr(0, 8) + ".." : expertName)
         << '|' << setw(12) << formattedDate
@@ -986,8 +957,185 @@ void viewBooking(Appointment appointmentArray[], int appointmentArraySize, Exper
   }
 
   cout << "------------------------------------------------------------------------------------\n";
+  
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
+}
+void submitFeedback(int customerIndex, CustomerAccount customerAccountArray[], int customerAccountArraySize, Appointment appointmentArray[], const int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize) {
 
+  // Check if customer index is valid
+  if (customerIndex < 0 || customerIndex >= customerAccountArraySize ||
+    customerAccountArray[customerIndex].customerID.empty()) {
+    cout << "Invalid customer session.\n";
+    return;
+  }
 
+  string customerID = customerAccountArray[customerIndex].customerID;
+
+  cout << "===== FEEDBACK SUBMISSION =====\n";
+  cout << "Welcome, " << customerAccountArray[customerIndex].firstName << "!\n";
+
+  // Display customer's appointments in table format
+  cout << "\nYour Appointments:\n";
+  cout << "=============================================================================================================\n";
+  cout << left << setw(4) << "No."
+    << setw(15) << "Appointment ID"
+    << setw(20) << "Service"
+    << setw(20) << "Expert"
+    << setw(12) << "Date"
+    << setw(20) << "Time" << endl;
+  cout << "=============================================================================================================\n";
+
+  int appointmentCount = 0;
+
+  // First pass: count appointments and display them in table
+  for (int i = 0; i < appointmentArraySize; i++) // linear search
+  {
+    if (appointmentArray[i].appointmentID != "" &&
+      appointmentArray[i].customerID == customerID) {
+
+      // Find expert name
+      string expertName = "Unknown";
+      for (int j = 0; j < expertAccountArraySize; j++) // linear search
+      {
+        if (expertAccountArray[j].expertID == appointmentArray[i].expertID) {
+          expertName = expertAccountArray[j].firstName + " " + expertAccountArray[j].lastName;
+          // Truncate if too long
+          if (expertName.length() > 18) expertName = expertName.substr(0, 15) + "...";
+          break;
+        }
+      }
+
+      // Format date (Dec 12)
+      string dateStr = appointmentArray[i].appointmentDate;
+      string formattedDate = "Dec " + dateStr.substr(6, 2);
+
+      // Format time
+      string startTime = convertToAmPm(appointmentArray[i].appointmentTimeSlot.startTime);
+      string endTime = convertToAmPm(appointmentArray[i].appointmentTimeSlot.endTime);
+      string formattedTime = startTime + "-" + endTime;
+
+      // Display in table row
+      cout << left << setw(4) << (appointmentCount + 1)
+        << setw(15) << appointmentArray[i].appointmentID
+        << setw(20) << (appointmentArray[i].serviceType.length() > 18 ?
+          appointmentArray[i].serviceType.substr(0, 15) + "..." :
+          appointmentArray[i].serviceType)
+        << setw(20) << expertName
+        << setw(12) << formattedDate
+        << setw(20) << formattedTime << endl;
+
+      appointmentCount++;
+    }
+  }
+
+  cout << "=============================================================================================================\n";
+
+  if (appointmentCount == 0) {
+    cout << "No appointments found for feedback submission.\n";
+    return;
+  }
+
+  // Select appointment for feedback
+  int selectedAppointment;
+  cout << "\nSelect an appointment to provide feedback (1-" << appointmentCount << "): ";
+  cin >> selectedAppointment;
+
+  if (selectedAppointment < 1 || selectedAppointment > appointmentCount) {
+    cout << "Invalid selection.\n";
+    return;
+  }
+
+  // Second pass: find the selected appointment
+  int currentIndex = 0;
+  int selectedApptIndex = -1;
+  for (int i = 0; i < appointmentArraySize; i++) {
+    if (appointmentArray[i].appointmentID != "" &&
+      appointmentArray[i].customerID == customerID) {
+
+      currentIndex++;
+      if (currentIndex == selectedAppointment) {
+        selectedApptIndex = i;
+        break;
+      }
+    }
+  }
+
+  if (selectedApptIndex == -1) {
+    cout << "Error: Could not find selected appointment.\n";
+    return;
+  }
+
+  Appointment selectedAppt = appointmentArray[selectedApptIndex];
+
+  // Check if feedback already exists for this appointment
+  ifstream feedbackFile("res/feedback.txt");
+  string line;
+  bool feedbackExists = false;
+
+  while (getline(feedbackFile, line)) {
+    if (line.find(selectedAppt.appointmentID) != string::npos) {
+      feedbackExists = true;
+      break;
+    }
+  }
+  feedbackFile.close();
+
+  if (feedbackExists) {
+    cout << "Feedback already submitted for this appointment.\n";
+    return;
+  }
+
+  // Get feedback details
+  cin.ignore(); // Clear input buffer
+  string comment;
+  int rating;
+
+  cout << "\nPlease provide your feedback for " << selectedAppt.serviceType << " service:\n";
+  cout << "Enter your comment: ";
+  getline(cin, comment);
+
+  size_t pos;
+  while ((pos = comment.find(';')) != string::npos) {
+    comment.replace(pos, 1, " ");
+  }
+
+  cout << "Enter rating (1-5 stars): ";
+  cin >> rating;
+
+  while (rating < 1 || rating > 5) {
+    cout << "Invalid rating. Please enter a value between 1 and 5: ";
+    cin >> rating;
+  }
+
+  // Generate Feedback ID
+  int newFeedbackNum = 1;
+  ifstream countFile("res/feedback.txt");
+  while (getline(countFile, line)) {
+    if (!line.empty()) newFeedbackNum++;
+  }
+  countFile.close();
+
+  string feedbackID = "F" + string(3 - to_string(newFeedbackNum).length(), '0') + to_string(newFeedbackNum);
+
+  // Save feedback to file
+  ofstream outFile("res/feedback.txt", ios::app);
+  if (outFile.is_open()) {
+    outFile << feedbackID << ";"
+      << customerID << ";"
+      << selectedAppt.appointmentID << ";"
+      << selectedAppt.expertID << ";"
+      << "comment=" << removeSemicolons(comment) << ";"
+      << "service=" << rating << ";\n";
+    outFile.close();
+
+    cout << "\nThank you for your feedback!\n";
+    cout << "Feedback ID: " << feedbackID << " has been recorded.\n";
+  }
+  else {
+    cout << "Error: Could not open feedback file for writing.\n";
+  }
 }
 
 // Admin Functions
@@ -997,7 +1145,8 @@ string adminLogin(AdminAccount adminAccountArray[], int adminArraySize) {
   cin >> username;
   cout << "Enter Password: ";
   cin >> password;
-  // Validate credentials
+  cin.ignore(); // Clear input buffer
+  // Validate credentials using linear search
   for (int i = 0; i < adminArraySize; i++) {
     if (adminAccountArray[i].username == username && adminAccountArray[i].password == password) {
       cout << "Login successful. Welcome, " << adminAccountArray[i].firstName << "!\n";
@@ -1005,12 +1154,12 @@ string adminLogin(AdminAccount adminAccountArray[], int adminArraySize) {
     }
 
   }
-  cout << "Login failed. Please try again.\n";
+  cout << "Login failed. Please try again.\n\n";
   return "";
 }
 void viewOverallSchedule(ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize)
 {
-  cout << "Overall Schedule for December\n";
+  cout << "\nOverall Schedule for December\n";
 
   for (int expertIndex = 0; expertIndex < expertAccountArraySize; expertIndex++)
   {
@@ -1060,6 +1209,10 @@ void viewOverallSchedule(ExpertAccount expertAccountArray[], int expertAccountAr
       << '|' << setw(20) << formattedTime
       << '|' << "\n";
   }
+
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
 }
 void viewCustomerList(CustomerAccount customerAccountArray[], int customerAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize)
 {
@@ -1085,9 +1238,10 @@ void viewCustomerList(CustomerAccount customerAccountArray[], int customerAccoun
     return;
   }
 
-  // Find customer
+  // Find customer by ID using linear search
   int selectedIndex = -1;
-  for (int i = 0; i < customerAccountArraySize; i++) {
+  for (int i = 0; i < customerAccountArraySize; i++) 
+  {
     if (customerAccountArray[i].customerID == inputID) {
       selectedIndex = i;
       break;
@@ -1095,7 +1249,6 @@ void viewCustomerList(CustomerAccount customerAccountArray[], int customerAccoun
   }
 
   if (selectedIndex == -1) {
-    cout << "Customer ID not found." << endl;
     return;
   }
 
@@ -1108,8 +1261,8 @@ void viewCustomerList(CustomerAccount customerAccountArray[], int customerAccoun
 
   bool hasAppointment = false;
 
-  // Show appointments for this customer
-  for (int j = 0; j < appointmentArraySize; j++)
+  // Show appointments for this customer using linear search
+  for (int j = 0; j < appointmentArraySize; j++) 
   {
     if (appointmentArray[j].appointmentID.empty()) continue;
 
@@ -1133,8 +1286,9 @@ void viewCustomerList(CustomerAccount customerAccountArray[], int customerAccoun
       cout << "Time\t\t: " << convertToAmPm(appointmentArray[j].appointmentTimeSlot.startTime)
         << " - " << convertToAmPm(appointmentArray[j].appointmentTimeSlot.endTime) << endl;
       cout << "Expert\t\t: " << expertName << " (" << specialization << ")" << endl;
-      cout << "Total Paid\t: RM" << appointmentArray[j].totalPaid << endl;
+      cout << "Subtotal\t: " << appointmentArray[j].totalPaid - appointmentArray[j].serviceFee;
       cout << "Service Fee\t: RM" << appointmentArray[j].serviceFee << endl;
+      cout << "Total Paid\t: RM" << appointmentArray[j].totalPaid << endl;
       cout << "Payment Status\t: " << (appointmentArray[j].paymentStatus ? "Paid" : "Pending") << endl;
       cout << "-----------------------------------------" << endl;
     }
@@ -1143,7 +1297,9 @@ void viewCustomerList(CustomerAccount customerAccountArray[], int customerAccoun
   if (!hasAppointment) {
     cout << "\nNo appointments found for this customer." << endl;
   }
-
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
 }
 void generateSalesReport(Appointment appointmentArray[], int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize)
 {
@@ -1161,16 +1317,16 @@ void generateSalesReport(Appointment appointmentArray[], int appointmentArraySiz
   switch (menuChoice) {
   case 1: {
     cout << "Enter start day (1-31): ";
-    cin >> startDay;
+    startDay = getDecemberDay();
     if (startDay < 1) startDay = 1;
     if (startDay > 31) startDay = 31;
 
     cout << "Enter end day (1-31): ";
-    cin >> endDay;
+    endDay = getDecemberDay();
     while (endDay < startDay || endDay > 31 || endDay < 1) {
       cout << "Invalid end day. It must be between " << startDay << " and 31.\n";
       cout << "Re-enter end day: ";
-      cin >> endDay;
+      endDay = getDecemberDay();
     }
     break;
   }
@@ -1195,7 +1351,8 @@ void generateSalesReport(Appointment appointmentArray[], int appointmentArraySiz
 
   case 3: {
     cout << "\n--- Expert List ---\n";
-    for (int i = 0; i < expertAccountArraySize; i++) {
+    for (int i = 0; i < expertAccountArraySize; i++) // linear search
+    {
       if (expertAccountArray[i].expertID != "") {
         cout << expertAccountArray[i].expertID << " | "
           << expertAccountArray[i].firstName << " " << expertAccountArray[i].lastName
@@ -1205,7 +1362,8 @@ void generateSalesReport(Appointment appointmentArray[], int appointmentArraySiz
     cout << "Enter expert ID: ";
     cin >> expertID;
 
-    if (!expertID.empty()) {
+    if (!expertID.empty()) 
+    {
       expertID[0] = static_cast<char>(toupper(expertID[0]));
     }
     else {
@@ -1225,7 +1383,8 @@ void generateSalesReport(Appointment appointmentArray[], int appointmentArraySiz
   double subtotalTreatment = 0, feeTreatment = 0, paidTreatment = 0;
   int consultationCount = 0, treatmentCount = 0;
 
-  for (int i = 0; i < appointmentArraySize; i++) {
+  for (int i = 0; i < appointmentArraySize; i++) // linear search
+  {
     if (appointmentArray[i].appointmentID == "" || !appointmentArray[i].paymentStatus) {
       continue;
     }
@@ -1297,11 +1456,16 @@ void generateSalesReport(Appointment appointmentArray[], int appointmentArraySiz
     << right << setw(18) << subtotalConsultation + subtotalTreatment
     << setw(18) << feeConsultation + feeTreatment
     << setw(18) << paidConsultation + paidTreatment << endl;
+
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
 }
 void viewIndividualExpertSchedule(ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize)
 {
   cout << "\n--- Expert List ---\n";
-  for (int i = 0; i < expertAccountArraySize; i++) {
+  for (int i = 0; i < expertAccountArraySize; i++) // linear search
+  {
     if (!expertAccountArray[i].expertID.empty()) {
       cout << expertAccountArray[i].expertID << " | "
         << expertAccountArray[i].firstName << " " << expertAccountArray[i].lastName
@@ -1323,7 +1487,8 @@ void viewIndividualExpertSchedule(ExpertAccount expertAccountArray[], int expert
 
   // find expert
   int expertIndex = -1;
-  for (int i = 0; i < expertAccountArraySize; i++) {
+  for (int i = 0; i < expertAccountArraySize; i++) // linear search
+  {
     if (expertAccountArray[i].expertID == selectedExpertID) {
       expertIndex = i;
       break;
@@ -1331,7 +1496,6 @@ void viewIndividualExpertSchedule(ExpertAccount expertAccountArray[], int expert
   }
 
   if (expertIndex == -1) {
-    cout << "Expert not found.\n";
     return;
   }
 
@@ -1417,6 +1581,10 @@ void viewIndividualExpertSchedule(ExpertAccount expertAccountArray[], int expert
     cout << "Total Hours Worked: " << weeklyHours << " hrs\n";
     week++;
   }
+
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
 }
 void viewExpertBonusEntitlement(Appointment appointmentArray[], int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize)
 {
@@ -1424,25 +1592,162 @@ void viewExpertBonusEntitlement(Appointment appointmentArray[], int appointmentA
   {
     viewEarningsBonusEntitlement(appointmentArray, appointmentArraySize, expertAccountArray, expertAccountArraySize, expertArrayIndex);
   }
+
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
+}
+void viewAllFeedback(Feedback feedbackArray[], int feedbackArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize) {
+
+  int feedbackCount = 0;
+
+  cout << "\n===== ALL FEEDBACK REPORT =====\n";
+  cout << "==========================================================================================================\n";
+  cout << left << setw(8) << "Rating"
+    << setw(20) << "Customer"
+    << setw(20) << "Expert"
+    << setw(35) << "Comment"
+    << setw(12) << "Date" << "\n";
+  cout << "==========================================================================================================\n";
+
+  // Loop through all feedback entries
+  for (int i = 0; i < feedbackArraySize; i++) 
+  {
+    if (feedbackArray[i].feedbackID.empty()) continue;
+
+    feedbackCount++;
+
+    // Find customer name
+    string customerName = "Unknown";
+    for (int j = 0; j < customerAccountArraySize; j++) // linear search
+    {
+      if (customerAccountArray[j].customerID == feedbackArray[i].customerID) {
+        customerName = customerAccountArray[j].firstName + " " +
+          customerAccountArray[j].lastName;
+        break;
+      }
+    }
+
+    // Find expert name
+    string expertName = "Unknown";
+    for (int j = 0; j < expertAccountArraySize; j++) {
+      if (expertAccountArray[j].expertID == feedbackArray[i].expertID) {
+        expertName = expertAccountArray[j].firstName + " " +
+          expertAccountArray[j].lastName;
+        break;
+      }
+    }
+
+    // Extract date info
+    string dateInfo = "N/A";
+    if (feedbackArray[i].appointmentID.length() >= 5) {
+      string apptNum = feedbackArray[i].appointmentID.substr(2);
+      dateInfo = "Dec " + to_string((stoi(apptNum) % 31) + 1);
+    }
+
+    // Display rating stars
+    string ratingStars = "";
+    for (int s = 0; s < feedbackArray[i].rating; s++) {
+      ratingStars += "š";
+    }
+    for (int s = feedbackArray[i].rating; s < 5; s++) {
+      ratingStars += "™";
+    }
+
+    // Handling comments too long for display
+    string displayComment = feedbackArray[i].comment;
+    if (displayComment.length() > 30) {
+      displayComment = displayComment.substr(0, 27) + "...";
+    }
+
+    cout << left << setw(8) << ratingStars
+      << setw(20) << (customerName.length() > 19 ? customerName.substr(0, 16) + "..." : customerName)
+      << setw(20) << (expertName.length() > 19 ? expertName.substr(0, 16) + "..." : expertName)
+      << setw(35) << displayComment
+      << setw(12) << dateInfo << "\n";
+  }
+
+  if (feedbackCount == 0) {
+    cout << "No feedback available in the system.\n";
+  }
+
+  cout << "==========================================================================================================\n";
+
+  // Display statistics
+  cout << "\n===== FEEDBACK STATISTICS =====\n";
+
+  // Calculate average rating per expert
+  for (int e = 0; e < expertAccountArraySize; e++) 
+  {
+    if (expertAccountArray[e].expertID.empty()) continue;
+
+    int expertTotalRating = 0;
+    int expertFeedbackCount = 0;
+
+    for (int i = 0; i < feedbackArraySize; i++) // linear search
+    {
+      if (!feedbackArray[i].feedbackID.empty() && feedbackArray[i].expertID == expertAccountArray[e].expertID) {
+        expertTotalRating += feedbackArray[i].rating;
+        expertFeedbackCount++;
+      }
+    }
+
+    if (expertFeedbackCount > 0) {
+      double averageRating = static_cast<double>(expertTotalRating) / expertFeedbackCount;
+      cout << expertAccountArray[e].firstName << " " << expertAccountArray[e].lastName
+        << ": " << fixed << setprecision(1) << averageRating << "/5.0 ("
+        << expertFeedbackCount << " review" << (expertFeedbackCount != 1 ? "s" : "") << ")\n";
+    }
+  }
+
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
+}
+void viewFeedbackByExpert(Feedback feedbackArray[], int feedbackArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize) {
+
+  // Display expert list
+  cout << "\n--- Select Expert to View Feedback ---\n";
+  for (int i = 0; i < expertAccountArraySize; i++) {
+    if (!expertAccountArray[i].expertID.empty()) {
+      cout << expertAccountArray[i].expertID << " | "
+        << expertAccountArray[i].firstName << " " << expertAccountArray[i].lastName
+        << " | " << expertAccountArray[i].specialization << endl;
+    }
+  }
+
+  cout << "Enter Expert ID: ";
+  int expertIndex = findExpertIndexByID(expertAccountArray, expertAccountArraySize);
+
+
+  // Use the expert feedback function
+  viewExpertFeedback(expertAccountArray, expertAccountArraySize, feedbackArray, feedbackArraySize, customerAccountArray, customerAccountArraySize, expertIndex);
+
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
 }
 
+
+
 // Expert Functions
-string expertLogin(ExpertAccount expertAccountArray[], int expertArraySize) {
+int expertLogin(ExpertAccount expertAccountArray[], int expertArraySize) {
   string username, password, expertID;
   cout << "Enter Username: ";
   cin >> username;
   cout << "Enter Password: ";
   cin >> password;
-  // Validate credentials
+  cin.ignore(); // Clear input buffer
+  // Validate credentials using linear search
   for (int i = 0; i < expertArraySize; i++) {
     if (expertAccountArray[i].username == username && expertAccountArray[i].password == password) {
       cout << "Login successful. Welcome, " << expertAccountArray[i].firstName << "!\n";
-      return expertAccountArray[i].expertID;
+      return i;
     }
 
   }
-  cout << "Login failed. Please try again.\n";
-  return "";
+  cout << "Login failed. Please try again.\n\n";
+  return -1;
 }
 void viewAssignedCustomerList(CustomerAccount customerAccountArray[], int customerAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, ExpertAccount expertAccountArray[], int expertIndex)
 {
@@ -1463,7 +1768,7 @@ void viewAssignedCustomerList(CustomerAccount customerAccountArray[], int custom
     << setw(18) << "Time" << "\n";
   cout << "====================================================================================\n";
 
-  // Loop through all appointments to find those assigned to this expert
+  // Loop through all appointments to find those assigned to this expert using linear search
   for (int i = 0; i < appointmentArraySize; i++)
   {
     // Skip empty appointments
@@ -1532,129 +1837,144 @@ void viewAssignedCustomerList(CustomerAccount customerAccountArray[], int custom
   cout << "====================================================================================\n\n";
 
   // Wait for user to continue
-  cout << "Press any key to return to menu...";
+  cout << "\nPress enter to continue...";
   cin.ignore();
   cin.get();
 }
 void viewIndividualSchedule(ExpertAccount expertAccountArray[], Appointment appointmentArray[], int appointmentArraySize, int expertIndex)
 {
   int option;
-  cout << "Select from the menu below. (1 - 3)\n";
+  cout << "\nSelect from the menu below. (1 - 3)\n";
   cout << "1. View Daily Schedule\n";
   cout << "2. View Weekly Schedule\n";
   cout << "3. Return to menu\n\n";
   cout << "Option: ";
-  cin >> option;
+  option = getValidatedChoice(1,3);
 
-  while (option < 1 || option > 3) {
-    cout << "\nError! Please enter a valid option (1 - 3).\n";
-    cout << "Option: ";
-    cin >> option;
-  }
-
-  if (option == 3) {
-    return; // back to main menu
-  }
-
-  if (option == 1) {
-    // === DAILY SCHEDULE ===
-    int dateInput;
-    cout << "\nCalendar for December 2025\n";
-    cout << "____________________________________\n\n";
-    cout << "Select the day of the month to view your schedule (1 - 31): ";
-    cin >> dateInput;
-
-    while (dateInput < 1 || dateInput > 31) {
-      cout << "Error! Please enter a valid day (1 - 31): ";
+  switch (option) {
+    case 1: {
+      // === DAILY SCHEDULE ===
+      int dateInput;
+      cout << "Select the day of the month to view your schedule (1 - 31): ";
       cin >> dateInput;
-    }
 
-    cout << "\n\nViewing Daily Schedule\n";
-    cout << "Expert: " << expertAccountArray[expertIndex].firstName << " "
-      << expertAccountArray[expertIndex].lastName << "\n";
-    cout << "Date: December " << dateInput << ", 2025\n";
-    cout << "------------------------------------------------------------------\n";
-    cout << left << setw(4) << "No."
-      << setw(12) << right << "Start Time"
-      << setw(12) << "End Time"
-      << setw(20) << "Service Type"
-      << setw(15) << "Customer ID" << "\n";
-    cout << "------------------------------------------------------------------\n";
-
-    int indexNumber = 1;
-    bool found = false;
-
-    for (int j = 0; j < appointmentArraySize; j++) {
-      if (appointmentArray[j].appointmentID.empty()) continue;
-
-      if (appointmentArray[j].expertID == expertAccountArray[expertIndex].expertID &&
-        stoi(appointmentArray[j].appointmentDate.substr(6, 2)) == dateInput)
-      {
-        cout << left << setw(4) << indexNumber++
-          << setw(12) << right << convertToAmPm(appointmentArray[j].appointmentTimeSlot.startTime)
-          << setw(12) << convertToAmPm(appointmentArray[j].appointmentTimeSlot.endTime)
-          << setw(20) << appointmentArray[j].serviceType
-          << setw(15) << appointmentArray[j].customerID << "\n";
-        found = true;
+      // Sort appointments by time using Bubble Sort
+      for (int i = 0; i < appointmentArraySize - 1; i++) {
+        for (int j = 0; j < appointmentArraySize - i - 1; j++) {
+          if (!appointmentArray[j].appointmentID.empty() &&
+            !appointmentArray[j + 1].appointmentID.empty() &&
+            appointmentArray[j].expertID == expertAccountArray[expertIndex].expertID &&
+            appointmentArray[j + 1].expertID == expertAccountArray[expertIndex].expertID &&
+            appointmentArray[j].appointmentTimeSlot.startTime > appointmentArray[j + 1].appointmentTimeSlot.startTime) {
+            // Swap appointments
+            Appointment temp = appointmentArray[j];
+            appointmentArray[j] = appointmentArray[j + 1];
+            appointmentArray[j + 1] = temp;
+          }
+        }
       }
+
+      cout << "\n\nViewing Daily Schedule (Sorted by Time)\n";
+
+      cout << "\n\nViewing Daily Schedule\n";
+      cout << "Expert: " << expertAccountArray[expertIndex].firstName << " "
+        << expertAccountArray[expertIndex].lastName << "\n";
+      cout << "Date: December " << dateInput << ", 2025\n";
+      cout << "------------------------------------------------------------------\n";
+      cout << left << setw(4) << "No."
+        << setw(12) << right << "Start Time"
+        << setw(12) << "End Time"
+        << setw(20) << "Service Type"
+        << setw(15) << "Customer ID" << "\n";
+      cout << "------------------------------------------------------------------\n";
+
+      int indexNumber = 1;
+      bool found = false;
+
+      for (int j = 0; j < appointmentArraySize; j++) {
+        if (appointmentArray[j].appointmentID.empty()) continue;
+
+        if (appointmentArray[j].expertID == expertAccountArray[expertIndex].expertID &&
+          stoi(appointmentArray[j].appointmentDate.substr(6, 2)) == dateInput)
+        {
+          cout << left << setw(4) << indexNumber++
+            << setw(12) << right << convertToAmPm(appointmentArray[j].appointmentTimeSlot.startTime)
+            << setw(12) << convertToAmPm(appointmentArray[j].appointmentTimeSlot.endTime)
+            << setw(20) << appointmentArray[j].serviceType
+            << setw(15) << appointmentArray[j].customerID << "\n";
+          found = true;
+        }
+      }
+
+      if (!found) {
+        cout << "No appointments booked. All slots available.\n";
+      }
+      break; // Exit the switch statement
     }
 
-    if (!found) {
-      cout << "No appointments booked. All slots available.\n";
-    }
-  }
-
-  else if (option == 2) {
-    // === WEEKLY SCHEDULE ===
-    int weekInput;
-    cout << "\nSelect the week of December 2025 to view (1 - 5): ";
-    cin >> weekInput;
-
-    while (weekInput < 1 || weekInput > 5) {
-      cout << "Error! Please enter a valid week (1 - 5): ";
+    case 2: {
+      // === WEEKLY SCHEDULE ===
+      int weekInput;
+      cout << "\nSelect the week of December 2025 to view (1 - 5): ";
       cin >> weekInput;
-    }
 
-    int startDay = (weekInput - 1) * 7 + 1;
-    int endDay = (weekInput == 5 ? 31 : weekInput * 7);
-
-    cout << "\n\nViewing Weekly Schedule\n";
-    cout << "Expert: " << expertAccountArray[expertIndex].firstName << " "
-      << expertAccountArray[expertIndex].lastName << "\n";
-    cout << "Week " << weekInput << " (Dec " << startDay << " - " << endDay << ")\n";
-    cout << "------------------------------------------------------------------\n";
-    cout << left << setw(4) << "No."
-      << setw(12) << "Date"
-      << setw(12) << right << "Start Time"
-      << setw(12) << "End Time"
-      << setw(20) << "Service Type"
-      << setw(15) << "Customer ID" << "\n";
-    cout << "------------------------------------------------------------------\n";
-
-    int indexNumber = 1;
-    bool found = false;
-
-    for (int j = 0; j < appointmentArraySize; j++) {
-      if (appointmentArray[j].appointmentID.empty()) continue;
-
-      int day = stoi(appointmentArray[j].appointmentDate.substr(6, 2));
-      if (appointmentArray[j].expertID == expertAccountArray[expertIndex].expertID &&
-        day >= startDay && day <= endDay)
-      {
-        cout << left << setw(4) << indexNumber++
-          << setw(12) << "Dec " + appointmentArray[j].appointmentDate.substr(6, 2)
-          << setw(12) << right << convertToAmPm(appointmentArray[j].appointmentTimeSlot.startTime)
-          << setw(12) << convertToAmPm(appointmentArray[j].appointmentTimeSlot.endTime)
-          << setw(20) << appointmentArray[j].serviceType
-          << setw(15) << appointmentArray[j].customerID << "\n";
-        found = true;
+      while (weekInput < 1 || weekInput > 5) {
+        cout << "Error! Please enter a valid week (1 - 5): ";
+        cin >> weekInput;
       }
+
+      int startDay = (weekInput - 1) * 7 + 1;
+      int endDay = (weekInput == 5 ? 31 : weekInput * 7);
+
+      cout << "\n\nViewing Weekly Schedule\n";
+      cout << "Expert: " << expertAccountArray[expertIndex].firstName << " "
+        << expertAccountArray[expertIndex].lastName << "\n";
+      cout << "Week " << weekInput << " (Dec " << startDay << " - " << endDay << ")\n";
+      cout << "------------------------------------------------------------------\n";
+      cout << left << setw(4) << "No."
+        << setw(12) << "Date"
+        << setw(12) << right << "Start Time"
+        << setw(12) << "End Time"
+        << setw(20) << "Service Type"
+        << setw(15) << "Customer ID" << "\n";
+      cout << "------------------------------------------------------------------\n";
+
+      int indexNumber = 1;
+      bool found = false;
+
+      for (int j = 0; j < appointmentArraySize; j++) {
+        if (appointmentArray[j].appointmentID.empty()) continue;
+
+        int day = stoi(appointmentArray[j].appointmentDate.substr(6, 2));
+        if (appointmentArray[j].expertID == expertAccountArray[expertIndex].expertID &&
+          day >= startDay && day <= endDay)
+        {
+          cout << left << setw(4) << indexNumber++
+            << setw(12) << "Dec " + appointmentArray[j].appointmentDate.substr(6, 2)
+            << setw(12) << right << convertToAmPm(appointmentArray[j].appointmentTimeSlot.startTime)
+            << setw(12) << convertToAmPm(appointmentArray[j].appointmentTimeSlot.endTime)
+            << setw(20) << appointmentArray[j].serviceType
+            << setw(15) << appointmentArray[j].customerID << "\n";
+          found = true;
+        }
+      }
+
+      if (!found) {
+        cout << "No appointments booked this week. All slots available.\n";
+      }
+      break; // Exit the switch statement
     }
 
-    if (!found) {
-      cout << "No appointments booked this week. All slots available.\n";
-    }
+    case 3:
+      return; // Back to main menu
+
+    default:
+      cout << "Invalid option. Please try again.\n";
+      break;
   }
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
 }
 void viewEarningsBonusEntitlement(Appointment appointmentArray[], int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, int expertIDIndex)
 {
@@ -1720,6 +2040,104 @@ void viewEarningsBonusEntitlement(Appointment appointmentArray[], int appointmen
   cout << "Total Service Charges    : RM" << totalServiceCharges << "\n";
   cout << "Bonus Percentage         : " << bonusPercent << "%\n";
   cout << "Bonus Earned             : RM" << bonusEarned << "\n";
+
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
+}
+void viewExpertFeedback(ExpertAccount expertAccountArray[], int expertAccountArraySize, Feedback feedbackArray[], int feedbackArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize, int expertIndex) {
+
+  if (expertIndex < 0 || expertIndex >= expertAccountArraySize ||
+    expertAccountArray[expertIndex].expertID.empty()) {
+    cout << "Invalid expert session.\n";
+    return;
+  }
+
+  string expertID = expertAccountArray[expertIndex].expertID;
+  bool foundFeedback = false;
+
+  cout << "\n===== FEEDBACK FOR " << expertAccountArray[expertIndex].firstName << " =====\n";
+  cout << "================================================================================\n";
+  cout << left << setw(8) << "Rating"
+    << setw(25) << "Customer"
+    << setw(40) << "Comment"
+    << setw(12) << "Date" << "\n";
+  cout << "================================================================================\n";
+
+  // Loop through all feedback
+  for (int i = 0; i < feedbackArraySize; i++) // linear search
+  {
+    if (feedbackArray[i].feedbackID.empty()) continue;
+
+    // Check if feedback is for this expert
+    if (feedbackArray[i].expertID == expertID) {
+      foundFeedback = true;
+
+      // Find customer name
+      string customerName = "Unknown";
+      for (int j = 0; j < customerAccountArraySize; j++) {
+        if (customerAccountArray[j].customerID == feedbackArray[i].customerID) {
+          customerName = customerAccountArray[j].firstName + " " +
+            customerAccountArray[j].lastName;
+          break;
+        }
+      }
+
+      // Extract date from appointment ID 
+      string dateInfo = "N/A";
+      if (feedbackArray[i].appointmentID.length() >= 5) {
+        string apptNum = feedbackArray[i].appointmentID.substr(2);
+        dateInfo = "Dec " + to_string((stoi(apptNum) % 31) + 1);
+      }
+
+      // Display rating stars
+      string ratingStars = "";
+      for (int s = 0; s < feedbackArray[i].rating; s++) {
+        ratingStars += "š";
+      }
+      for (int s = feedbackArray[i].rating; s < 5; s++) {
+        ratingStars += "™";
+      }
+
+      // Truncate long comments for display
+      string displayComment = feedbackArray[i].comment;
+      if (displayComment.length() > 35) {
+        displayComment = displayComment.substr(0, 32) + "...";
+      }
+
+      cout << left << setw(8) << ratingStars
+        << setw(25) << (customerName.length() > 24 ? customerName.substr(0, 21) + "..." : customerName)
+        << setw(40) << displayComment
+        << setw(12) << dateInfo << "\n";
+    }
+  }
+
+  if (!foundFeedback) {
+    cout << "No feedback received yet.\n";
+  }
+
+  cout << "================================================================================\n";
+
+  // Calculate and display average rating
+  int totalRating = 0;
+  int feedbackCount = 0;
+
+  for (int i = 0; i < feedbackArraySize; i++) {
+    if (!feedbackArray[i].feedbackID.empty() && feedbackArray[i].expertID == expertID) {
+      totalRating += feedbackArray[i].rating;
+      feedbackCount++;
+    }
+  }
+
+  if (feedbackCount > 0) {
+    double averageRating = static_cast<double>(totalRating) / feedbackCount;
+    cout << "\nAverage Rating: " << fixed << setprecision(1) << averageRating << "/5.0 ("
+      << feedbackCount << " review" << (feedbackCount != 1 ? "s" : "") << ")\n";
+  }
+
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
 }
 
 // Miscellaneous Functions
@@ -1727,31 +2145,104 @@ int findExpertIndexByID(ExpertAccount expertAccountArray[], int expertAccountSiz
 {
   string expertID;
   int expertIDIndex = -1;
-  cout << "Enter ExpertID: ";
-  cin >> expertID;
 
-  // Check if expertID is not empty
-  if (!expertID.empty()) {
-    expertID[0] = static_cast<char>(toupper(expertID[0]));
-  }
-  else {
-    cout << "ExpertID cannot be empty.";
-    return -1;
-  }
+  // Input validation loop
+  while (true) {
+    cout << "Enter ExpertID: ";
 
-  bool found = false;
+    // Clear any previous errors
+    cin.clear();
+    cin.ignore(10000, '\n'); 
 
-  for (int i = 0; i < expertAccountSize; i++) {
-    if (expertID == expertAccountArray[i].expertID) {
-      found = true;
-      expertIDIndex = i;
-      break; // Exit loop once found
+    // Get input
+    if (!getline(cin, expertID)) {
+      cout << "Error reading input. Please try again. \n";
+      continue;
     }
-  }
 
-  if (!found) {
-    cout << "ExpertID not found.";
-    return -1;
+    // Remove leading/trailing whitespace
+    size_t start = expertID.find_first_not_of(" \t\n\r");
+    size_t end = expertID.find_last_not_of(" \t\n\r");
+
+    if (start == string::npos || end == string::npos) {
+      cout << "ExpertID cannot be empty. Please try again.\n";
+      continue;
+    }
+
+    expertID = expertID.substr(start, end - start + 1);
+
+    // Check if expertID is not empty
+    if (expertID.empty()) {
+      cout << "ExpertID cannot be empty. Please try again.\n";
+      continue;
+    }
+
+    // String should start with 'E' followed by digits
+    if (expertID[0] != 'E' && expertID[0] != 'e') {
+      cout << "ExpertID must start with 'E'. Please try again. \n";
+      continue;
+    }
+
+    // Check if the rest are digits
+    bool validFormat = true;
+    for (size_t i = 1; i < expertID.length(); i++) {
+      if (!isdigit(expertID[i])) {
+        validFormat = false;
+        break;
+      }
+    }
+
+    if (!validFormat) {
+      cout << "ExpertID format invalid. Should be E followed by numbers (e.g., E01). Please try again. \n";
+      continue;
+    }
+
+    // Convert to uppercase format (E + numbers)
+    expertID[0] = static_cast<char>(toupper(expertID[0]));
+
+
+    // Check if expert ID exists in the system using linear search
+    bool found = false;
+    for (int i = 0; i < expertAccountSize; i++) {
+      if (expertAccountArray[i].expertID == expertID) {
+        found = true;
+        expertIDIndex = i;
+        break;
+      }
+    }
+
+    if (!found) {
+      cout << "ExpertID '" << expertID << "' not found. Available experts:\n";
+
+      // Display available experts
+      bool anyExperts = false;
+      for (int i = 0; i < expertAccountSize; i++) {
+        if (!expertAccountArray[i].expertID.empty()) {
+          cout << " - " << expertAccountArray[i].expertID << ": "
+            << expertAccountArray[i].firstName << " "
+            << expertAccountArray[i].lastName
+            << " (" << expertAccountArray[i].specialization << ")\n";
+          anyExperts = true;
+        }
+      }
+
+      if (!anyExperts) {
+        cout << "No experts available in the system.\n";
+      }
+
+      // Ask if user wants to try again
+      cout << "Would you like to try again? (y/n): ";
+      string tryAgain;
+      getline(cin, tryAgain);
+
+      if (tryAgain.empty() || (tolower(tryAgain[0]) != 'y')) {
+        return -1;
+      }
+
+      continue;
+    }
+
+    break;
   }
 
   return expertIDIndex;
@@ -1794,10 +2285,7 @@ string convertToAmPm(string& time24) {
     hours -= 12;
   }
 
-  // Format the output string without stringstream
   string result = to_string(hours) + ":";
-
-  // Add leading zero to minutes if needed
   if (minutes < 10) {
     result += "0";
   }
@@ -1883,7 +2371,7 @@ void showExpertTimeTable(ExpertAccount expertAccountArray[], int expertIndex)
     cout << setw(10) << (day + 1); // Display day number (1-based)
     for (int hour = 9; hour <= 17; hour++)
     {
-      // Use booked flag to display slot status
+      // Use booked to display slot status
       if (expertAccountArray[expertIndex].timeSlots[day][hour].booked) {
         cout << "[X]   ";
       }
@@ -1896,11 +2384,46 @@ void showExpertTimeTable(ExpertAccount expertAccountArray[], int expertIndex)
 
   cout << "-------------------------------------------------------------------\n\n";
 }
+int getValidatedChoice(int min, int max) {
+  int choice;
+  while (!(cin >> choice) || choice < min || choice > max) {
+    cout << "Invalid input. Please enter a number between "
+      << min << " and " << max << ": ";
+    cin.clear();
+    cin.ignore(10000, '\n');
+  }
+  return choice;
+}
+int getDecemberDay() {
+  int day;
+  while (true) {
+    cout << "Enter day of December (1-31): ";
+    if (cin >> day && day >= 1 && day <= 31) {
+      return day;
+    }
+    cout << "Invalid day. Please enter a valid day in December (1-31).\n";
+    cin.clear();
+    cin.ignore(10000, '\n');
+  }
+}
+string removeSemicolons(string input) {
+  string cleaned = "";
+  for (int i = 0; i < (int)input.length(); i++) {
+    if (input[i] != ';') {
+      cleaned += input[i]; // keep only non-';' characters
+    }
+  }
+  return cleaned;
+}
+
+
+
+
 
 // File Loading Functions
 void loadFromCustomerAccountFile(struct CustomerAccount* account, int arrayPosition) {
   string fileText;
-  ifstream accountFile(RESOURCES_FOLDER + "AccountCustomer.txt");
+  ifstream accountFile("res/AccountCustomer.txt");
 
   int currentLine = 0;
   while (getline(accountFile, fileText)) {
@@ -1945,7 +2468,7 @@ void loadToCustomerAccountStruct(struct CustomerAccount* account, int arraySize)
 }
 void loadFromExpertAccountFile(struct ExpertAccount* account, int lineIndex) {
   string fileText;
-  ifstream expertFile(RESOURCES_FOLDER + "AccountExpert.txt");
+  ifstream expertFile("res/AccountExpert.txt");
   int currentLine = 0;
   while (getline(expertFile, fileText)) {
     if (currentLine == lineIndex && !fileText.empty()) {
@@ -1998,7 +2521,7 @@ void loadToExpertAccountStruct(struct ExpertAccount* account, int arraySize) {
 }
 void loadFromAdminAccountFile(struct AdminAccount* account, int lineIndex) {
   string fileText;
-  ifstream accountFile(RESOURCES_FOLDER + "AccountAdmin.txt");
+  ifstream accountFile("res/AccountAdmin.txt");
 
   int currentLine = 0;
   while (getline(accountFile, fileText)) {
@@ -2035,7 +2558,7 @@ void loadToAdminAccountStruct(struct AdminAccount* account, int arraySize) {
 }
 void loadFromAppointmentFile(struct Appointment* appointment, int lineIndex) {
   string fileText;
-  ifstream appointmentFile(RESOURCES_FOLDER + "Appointment.txt");
+  ifstream appointmentFile("res/Appointment.txt");
   int currentLine = 0;
   while (getline(appointmentFile, fileText)) {
     if (fileText.empty()) {
@@ -2092,7 +2615,7 @@ void loadToAppointmentStruct(struct Appointment* appointment, int arraySize) {
 }
 void loadFromFeedbackFile(struct Feedback* feedback, int lineIndex) {
   string fileText;
-  ifstream feedbackFile(RESOURCES_FOLDER + "Feedback.txt");
+  ifstream feedbackFile("res/Feedback.txt");
   int currentLine = 0;
   while (getline(feedbackFile, fileText)) {
     if (fileText.empty()) {
@@ -2155,7 +2678,7 @@ void loadExpertTimeSlots(Appointment* appointmentArray, int appointmentArraySize
 
 
       int expertAccountIndex = -1; // Initialize to invalid value
-      for (int j = 0; j < expertAccountArraySize; j++)
+      for (int j = 0; j < expertAccountArraySize; j++) // linear search for expert
       {
         if (appointmentArray[i].expertID == expertAccountArray[j].expertID)
         {
