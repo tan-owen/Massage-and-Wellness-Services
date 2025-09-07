@@ -1,9 +1,1 @@
-A1;username=alex;password=alex123;firstName=Alex;lastName=Chen;
-A2;username=sara;password=sara456;firstName=Sara;lastName=Rodriguez;
-A3;username=liam;password=liam_pass;firstName=Liam;lastName=Patel;
-A4;username=maya;password=maya_pw;firstName=Maya;lastName=Singh;
-A5;username=noah;password=noah789;firstName=Noah;lastName=Kim;
-A6;username=isabella;password=bella_pass;firstName=Isabella;lastName=Lee;
-A7;username=james;password=james_pw;firstName=James;lastName=Lopez;
-A8;username=chloe;password=chloe_456;firstName=Chloe;lastName=Hernandez;
-A9;username=benjamin;password=ben_pass;firstName=Benjamin;lastName=Wang;
+A1;username=admin_user;password=admin123;firstName=Admin;lastName=User;

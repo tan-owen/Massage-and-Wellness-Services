@@ -1,2 +1,3 @@
-E01;username=dashquack;password=dashquack123;firstName=John;lastName=Smith;specialization=Massage Therapy;workStartTime=0900;workEndTime=1700;
-E02;username=dashquack1;password=dashquack123;firstName=user;lastName=2;specialization=Massage Therapy;workStartTime=0900;workEndTime=1700;
+E01;username=aina_tan;password=aina123;firstName=Aina;lastName=Tan;specialization=Massage Therapy;workStartTime=0900;workEndTime=1700;
+E02;username=bryan_lee;password=bryan456;firstName=Bryan;lastName=Lee;specialization=Aromatherapy;workStartTime=1000;workEndTime=1800;
+E03;username=lisa_wong;password=lisa789;firstName=Lisa;lastName=Wong;specialization=Reflexology;workStartTime=0800;workEndTime=1600;

@@ -1,1 +1,8 @@
-C001;username=peter;password=peter_pw;firstName=Peter;lastName=Quinn;
+C001;username=siti_aina;password=siti123;firstName=Siti;lastName=Nor Aina;
+C002;username=amir_khan;password=amir456;firstName=Amir;lastName=Khan;
+C003;username=lim_wei;password=lim789;firstName=Lim;lastName=Wei;
+C004;username=priya_sharma;password=priya012;firstName=Priya;lastName=Sharma;
+C005;username=ali_ahmad;password=ali345;firstName=Ali;lastName=Ahmad;
+C006;username=mei_ling;password=mei678;firstName=Mei;lastName=Ling;
+C007;username=john_doe;password=john901;firstName=John;lastName=Doe;
+C008;username=sarah_tan;password=sarah234;firstName=Sarah;lastName=Tan;
