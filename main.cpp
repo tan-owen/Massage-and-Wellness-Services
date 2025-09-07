@@ -696,6 +696,7 @@ void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount exper
   int serviceChoice = getValidatedChoice(1,2);
 
 
+
   string serviceType;
   int serviceTypeHours = 0;
   double subtotal = 0.0;
@@ -1035,6 +1036,173 @@ void submitFeedback(int customerIndex, CustomerAccount customerAccountArray[], i
     cout << "Invalid customer session.\n";
     return;
   }
+
+  string customerID = customerAccountArray[customerIndex].customerID;
+
+  cout << "===== FEEDBACK SUBMISSION =====\n";
+  cout << "Welcome, " << customerAccountArray[customerIndex].firstName << "!\n";
+
+  // Display customer's appointments in table format
+  cout << "\nYour Appointments:\n";
+  cout << "=============================================================================================================\n";
+  cout << left << setw(4) << "No."
+    << setw(15) << "Appointment ID"
+    << setw(20) << "Service"
+    << setw(20) << "Expert"
+    << setw(12) << "Date"
+    << setw(20) << "Time" << endl;
+  cout << "=============================================================================================================\n";
+
+  int appointmentCount = 0;
+
+  // First pass: count appointments and display them in table
+  for (int i = 0; i < appointmentArraySize; i++) // linear search
+  {
+    if (appointmentArray[i].appointmentID != "" &&
+      appointmentArray[i].customerID == customerID) {
+
+      // Find expert name
+      string expertName = "Unknown";
+      for (int j = 0; j < expertAccountArraySize; j++) // linear search
+      {
+        if (expertAccountArray[j].expertID == appointmentArray[i].expertID) {
+          expertName = expertAccountArray[j].firstName + " " + expertAccountArray[j].lastName;
+          // Truncate if too long
+          if (expertName.length() > 18) expertName = expertName.substr(0, 15) + "...";
+          break;
+        }
+      }
+
+      // Format date (Dec 12)
+      string dateStr = appointmentArray[i].appointmentDate;
+      string formattedDate = "Dec " + dateStr.substr(6, 2);
+
+      // Format time
+      string startTime = convertToAmPm(appointmentArray[i].appointmentTimeSlot.startTime);
+      string endTime = convertToAmPm(appointmentArray[i].appointmentTimeSlot.endTime);
+      string formattedTime = startTime + "-" + endTime;
+
+      // Display in table row
+      cout << left << setw(4) << (appointmentCount + 1)
+        << setw(15) << appointmentArray[i].appointmentID
+        << setw(20) << (appointmentArray[i].serviceType.length() > 18 ?
+          appointmentArray[i].serviceType.substr(0, 15) + "..." :
+          appointmentArray[i].serviceType)
+        << setw(20) << expertName
+        << setw(12) << formattedDate
+        << setw(20) << formattedTime << endl;
+
+      appointmentCount++;
+    }
+  }
+
+  cout << "=============================================================================================================\n";
+
+  if (appointmentCount == 0) {
+    cout << "No appointments found for feedback submission.\n";
+    return;
+  }
+
+  // Select appointment for feedback
+  int selectedAppointment;
+  cout << "\nSelect an appointment to provide feedback (1-" << appointmentCount << "): ";
+  cin >> selectedAppointment;
+
+  if (selectedAppointment < 1 || selectedAppointment > appointmentCount) {
+    cout << "Invalid selection.\n";
+    return;
+  }
+
+  // Second pass: find the selected appointment
+  int currentIndex = 0;
+  int selectedApptIndex = -1;
+  for (int i = 0; i < appointmentArraySize; i++) {
+    if (appointmentArray[i].appointmentID != "" &&
+      appointmentArray[i].customerID == customerID) {
+
+      currentIndex++;
+      if (currentIndex == selectedAppointment) {
+        selectedApptIndex = i;
+        break;
+      }
+    }
+  }
+
+  if (selectedApptIndex == -1) {
+    cout << "Error: Could not find selected appointment.\n";
+    return;
+  }
+
+  Appointment selectedAppt = appointmentArray[selectedApptIndex];
+
+  // Check if feedback already exists for this appointment
+  ifstream feedbackFile("res/feedback.txt");
+  string line;
+  bool feedbackExists = false;
+
+  while (getline(feedbackFile, line)) {
+    if (line.find(selectedAppt.appointmentID) != string::npos) {
+      feedbackExists = true;
+      break;
+    }
+  }
+  feedbackFile.close();
+
+  if (feedbackExists) {
+    cout << "Feedback already submitted for this appointment.\n";
+    return;
+  }
+
+  // Get feedback details
+  cin.ignore(); // Clear input buffer
+  string comment;
+  int rating;
+
+  cout << "\nPlease provide your feedback for " << selectedAppt.serviceType << " service:\n";
+  cout << "Enter your comment: ";
+  getline(cin, comment);
+
+  size_t pos;
+  while ((pos = comment.find(';')) != string::npos) {
+    comment.replace(pos, 1, " ");
+  }
+
+  cout << "Enter rating (1-5 stars): ";
+  cin >> rating;
+
+  while (rating < 1 || rating > 5) {
+    cout << "Invalid rating. Please enter a value between 1 and 5: ";
+    cin >> rating;
+  }
+
+  // Generate Feedback ID
+  int newFeedbackNum = 1;
+  ifstream countFile("res/feedback.txt");
+  while (getline(countFile, line)) {
+    if (!line.empty()) newFeedbackNum++;
+  }
+  countFile.close();
+
+  string feedbackID = "F" + string(3 - to_string(newFeedbackNum).length(), '0') + to_string(newFeedbackNum);
+
+  // Save feedback to file
+  ofstream outFile("res/feedback.txt", ios::app);
+  if (outFile.is_open()) {
+    outFile << feedbackID << ";"
+      << customerID << ";"
+      << selectedAppt.appointmentID << ";"
+      << selectedAppt.expertID << ";"
+      << "comment=" << removeSemicolons(comment) << ";"
+      << "service=" << rating << ";\n";
+    outFile.close();
+
+    cout << "\nThank you for your feedback!\n";
+    cout << "Feedback ID: " << feedbackID << " has been recorded.\n";
+  }
+  else {
+    cout << "Error: Could not open feedback file for writing.\n";
+  }
+}
 
   string customerID = customerAccountArray[customerIndex].customerID;
 
