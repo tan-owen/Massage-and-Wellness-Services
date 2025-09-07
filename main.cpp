@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cctype>
 #include <iomanip>
+#include <cstdlib>
 using namespace std;
 
 // Customer Account File Format:
@@ -114,7 +115,7 @@ string removeSemicolons(string input);
 string customerLogin(CustomerAccount customerAccountArray[], int customerArraySize);
 void customerRegistration(CustomerAccount customerAccountArray[], int customerAccountArraySize);
 void viewBeautyCentreInformation();
-void viewServicesAndExperts(ExpertAccount expertAccountArray[], int expertAccountArraySize);
+int viewServicesAndExperts(ExpertAccount expertAccountArray[], int expertAccountArraySize);
 void checkAppointmentAvailability(ExpertAccount expertAccountArray[], int expertArraySize);
 void viewBooking(Appointment appointmentArray[], int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountSize, int customerIndex, CustomerAccount customerAccountArray[]);
 void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, int customerArrayIndex);
@@ -179,7 +180,7 @@ int main()
 
   // Display welcome message
   cout << "==================================\n";
-  cout << "  SERENITY WELLNESS CENTER\n";
+  cout << "  FEEL GOOD WELLNESS CENTER\n";
   cout << "  Massage & Therapy Booking System\n";
   cout << "==================================\n\n";
 
@@ -192,16 +193,19 @@ int main()
 
     switch (choice) {
     case 1:
+      system("cls");
       customerMenu(customerAccountArray, customerAccountArraySize, expertAccountArray, expertAccountArraySize, appointmentArray, appointmentArraySize);
       break;
     case 2:
+      system("cls");
       expertMenu(expertAccountArray, expertAccountArraySize, appointmentArray, appointmentArraySize, customerAccountArray, customerAccountArraySize, feedbackArray, feedbackArraySize);
       break;
     case 3:
+      system("cls");
       adminMenu(adminAccountArray, adminAccountArraySize, expertAccountArray, expertAccountArraySize, appointmentArray, appointmentArraySize, customerAccountArray, customerAccountArraySize, feedbackArray, feedbackArraySize);
       break;
     case 4:
-      cout << "Thank you for using Serenity Wellness Center System!\n";
+      cout << "Thank you for using Feel Good Wellness Center System!\n";
       break;
     default:
       cout << "Invalid choice. Please try again.\n";
@@ -213,26 +217,27 @@ int main()
 // Menu Functions
 void displayMainMenu() {
   cout << "===== MAIN MENU =====\n";
-  cout << "1. Customer Menu\n";
-  cout << "2. Expert Menu\n";
-  cout << "3. Admin Menu\n";
+  cout << "1. Customer Mode\n";
+  cout << "2. Expert Mode\n";
+  cout << "3. Admin Mode\n";
   cout << "4. Exit\n";
 }
 void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize) {
+  
   cin.ignore(10000, '\n'); // Clear input buffer
 
   int customerIndex = -1;
   string customerID;
   int choice;
 
-  cout << "\n===== CUSTOMER PORTAL =====\n";
+  cout << "===== CUSTOMER MODE =====\n";
   cout << "1. Login\n";
   cout << "2. Register\n";
   cout << "3. Back to Main Menu\n";
   cout << "Enter your choice: ";
   choice = getValidatedChoice(1, 3);
-
-  if (choice == 1) {
+  switch (choice) {
+  case 1: {
     customerID = customerLogin(customerAccountArray, customerAccountArraySize);
     if (customerID == "") return;
 
@@ -243,15 +248,19 @@ void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArr
         break;
       }
     }
+    break;
   }
-  else if (choice == 2) {
+
+  case 2: {
     customerRegistration(customerAccountArray, customerAccountArraySize);
     return;
   }
-  else if (choice == 3) {
+
+  case 3:
+    system("cls");
     return;
-  }
-  else {
+
+  default:
     cout << "Invalid choice.\n";
     return;
   }
@@ -259,7 +268,7 @@ void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArr
   // Customer submenu
   int customerChoice;
   do {
-    cout << "\n===== CUSTOMER DASHBOARD =====\n";
+    cout << "===== CUSTOMER DASHBOARD =====\n";
     cout << "Welcome, " << customerAccountArray[customerIndex].firstName << "!\n";
     cout << "1. View Beauty Centre Information\n";
     cout << "2. View Services and Experts\n";
@@ -275,26 +284,33 @@ void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArr
     switch (customerChoice) {
     case 1:
       viewBeautyCentreInformation();
+      system("cls");
       break;
     case 2:
       viewServicesAndExperts(expertAccountArray, expertAccountArraySize);
+      system("cls");
       break;
     case 3:
       checkAppointmentAvailability(expertAccountArray, expertAccountArraySize);
+      system("cls");
       break;
     case 4:
       bookAppointment(customerAccountArray, expertAccountArray, expertAccountArraySize,
         appointmentArray, appointmentArraySize, customerIndex);
+      system("cls");
       break;
     case 5:
       makePayment(appointmentArray, appointmentArraySize, customerAccountArray, customerIndex);
+      system("cls");
       break;
     case 6:
       viewBooking(appointmentArray, appointmentArraySize, expertAccountArray,
         expertAccountArraySize, customerIndex, customerAccountArray);
+      system("cls");
       break;
     case 7:  
       submitFeedback(customerIndex, customerAccountArray, customerAccountArraySize, appointmentArray, appointmentArraySize, expertAccountArray, expertAccountArraySize);
+      system("cls");
       break;
     case 8:
       cout << "Logging out...\n\n\n";
@@ -306,7 +322,7 @@ void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArr
 }
 void expertMenu(ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize, Feedback feedbackArray[], int feedbackArraySize) {
   cin.ignore(10000, '\n'); // Clear input buffer
-
+  cout << "===== EXPERT LOGIN =====\n";
   int expertIndex = expertLogin(expertAccountArray, expertAccountArraySize);
   if (expertIndex == -1) {
     return;
@@ -327,22 +343,26 @@ void expertMenu(ExpertAccount expertAccountArray[], int expertAccountArraySize, 
     switch (expertChoice) {
     case 1:
       viewIndividualSchedule(expertAccountArray, appointmentArray, appointmentArraySize, expertIndex);
+      system("cls");
       break;
     case 2:
       viewAssignedCustomerList(customerAccountArray, customerAccountArraySize,
         appointmentArray, appointmentArraySize,
         expertAccountArray, expertIndex);
+      system("cls");
       break;
     case 3:
       viewEarningsBonusEntitlement(appointmentArray, appointmentArraySize,
         expertAccountArray, expertAccountArraySize,
         expertIndex);
+      system("cls");
       break;
     case 4:  // Add this as a new option
       viewExpertFeedback(expertAccountArray, expertAccountArraySize,
         feedbackArray, feedbackArraySize,
         customerAccountArray, customerAccountArraySize,
         expertIndex);
+      system("cls");
       break;
     case 5:
       cout << "Logging out...\n\n\n";
@@ -354,6 +374,7 @@ void expertMenu(ExpertAccount expertAccountArray[], int expertAccountArraySize, 
 }
 void adminMenu(AdminAccount adminAccountArray[], int adminAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize, Feedback feedbackArray[], int feedbackArraySize) {
   cin.ignore(10000, '\n'); // Clear input buffer
+  cout << "===== ADMIN LOGIN =====\n";
   string adminID = adminLogin(adminAccountArray, adminAccountArraySize);
   if (adminID == "") return;
   int adminChoice = 0;
@@ -373,24 +394,31 @@ void adminMenu(AdminAccount adminAccountArray[], int adminAccountArraySize, Expe
     switch (adminChoice) {
     case 1:
       viewOverallSchedule(expertAccountArray, expertAccountArraySize, appointmentArray, appointmentArraySize);
+      system("cls");
       break;
     case 2:
       viewIndividualExpertSchedule(expertAccountArray, expertAccountArraySize,appointmentArray, appointmentArraySize);
+      system("cls");
       break;
     case 3:
       viewCustomerList(customerAccountArray, customerAccountArraySize, expertAccountArray, expertAccountArraySize, appointmentArray, appointmentArraySize);
+      system("cls");
       break;
     case 4:
       generateSalesReport(appointmentArray, appointmentArraySize, expertAccountArray, expertAccountArraySize);
+      system("cls");
       break;
     case 5:
       viewExpertBonusEntitlement(appointmentArray, appointmentArraySize, expertAccountArray, expertAccountArraySize);
+      system("cls");
       break;
     case 6: 
       viewAllFeedback(feedbackArray, feedbackArraySize, customerAccountArray, customerAccountArraySize, expertAccountArray, expertAccountArraySize);
+      system("cls");
       break;
     case 7:  
       viewFeedbackByExpert(feedbackArray, feedbackArraySize, customerAccountArray, customerAccountArraySize, expertAccountArray, expertAccountArraySize);
+      system("cls");
       break;
     case 8:
       cout << "Logging out...\n\n\n";
@@ -412,7 +440,7 @@ string customerLogin(CustomerAccount customerAccountArray[], int customerArraySi
   // Validate credentials using linear search
   for (int i = 0; i < customerArraySize; i++) {
     if (customerAccountArray[i].username == username && customerAccountArray[i].password == password) {
-      cout << "Login successful. Welcome, " << customerAccountArray[i].firstName << "!\n";
+      cout << "Login successful. Welcome, " << customerAccountArray[i].firstName << "!\n\n";
       return customerAccountArray[i].customerID;
     }
 
@@ -490,7 +518,7 @@ void customerRegistration(CustomerAccount customerAccountArray[], int customerAc
 }
 void viewBeautyCentreInformation() {
   cout << "==================================\n\n";
-  cout << "Serenity Massage & Wellness Centre\n\n";
+  cout << "Feel Good Massage & Wellness Centre\n\n";
   cout << "==================================\n\n\n";
 
 
@@ -511,7 +539,7 @@ void viewBeautyCentreInformation() {
 
   cout << "CONTACT:\n";
   cout << " Phone: +60 12-345 6789\n";
-  cout << " Email: hello@serenitywellness.my\n";
+  cout << " Email: hello@feelgoodwellness.my\n";
   cout << " Address: 12 Jalan Genting, Kuala Lumpur, Malaysia\n\n";
 
   cout << "Available Services:\n";
@@ -523,7 +551,7 @@ void viewBeautyCentreInformation() {
   cin.ignore();
   cin.get();
 };
-void viewServicesAndExperts(ExpertAccount expertAccountArray[], int expertAccountArraySize) {
+int viewServicesAndExperts(ExpertAccount expertAccountArray[], int expertAccountArraySize) {
 
   string selectedService = serviceSelectionValidation();
 
@@ -550,15 +578,23 @@ void viewServicesAndExperts(ExpertAccount expertAccountArray[], int expertAccoun
       found = true;
     }
   }
+  if (!found) {
+    cout << "No experts available for this service.\n\n";
+  }
   cout << "\nPress enter to continue...";
   cin.ignore();
   cin.get();
-  if (!found) {
-    cout << "No experts available for this service.\n";
-  }
+  if (found)
+    return 0;
+  else
+    return -1;
 }
 void checkAppointmentAvailability(ExpertAccount expertAccountArray[], int expertArraySize) {
-
+  int found = viewServicesAndExperts(expertAccountArray, expertArraySize);
+  if (found == -1)
+  {
+      return;
+  }
   int expertIDIndex = findExpertIndexByID(expertAccountArray, expertArraySize);
   if (expertIDIndex == -1)
   {
@@ -640,7 +676,11 @@ void checkAppointmentAvailability(ExpertAccount expertAccountArray[], int expert
   cin.get();
 }
 void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, int customerArrayIndex) {
-  viewServicesAndExperts(expertAccountArray, expertAccountArraySize);
+  int found = viewServicesAndExperts(expertAccountArray, expertAccountArraySize);
+  if (found == -1)
+  {
+    return;
+  }
   // Get expert selection
   int expertIDIndex = findExpertIndexByID(expertAccountArray, expertAccountArraySize);
   if (expertIDIndex == -1) {
@@ -656,18 +696,19 @@ void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount exper
   int serviceChoice = getValidatedChoice(1,2);
 
 
+
   string serviceType;
   int serviceTypeHours = 0;
   double subtotal = 0.0;
   if (serviceChoice == 1) {
     serviceType = "Treatment";
     serviceTypeHours = 3;
-    subtotal = 500.0;   // example base price
+    subtotal = 500.0;   
   }
   else {
     serviceType = "Consultation";
     serviceTypeHours = 1;
-    subtotal = 85.50;   // example base price
+    subtotal = 100; 
   }
 
   // Show expert schedule
@@ -675,17 +716,37 @@ void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount exper
 
   // Get day and time
   int dayInt = 0, timeInt = 0;
-  cout << "Enter day (1-31): ";
   dayInt = getDecemberDay();
-  cout << "Enter start hour within 9AM to 5PM (9-17): ";
-  if (!(cin >> timeInt) || timeInt < 9 || timeInt > 17) {
-    cout << "Invalid time. Returning...\n";
-    return;
+
+  while (true) {
+    cout << "Enter start hour within 9AM to 4PM (9 to 16, enter 0 to exit): ";
+
+    if (!(cin >> timeInt)) {
+      cin.clear();
+      cin.ignore(100000, '\n'); // discard invalid input
+      cout << "Invalid input. Please enter a number.\n";
+      continue;
+    } 
+    else if (timeInt == 0)
+    {
+      return;
+    }
+    else if (timeInt < 9 || timeInt > 17) {
+      cout << "Invalid time. Please enter between 9 and 17.\n";
+      continue;
+    }
+    else if (timeInt + serviceTypeHours > 17) {
+      cout << "Service does not fit within working hours. Please choose an earlier time.\n";
+      continue;
+    }
+
+    // break out of loop if valid
+    break;
   }
-  if (timeInt + serviceTypeHours > 17) {
-    cout << "Service does not fit within working hours. Returning...\n";
-    return;
-  }
+  cout << "Booking Success! Please procide to the payment page.";
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
 
   // Check availability
   int totalHoursWorkedDay = 0;
@@ -820,7 +881,7 @@ void makePayment(Appointment appointmentArray[], int appointmentArraySize, Custo
   }
 
   int choice;
-  cout << "\nSelect an appointment to pay (1-" << unpaidCount << "): ";
+  cout << "\nSelect an appointment to pay: ";
   cin >> choice;
 
   if (choice < 1 || choice > unpaidCount) {
@@ -887,6 +948,11 @@ void makePayment(Appointment appointmentArray[], int appointmentArraySize, Custo
 
   cout << "Payment successful for appointment "
     << appointmentArray[selectedIndex].appointmentID << "!\n";
+
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
+
 }
 void viewBooking(Appointment appointmentArray[], int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountSize, int customerIndex, CustomerAccount customerAccountArray[])
 {
@@ -1138,6 +1204,173 @@ void submitFeedback(int customerIndex, CustomerAccount customerAccountArray[], i
   }
 }
 
+  string customerID = customerAccountArray[customerIndex].customerID;
+
+  cout << "===== FEEDBACK SUBMISSION =====\n";
+  cout << "Welcome, " << customerAccountArray[customerIndex].firstName << "!\n";
+
+  // Display customer's appointments in table format
+  cout << "\nYour Appointments:\n";
+  cout << "=============================================================================================================\n";
+  cout << left << setw(4) << "No."
+    << setw(15) << "Appointment ID"
+    << setw(20) << "Service"
+    << setw(20) << "Expert"
+    << setw(12) << "Date"
+    << setw(20) << "Time" << endl;
+  cout << "=============================================================================================================\n";
+
+  int appointmentCount = 0;
+
+  // First pass: count appointments and display them in table
+  for (int i = 0; i < appointmentArraySize; i++) // linear search
+  {
+    if (appointmentArray[i].appointmentID != "" &&
+      appointmentArray[i].customerID == customerID) {
+
+      // Find expert name
+      string expertName = "Unknown";
+      for (int j = 0; j < expertAccountArraySize; j++) // linear search
+      {
+        if (expertAccountArray[j].expertID == appointmentArray[i].expertID) {
+          expertName = expertAccountArray[j].firstName + " " + expertAccountArray[j].lastName;
+          // Truncate if too long
+          if (expertName.length() > 18) expertName = expertName.substr(0, 15) + "...";
+          break;
+        }
+      }
+
+      // Format date (Dec 12)
+      string dateStr = appointmentArray[i].appointmentDate;
+      string formattedDate = "Dec " + dateStr.substr(6, 2);
+
+      // Format time
+      string startTime = convertToAmPm(appointmentArray[i].appointmentTimeSlot.startTime);
+      string endTime = convertToAmPm(appointmentArray[i].appointmentTimeSlot.endTime);
+      string formattedTime = startTime + "-" + endTime;
+
+      // Display in table row
+      cout << left << setw(4) << (appointmentCount + 1)
+        << setw(15) << appointmentArray[i].appointmentID
+        << setw(20) << (appointmentArray[i].serviceType.length() > 18 ?
+          appointmentArray[i].serviceType.substr(0, 15) + "..." :
+          appointmentArray[i].serviceType)
+        << setw(20) << expertName
+        << setw(12) << formattedDate
+        << setw(20) << formattedTime << endl;
+
+      appointmentCount++;
+    }
+  }
+
+  cout << "=============================================================================================================\n";
+
+  if (appointmentCount == 0) {
+    cout << "No appointments found for feedback submission.\n";
+    return;
+  }
+
+  // Select appointment for feedback
+  int selectedAppointment;
+  cout << "\nSelect an appointment to provide feedback (1-" << appointmentCount << "): ";
+  cin >> selectedAppointment;
+
+  if (selectedAppointment < 1 || selectedAppointment > appointmentCount) {
+    cout << "Invalid selection.\n";
+    return;
+  }
+
+  // Second pass: find the selected appointment
+  int currentIndex = 0;
+  int selectedApptIndex = -1;
+  for (int i = 0; i < appointmentArraySize; i++) {
+    if (appointmentArray[i].appointmentID != "" &&
+      appointmentArray[i].customerID == customerID) {
+
+      currentIndex++;
+      if (currentIndex == selectedAppointment) {
+        selectedApptIndex = i;
+        break;
+      }
+    }
+  }
+
+  if (selectedApptIndex == -1) {
+    cout << "Error: Could not find selected appointment.\n";
+    return;
+  }
+
+  Appointment selectedAppt = appointmentArray[selectedApptIndex];
+
+  // Check if feedback already exists for this appointment
+  ifstream feedbackFile("res/feedback.txt");
+  string line;
+  bool feedbackExists = false;
+
+  while (getline(feedbackFile, line)) {
+    if (line.find(selectedAppt.appointmentID) != string::npos) {
+      feedbackExists = true;
+      break;
+    }
+  }
+  feedbackFile.close();
+
+  if (feedbackExists) {
+    cout << "Feedback already submitted for this appointment.\n";
+    return;
+  }
+
+  // Get feedback details
+  cin.ignore(); // Clear input buffer
+  string comment;
+  int rating;
+
+  cout << "\nPlease provide your feedback for " << selectedAppt.serviceType << " service:\n";
+  cout << "Enter your comment: ";
+  getline(cin, comment);
+
+  size_t pos;
+  while ((pos = comment.find(';')) != string::npos) {
+    comment.replace(pos, 1, " ");
+  }
+
+  cout << "Enter rating (1-5 stars): ";
+  cin >> rating;
+
+  while (rating < 1 || rating > 5) {
+    cout << "Invalid rating. Please enter a value between 1 and 5: ";
+    cin >> rating;
+  }
+
+  // Generate Feedback ID
+  int newFeedbackNum = 1;
+  ifstream countFile("res/feedback.txt");
+  while (getline(countFile, line)) {
+    if (!line.empty()) newFeedbackNum++;
+  }
+  countFile.close();
+
+  string feedbackID = "F" + string(3 - to_string(newFeedbackNum).length(), '0') + to_string(newFeedbackNum);
+
+  // Save feedback to file
+  ofstream outFile("res/feedback.txt", ios::app);
+  if (outFile.is_open()) {
+    outFile << feedbackID << ";"
+      << customerID << ";"
+      << selectedAppt.appointmentID << ";"
+      << selectedAppt.expertID << ";"
+      << "comment=" << removeSemicolons(comment) << ";"
+      << "service=" << rating << ";\n";
+    outFile.close();
+
+    cout << "\nThank you for your feedback!\n";
+    cout << "Feedback ID: " << feedbackID << " has been recorded.\n";
+  }
+  else {
+    cout << "Error: Could not open feedback file for writing.\n";
+  }
+}
+
 // Admin Functions
 string adminLogin(AdminAccount adminAccountArray[], int adminArraySize) {
   string username, password, adminID;
@@ -1149,7 +1382,7 @@ string adminLogin(AdminAccount adminAccountArray[], int adminArraySize) {
   // Validate credentials using linear search
   for (int i = 0; i < adminArraySize; i++) {
     if (adminAccountArray[i].username == username && adminAccountArray[i].password == password) {
-      cout << "Login successful. Welcome, " << adminAccountArray[i].firstName << "!\n";
+      cout << "Login successful. Welcome, " << adminAccountArray[i].firstName << "!\n\n";
       return adminAccountArray[i].adminID;
     }
 
@@ -1741,7 +1974,7 @@ int expertLogin(ExpertAccount expertAccountArray[], int expertArraySize) {
   // Validate credentials using linear search
   for (int i = 0; i < expertArraySize; i++) {
     if (expertAccountArray[i].username == username && expertAccountArray[i].password == password) {
-      cout << "Login successful. Welcome, " << expertAccountArray[i].firstName << "!\n";
+      cout << "Login successful. Welcome, " << expertAccountArray[i].firstName << "!\n\n";
       return i;
     }
 
@@ -1930,14 +2163,14 @@ void viewIndividualSchedule(ExpertAccount expertAccountArray[], Appointment appo
       cout << "Expert: " << expertAccountArray[expertIndex].firstName << " "
         << expertAccountArray[expertIndex].lastName << "\n";
       cout << "Week " << weekInput << " (Dec " << startDay << " - " << endDay << ")\n";
-      cout << "------------------------------------------------------------------\n";
+      cout << "----------------------------------------------------------------------------\n";
       cout << left << setw(4) << "No."
         << setw(12) << "Date"
         << setw(12) << right << "Start Time"
         << setw(12) << "End Time"
         << setw(20) << "Service Type"
         << setw(15) << "Customer ID" << "\n";
-      cout << "------------------------------------------------------------------\n";
+      cout << "----------------------------------------------------------------------------\n";
 
       int indexNumber = 1;
       bool found = false;
@@ -2150,13 +2383,14 @@ int findExpertIndexByID(ExpertAccount expertAccountArray[], int expertAccountSiz
   while (true) {
     cout << "Enter ExpertID: ";
 
-    // Clear any previous errors
-    cin.clear();
-    cin.ignore(10000, '\n'); 
 
     // Get input
     if (!getline(cin, expertID)) {
       cout << "Error reading input. Please try again. \n";
+      // Clear any previous errors
+      cin.clear();
+      cin.ignore(10000, '\n');
+
       continue;
     }
 
@@ -2354,14 +2588,17 @@ void showExpertTimeTable(ExpertAccount expertAccountArray[], int expertIndex)
   }
 
   cout << "ExpertID: " << expertAccountArray[expertIndex].expertID << "\n";
-  cout << "Name: " << expertAccountArray[expertIndex].firstName << " " << expertAccountArray[expertIndex].lastName
+  cout << "Name: " << expertAccountArray[expertIndex].firstName << " "
+    << expertAccountArray[expertIndex].lastName
     << " (" << expertAccountArray[expertIndex].specialization << ")\n";
   cout << "-------------------------------------------------------------------\n";
 
-  // Header: Day/Time and hours 9AM - 5PM
+  // Header: Day/Time and hours 09:00 - 17:00
   cout << setw(10) << left << "Day/Time";
-  for (int hour = 9; hour <= 17; hour++) {
-    cout << setw(6) << left << convertToAmPm(hour);
+  for (int hour = 9; hour <= 16; hour++) {
+    cout << setw(6) << left
+      << (hour < 10 ? "0" + to_string(hour) + ":00"
+        : to_string(hour) + ":00");
   }
   cout << "\n";
 
@@ -2369,9 +2606,8 @@ void showExpertTimeTable(ExpertAccount expertAccountArray[], int expertIndex)
   for (int day = 0; day < 31; day++)
   {
     cout << setw(10) << (day + 1); // Display day number (1-based)
-    for (int hour = 9; hour <= 17; hour++)
+    for (int hour = 9; hour <= 16; hour++)
     {
-      // Use booked to display slot status
       if (expertAccountArray[expertIndex].timeSlots[day][hour].booked) {
         cout << "[X]   ";
       }
@@ -2384,6 +2620,7 @@ void showExpertTimeTable(ExpertAccount expertAccountArray[], int expertIndex)
 
   cout << "-------------------------------------------------------------------\n\n";
 }
+
 int getValidatedChoice(int min, int max) {
   int choice;
   while (!(cin >> choice) || choice < min || choice > max) {
