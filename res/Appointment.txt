@@ -20,3 +20,4 @@ AP019;C003;E02;serviceType=Consultation;appointmentStartTime=1500;appointmentEnd
 AP020;C004;E03;serviceType=Treatment;appointmentStartTime=1300;appointmentEndTime=1600;appointmentDate=20251229;totalPaid=550.00;serviceFee=50.00;paymentStatus=1;
 AP021;C001;E01;serviceType=Treatment;appointmentStartTime=0900;appointmentEndTime=1200;appointmentDate=20251231;totalPaid=550.00;serviceFee=50.00;paymentStatus=1;
 AP022;C001;E02;serviceType=Consultation;appointmentStartTime=0900;appointmentEndTime=1000;appointmentDate=20251201;totalPaid=110.00;serviceFee=10.00;paymentStatus=0;
+AP023;C010;E01;serviceType=Treatment;appointmentStartTime=1000;appointmentEndTime=1300;appointmentDate=20251217;totalPaid=550.00;serviceFee=50.00;paymentStatus=0;
