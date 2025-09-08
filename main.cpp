@@ -287,6 +287,9 @@ void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArr
       break;
     case 2:
       viewServicesAndExperts(expertAccountArray, expertAccountArraySize);
+      cout << "Press enter to continue...";
+      cin.ignore();
+      cin.get();
       system("cls");
       break;
     case 3:
@@ -463,25 +466,89 @@ void customerRegistration(CustomerAccount customerAccountArray[], int customerAc
 
   // Input details
   string username, password, firstName, lastName;
-  cout << "Enter Username: ";
-  cin >> username;
 
-  // Check for duplicate username using linear search
-  for (int i = 0; i < customerAccountArraySize; i++) // linear search
-  {
-    if (!customerAccountArray[i].customerID.empty() &&
-      customerAccountArray[i].username == username) {
+  // Clear the input buffer
+  cin.ignore();
+
+  // Get username with validation
+  while (true) {
+    cout << "Enter Username: ";
+    getline(cin, username);
+
+    // Check for semicolon in username
+    if (username.find(';') != string::npos) {
+      cout << "Error: Username cannot contain semicolons (;). Please choose another.\n";
+      continue;
+    }
+    if (username.find(' ') != string::npos) {
+      cout << "Error: Username cannot contain spaces. Please choose another.\n";
+      continue;
+    }
+
+    // Check for duplicate username using linear search
+    bool usernameExists = false;
+    for (int i = 0; i < customerAccountArraySize; i++) {
+      if (!customerAccountArray[i].customerID.empty() &&
+        customerAccountArray[i].username == username) {
+        usernameExists = true;
+        break;
+      }
+    }
+
+    if (usernameExists) {
       cout << "Error: Username already exists. Please choose another.\n";
-      return;
+    }
+    else {
+      break; // Valid username
     }
   }
 
-  cout << "Enter Password: ";
-  cin >> password;
-  cout << "Enter First Name: ";
-  cin >> firstName;
-  cout << "Enter Last Name: ";
-  cin >> lastName;
+  // Get password with validation
+  while (true) {
+    cout << "Enter Password: ";
+    getline(cin, password);
+
+    // Check for semicolon in password
+    if (password.find(';') != string::npos) {
+      cout << "Error: Password cannot contain semicolons (;). Please choose another.\n";
+      continue;
+    }
+    if (username.find(' ') != string::npos) {
+      cout << "Error: Username cannot contain spaces. Please choose another.\n";
+      continue;
+    }
+
+    break; // Valid password
+  }
+
+  // Get first name with validation
+  while (true) {
+    cout << "Enter First Name: ";
+    getline(cin, firstName);
+
+    // Check for semicolon in first name
+    if (firstName.find(';') != string::npos) {
+      cout << "Error: First name cannot contain semicolons (;). Please enter again.\n";
+      continue;
+    }
+
+
+    break; // Valid first name
+  }
+
+  // Get last name with validation
+  while (true) {
+    cout << "Enter Last Name: ";
+    getline(cin, lastName);
+
+    // Check for semicolon in last name
+    if (lastName.find(';') != string::npos) {
+      cout << "Error: Last name cannot contain semicolons (;). Please enter again.\n";
+      continue;
+    }
+
+    break; // Valid last name
+  }
 
   // Generate CustomerID (C001, C002, etc.)
   int newCustNum = 1;
@@ -514,6 +581,11 @@ void customerRegistration(CustomerAccount customerAccountArray[], int customerAc
   }
 
   cout << "Registration successful! Your Customer ID is: " << customerID << endl;
+
+  // Clear input buffer and wait for user to continue
+  cout << "Press enter to continue...";
+  cin.ignore();
+  cin.get();
 }
 void viewBeautyCentreInformation() {
   cout << "==================================\n\n";
@@ -580,13 +652,15 @@ int viewServicesAndExperts(ExpertAccount expertAccountArray[], int expertAccount
   if (!found) {
     cout << "No experts available for this service.\n\n";
   }
-  cout << "\nPress enter to continue...";
-  cin.ignore();
-  cin.get();
   if (found)
+  {
     return 0;
+  }
   else
+  {
     return -1;
+  }
+
 }
 void checkAppointmentAvailability(ExpertAccount expertAccountArray[], int expertArraySize) {
   int found = viewServicesAndExperts(expertAccountArray, expertArraySize);
@@ -715,6 +789,7 @@ void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount exper
 
   // Get day and time
   int dayInt = 0, timeInt = 0;
+  cout << "Enter day of December (1-31): ";
   dayInt = getDecemberDay();
 
   while (true) {
@@ -726,26 +801,24 @@ void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount exper
       cout << "Invalid input. Please enter a number.\n";
       continue;
     } 
-    else if (timeInt == 0)
+    if (timeInt == 0)
     {
       return;
     }
-    else if (timeInt < 9 || timeInt > 17) {
+    if (timeInt < 9 || timeInt > 17) {
       cout << "Invalid time. Please enter between 9 and 17.\n";
       continue;
     }
-    else if (timeInt + serviceTypeHours > 17) {
+    if (timeInt + serviceTypeHours > 17) {
       cout << "Service does not fit within working hours. Please choose an earlier time.\n";
       continue;
     }
 
+
     // break out of loop if valid
     break;
   }
-  cout << "Booking Success! Please procide to the payment page.";
-  cout << "\nPress enter to continue...";
-  cin.ignore();
-  cin.get();
+
 
   // Check availability
   int totalHoursWorkedDay = 0;
@@ -776,12 +849,18 @@ void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount exper
     int hourIndex = timeInt + k;
     if (expertAccountArray[expertIDIndex].timeSlots[dayInt - 1][hourIndex].booked) {
       cout << "Time slots are already booked.\n";
+      cout << "Press enter to continue...\n";
+      cin.ignore();
+      cin.get();
       return;
     }
   }
 
   if ((totalHoursWorkedDay + serviceTypeHours) > 6) {
     cout << "Expert schedule is already full for the selected day.\n";
+    cout << "Press enter to continue...\n";
+    cin.ignore();
+    cin.get();
     return;
   }
 
@@ -811,6 +890,9 @@ void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount exper
   }
   if (freeIndex == -1) {
     cout << "No space left in appointment array.\n";
+    cout << "\nPress enter to continue...";
+    cin.ignore();
+    cin.get();
     return;
   }
 
@@ -849,6 +931,10 @@ void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount exper
   cout << "Booking successful for " << serviceType << " on Dec "
     << (dayInt < 10 ? "0" : "") << dayInt
     << " starting at " << timeInt << ":00\n";
+
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
 }
 void makePayment(Appointment appointmentArray[], int appointmentArraySize, CustomerAccount customerAccountArray[], int customerArrayIndex)
 {
@@ -947,7 +1033,6 @@ void makePayment(Appointment appointmentArray[], int appointmentArraySize, Custo
 
   cout << "Payment successful for appointment "
     << appointmentArray[selectedIndex].appointmentID << "!\n";
-
   cout << "\nPress enter to continue...";
   cin.ignore();
   cin.get();
@@ -1129,6 +1214,9 @@ void submitFeedback(int customerIndex, CustomerAccount customerAccountArray[], i
 
   if (selectedApptIndex == -1) {
     cout << "Error: Could not find selected appointment.\n";
+    cout << "Press enter to continue...";
+    cin.ignore();
+    cin.get();
     return;
   }
 
@@ -1149,6 +1237,9 @@ void submitFeedback(int customerIndex, CustomerAccount customerAccountArray[], i
 
   if (feedbackExists) {
     cout << "Feedback already submitted for this appointment.\n";
+    cout << "Press enter to continue...";
+    cin.ignore();
+    cin.get();
     return;
   }
 
@@ -1201,6 +1292,9 @@ void submitFeedback(int customerIndex, CustomerAccount customerAccountArray[], i
   else {
     cout << "Error: Could not open feedback file for writing.\n";
   }
+  cout << "\nPress enter to continue...";
+  cin.ignore();
+  cin.get();
 }
 
 
@@ -1352,7 +1446,7 @@ void viewCustomerList(CustomerAccount customerAccountArray[], int customerAccoun
       cout << "Time\t\t: " << convertToAmPm(appointmentArray[j].appointmentTimeSlot.startTime)
         << " - " << convertToAmPm(appointmentArray[j].appointmentTimeSlot.endTime) << endl;
       cout << "Expert\t\t: " << expertName << " (" << specialization << ")" << endl;
-      cout << "Subtotal\t: " << appointmentArray[j].totalPaid - appointmentArray[j].serviceFee;
+      cout << "Subtotal\t: " << appointmentArray[j].totalPaid - appointmentArray[j].serviceFee << endl;
       cout << "Service Fee\t: RM" << appointmentArray[j].serviceFee << endl;
       cout << "Total Paid\t: RM" << appointmentArray[j].totalPaid << endl;
       cout << "Payment Status\t: " << (appointmentArray[j].paymentStatus ? "Paid" : "Pending") << endl;
@@ -1669,7 +1763,7 @@ void viewAllFeedback(Feedback feedbackArray[], int feedbackArraySize, CustomerAc
 
   cout << "\n===== ALL FEEDBACK REPORT =====\n";
   cout << "==========================================================================================================\n";
-  cout << left << setw(8) << "Rating"
+  cout << left << setw(12) << "Rating"
     << setw(20) << "Customer"
     << setw(20) << "Expert"
     << setw(35) << "Comment"
@@ -1714,10 +1808,10 @@ void viewAllFeedback(Feedback feedbackArray[], int feedbackArraySize, CustomerAc
     // Display rating stars
     string ratingStars = "";
     for (int s = 0; s < feedbackArray[i].rating; s++) {
-      ratingStars += "š";
+      ratingStars += "š ";
     }
     for (int s = feedbackArray[i].rating; s < 5; s++) {
-      ratingStars += "™";
+      ratingStars += "™ ";
     }
 
     // Handling comments too long for display
@@ -1726,7 +1820,7 @@ void viewAllFeedback(Feedback feedbackArray[], int feedbackArraySize, CustomerAc
       displayComment = displayComment.substr(0, 27) + "...";
     }
 
-    cout << left << setw(8) << ratingStars
+    cout << left << setw(14) << ratingStars
       << setw(20) << (customerName.length() > 19 ? customerName.substr(0, 16) + "..." : customerName)
       << setw(20) << (expertName.length() > 19 ? expertName.substr(0, 16) + "..." : expertName)
       << setw(35) << displayComment
@@ -1781,17 +1875,12 @@ void viewFeedbackByExpert(Feedback feedbackArray[], int feedbackArraySize, Custo
         << " | " << expertAccountArray[i].specialization << endl;
     }
   }
-
-  cout << "Enter Expert ID: ";
   int expertIndex = findExpertIndexByID(expertAccountArray, expertAccountArraySize);
 
 
   // Use the expert feedback function
   viewExpertFeedback(expertAccountArray, expertAccountArraySize, feedbackArray, feedbackArraySize, customerAccountArray, customerAccountArraySize, expertIndex);
 
-  cout << "\nPress enter to continue...";
-  cin.ignore();
-  cin.get();
 }
 
 
@@ -2111,7 +2200,8 @@ void viewEarningsBonusEntitlement(Appointment appointmentArray[], int appointmen
   cin.ignore();
   cin.get();
 }
-void viewExpertFeedback(ExpertAccount expertAccountArray[], int expertAccountArraySize, Feedback feedbackArray[], int feedbackArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize, int expertIndex) {
+void viewExpertFeedback(ExpertAccount expertAccountArray[], int expertAccountArraySize, Feedback feedbackArray[], int feedbackArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize, int expertIndex)
+ {
 
   if (expertIndex < 0 || expertIndex >= expertAccountArraySize ||
     expertAccountArray[expertIndex].expertID.empty()) {
@@ -2124,7 +2214,7 @@ void viewExpertFeedback(ExpertAccount expertAccountArray[], int expertAccountArr
 
   cout << "\n===== FEEDBACK FOR " << expertAccountArray[expertIndex].firstName << " =====\n";
   cout << "================================================================================\n";
-  cout << left << setw(8) << "Rating"
+  cout << left << setw(12) << "Rating"
     << setw(25) << "Customer"
     << setw(40) << "Comment"
     << setw(12) << "Date" << "\n";
@@ -2159,10 +2249,10 @@ void viewExpertFeedback(ExpertAccount expertAccountArray[], int expertAccountArr
       // Display rating stars
       string ratingStars = "";
       for (int s = 0; s < feedbackArray[i].rating; s++) {
-        ratingStars += "š";
+        ratingStars += "š ";
       }
       for (int s = feedbackArray[i].rating; s < 5; s++) {
-        ratingStars += "™";
+        ratingStars += "™ ";
       }
 
       // Truncate long comments for display
@@ -2171,7 +2261,7 @@ void viewExpertFeedback(ExpertAccount expertAccountArray[], int expertAccountArr
         displayComment = displayComment.substr(0, 32) + "...";
       }
 
-      cout << left << setw(8) << ratingStars
+      cout << left << setw(14) << ratingStars
         << setw(25) << (customerName.length() > 24 ? customerName.substr(0, 21) + "..." : customerName)
         << setw(40) << displayComment
         << setw(12) << dateInfo << "\n";
@@ -2209,6 +2299,7 @@ void viewExpertFeedback(ExpertAccount expertAccountArray[], int expertAccountArr
 // Miscellaneous Functions
 int findExpertIndexByID(ExpertAccount expertAccountArray[], int expertAccountSize)
 {
+  cin.ignore();
   string expertID;
   int expertIDIndex = -1;
 
@@ -2467,7 +2558,6 @@ int getValidatedChoice(int min, int max) {
 int getDecemberDay() {
   int day;
   while (true) {
-    cout << "Enter day of December (1-31): ";
     if (cin >> day && day >= 1 && day <= 31) {
       return day;
     }

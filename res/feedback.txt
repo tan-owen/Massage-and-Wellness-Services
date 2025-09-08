@@ -8,3 +8,5 @@ F007;C002;AP010;E02;comment=Amazing treatment, felt rejuvenated.;service=5;
 F008;C003;AP011;E03;comment=Reflexology was very effective.;service=5;
 F009;C005;AP013;E02;comment=Good consultation but room was cold.;service=3;
 F010;C006;AP014;E03;comment=Professional service, will come again.;service=5;
+F011;C001;AP017;E03;comment=Fire;service=1;
+F012;C001;AP021;E01;comment=good;service=3;

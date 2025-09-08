@@ -6,3 +6,4 @@ C005;username=ali_ahmad;password=ali345;firstName=Ali;lastName=Ahmad;
 C006;username=mei_ling;password=mei678;firstName=Mei;lastName=Ling;
 C007;username=john_doe;password=john901;firstName=John;lastName=Doe;
 C008;username=sarah_tan;password=sarah234;firstName=Sarah;lastName=Tan;
+C009;username=johnsag;password=john123;firstName=John;lastName=Sag EE;

@@ -1,1 +1,1 @@
-A1;username=admin_user;password=admin123;firstName=Admin;lastName=User;
+A1;username=admin;password=admin123;firstName=Admin;lastName=User;
