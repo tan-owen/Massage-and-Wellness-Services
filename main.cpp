@@ -113,7 +113,7 @@ string removeSemicolons(string input);
 // Customer Functions
 string customerLogin(CustomerAccount customerAccountArray[], int customerArraySize);
 void customerRegistration(CustomerAccount customerAccountArray[], int customerAccountArraySize);
-void viewBeautyCentreInformation();
+void viewCentreInformation();
 int viewServicesAndExperts(ExpertAccount expertAccountArray[], int expertAccountArraySize);
 void checkAppointmentAvailability(ExpertAccount expertAccountArray[], int expertArraySize);
 void viewBooking(Appointment appointmentArray[], int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountSize, int customerIndex, CustomerAccount customerAccountArray[]);
@@ -269,7 +269,7 @@ void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArr
   do {
     cout << "===== CUSTOMER DASHBOARD =====\n";
     cout << "Welcome, " << customerAccountArray[customerIndex].firstName << "!\n";
-    cout << "1. View Beauty Centre Information\n";
+    cout << "1. View Massage & Wellness Centre Information\n";
     cout << "2. View Services and Experts\n";
     cout << "3. Check Appointment Availability\n";
     cout << "4. Book Appointment\n";
@@ -282,7 +282,7 @@ void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArr
     cout << "\n";
     switch (customerChoice) {
     case 1:
-      viewBeautyCentreInformation();
+      viewCentreInformation();
       system("cls");
       break;
     case 2:
@@ -587,7 +587,7 @@ void customerRegistration(CustomerAccount customerAccountArray[], int customerAc
   cin.ignore();
   cin.get();
 }
-void viewBeautyCentreInformation() {
+void viewCentreInformation() {
   cout << "==================================\n\n";
   cout << "Feel Good Massage & Wellness Centre\n\n";
   cout << "==================================\n\n\n";
@@ -2425,6 +2425,7 @@ string serviceSelectionValidation()
   case 2: return "Aromatherapy"; break;
   case 3: return "Reflexology"; break;
   }
+
   return "";
 }
 string convertToAmPm(string& time24) {
