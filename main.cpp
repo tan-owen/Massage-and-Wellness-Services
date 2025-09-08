@@ -348,22 +348,15 @@ void expertMenu(ExpertAccount expertAccountArray[], int expertAccountArraySize, 
       system("cls");
       break;
     case 2:
-      viewAssignedCustomerList(customerAccountArray, customerAccountArraySize,
-        appointmentArray, appointmentArraySize,
-        expertAccountArray, expertIndex);
+      viewAssignedCustomerList(customerAccountArray, customerAccountArraySize, appointmentArray, appointmentArraySize, expertAccountArray, expertIndex);
       system("cls");
       break;
     case 3:
-      viewEarningsBonusEntitlement(appointmentArray, appointmentArraySize,
-        expertAccountArray, expertAccountArraySize,
-        expertIndex);
+      viewEarningsBonusEntitlement(appointmentArray, appointmentArraySize, expertAccountArray, expertAccountArraySize, expertIndex);
       system("cls");
       break;
     case 4:  // Add this as a new option
-      viewExpertFeedback(expertAccountArray, expertAccountArraySize,
-        feedbackArray, feedbackArraySize,
-        customerAccountArray, customerAccountArraySize,
-        expertIndex);
+      viewExpertFeedback(expertAccountArray, expertAccountArraySize, feedbackArray, feedbackArraySize, customerAccountArray, customerAccountArraySize, expertIndex);
       system("cls");
       break;
     case 5:
@@ -1492,12 +1485,11 @@ void generateSalesReport(Appointment appointmentArray[], int appointmentArraySiz
   }
 
   case 2: {
-    int serviceChoice;
     cout << "\n--- Select Service Category ---\n";
     cout << "1. Consultation\n";
     cout << "2. Treatment\n";
     cout << "Enter your choice (1-2): ";
-    cin >> serviceChoice;
+    int serviceChoice = getValidatedChoice(1,2);
 
     switch (serviceChoice) {
     case 1: category = "Consultation"; break;
