@@ -100,7 +100,6 @@ void loadExpertTimeSlots(Appointment* appointmentArray, int appointmentArraySize
 
 // Miscellaneous Functions
 string serviceSelectionValidation();
-int bookingAvailablitySelect();
 int findExpertIndexByID(ExpertAccount expertAccountArray[], int expertArraySize);
 string convertToAmPm(string& time24);
 string convertToAmPm(int hour24);
@@ -119,7 +118,7 @@ void checkAppointmentAvailability(ExpertAccount expertAccountArray[], int expert
 void viewBooking(Appointment appointmentArray[], int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountSize, int customerIndex, CustomerAccount customerAccountArray[]);
 void bookAppointment(CustomerAccount customerAccountArray[], ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, int customerArrayIndex);
 void makePayment(Appointment appointmentArray[], int appointmentArraySize, CustomerAccount customerAccountArray[], int customerArrayIndex);
-void submitFeedback(int customerIndex, CustomerAccount customerAccountArray[], int customerAccountArraySize, Appointment appointmentArray[], const int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize);
+void submitFeedback(int customerIndex, CustomerAccount customerAccountArray[], int customerAccountArraySize, Appointment appointmentArray[], const int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, Feedback feedbackArray[], int feedbackArraySize);
 
 
 // Admin Functions 
@@ -142,7 +141,7 @@ void viewExpertFeedback(ExpertAccount expertAccountArray[], int expertAccountArr
 
 // Menu functions
 void displayMainMenu();
-void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize);
+void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, Feedback feedbackArray[], int feedbackArraySize);
 void adminMenu(AdminAccount adminAccountArray[], int adminAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize, Feedback feedbackArray[], int feedbackArraySize);
 void expertMenu(ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, CustomerAccount customerAccountArray[], int customerAccountArraySize, Feedback feedback[], int feedbackArraySize);
 
@@ -193,7 +192,7 @@ int main()
     switch (choice) {
     case 1:
       system("cls");
-      customerMenu(customerAccountArray, customerAccountArraySize, expertAccountArray, expertAccountArraySize, appointmentArray, appointmentArraySize);
+      customerMenu(customerAccountArray, customerAccountArraySize, expertAccountArray, expertAccountArraySize, appointmentArray, appointmentArraySize, feedbackArray, feedbackArraySize);
       break;
     case 2:
       system("cls");
@@ -221,7 +220,7 @@ void displayMainMenu() {
   cout << "3. Admin Mode\n";
   cout << "4. Exit\n";
 }
-void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize) {
+void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, Appointment appointmentArray[], int appointmentArraySize, Feedback feedbackArray[], int feedbackArraySize) {
   
   cin.ignore(10000, '\n'); // Clear input buffer
 
@@ -311,7 +310,7 @@ void customerMenu(CustomerAccount customerAccountArray[], int customerAccountArr
       system("cls");
       break;
     case 7:  
-      submitFeedback(customerIndex, customerAccountArray, customerAccountArraySize, appointmentArray, appointmentArraySize, expertAccountArray, expertAccountArraySize);
+      submitFeedback(customerIndex, customerAccountArray, customerAccountArraySize, appointmentArray, appointmentArraySize, expertAccountArray, expertAccountArraySize, feedbackArray, feedbackArraySize);
       system("cls");
       break;
     case 8:
@@ -1105,7 +1104,7 @@ void viewBooking(Appointment appointmentArray[], int appointmentArraySize, Exper
   cin.ignore();
   cin.get();
 }
-void submitFeedback(int customerIndex, CustomerAccount customerAccountArray[], int customerAccountArraySize, Appointment appointmentArray[], const int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize) {
+void submitFeedback(int customerIndex, CustomerAccount customerAccountArray[], int customerAccountArraySize, Appointment appointmentArray[], const int appointmentArraySize, ExpertAccount expertAccountArray[], int expertAccountArraySize, Feedback feedbackArray[], int feedbackArraySize) {
 
   // Check if customer index is valid
   if (customerIndex < 0 || customerIndex >= customerAccountArraySize ||
@@ -1278,6 +1277,23 @@ void submitFeedback(int customerIndex, CustomerAccount customerAccountArray[], i
       << "comment=" << removeSemicolons(comment) << ";"
       << "service=" << rating << ";\n";
     outFile.close();
+
+    // Write to feedback array
+    int freeIndex = -1;
+    for (int i = 0; i < feedbackArraySize; i++) {
+      if (feedbackArray[i].feedbackID.empty()) {
+        freeIndex = i;
+        break;
+      }
+    }
+    if (freeIndex != -1) {
+      feedbackArray[freeIndex].feedbackID = feedbackID;
+      feedbackArray[freeIndex].customerID = customerID;
+      feedbackArray[freeIndex].appointmentID = selectedAppt.appointmentID;
+      feedbackArray[freeIndex].expertID = selectedAppt.expertID;
+      feedbackArray[freeIndex].comment = removeSemicolons(comment);
+      feedbackArray[freeIndex].rating = rating;
+    }
 
     cout << "\nThank you for your feedback!\n";
     cout << "Feedback ID: " << feedbackID << " has been recorded.\n";
